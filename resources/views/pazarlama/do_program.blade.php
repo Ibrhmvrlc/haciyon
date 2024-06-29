@@ -36,14 +36,6 @@
                             <div class="external-event" data-class="bg-warning"><i class="fa fa-move"></i>Santral Altı Program</div>
                             <div class="external-event" data-class="bg-dark"><i class="fa fa-move"></i>Boş Program</div>
                         </div>
-                        <!-- checkbox -->
-                        <div class="checkbox checkbox-event pt-3 pb-5">
-                            <input id="drop-remove" class="styled-checkbox" type="checkbox">
-                            <label class="ml-2 mb-0" for="drop-remove">Remove After Drop</label>
-                        </div>
-                        <a href="javascript:void()" data-toggle="modal" data-target="#add-category" class="btn btn-primary btn-event w-100">
-                            <span class="align-middle"><i class="ti-plus"></i></span> Create New
-                        </a>
                     </div>
                 </div>
             </div>
@@ -68,23 +60,38 @@
         </script>
         <!-- BEGIN MODAL -->
         <div class="modal fade none-border" id="event-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><strong>Add New Event</strong></h4>
-                    </div>
-                    <div class="modal-body"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success save-event waves-effect waves-light">Create
-                            event</button>
-
-                        <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
+            <form action="" method="POST">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"><strong>Add New Event</strong></h4>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-body-2">
+                            <div class='col-md-6'>
+                                <div class='form-group'>
+                                    <label class='control-label'>Pompacı</label>
+                                    <select class='form-control' name='pompa'>
+                                        <option value='pompaci1'>Ahmet Kaya</option>
+                                        <option value='pompaci2'>Şaban Kaya</option>
+                                        <option value='pompaci3'>Pompalı Döküm</option>
+                                        <option value='pompaci4'>Pompalı Döküm</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success save-event waves-effect waves-light">Create
+                                event</button>
+    
+                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-        <!-- Modal Add Category -->
+        <!-- Modal Add Category
         <div class="modal fade none-border" id="add-category">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -119,6 +126,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 
 </div>
