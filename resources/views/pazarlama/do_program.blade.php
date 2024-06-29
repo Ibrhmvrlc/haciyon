@@ -60,11 +60,11 @@
         </script>
         <!-- BEGIN MODAL -->
         <div class="modal fade none-border" id="event-modal">
-            <form action="" method="POST">
+            <form action="{{route('Program.olustur')}}" method="POST">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title"><strong>Add New Event</strong></h4>
+                            <h4 class="modal-title"><strong>Yeni Program Ekle</strong></h4>
                         </div>
                         <div class="modal-body"></div>
                         <div class="modal-body-2">
@@ -81,11 +81,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success save-event waves-effect waves-light">Create
-                                event</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Kapat</button>
+                            <button type="submit" class="btn btn-success save-event waves-effect waves-light">Oluştur</button>
     
-                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
+                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Sil</button>
                         </div>
                     </div>
                 </div>
