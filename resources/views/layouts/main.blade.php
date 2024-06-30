@@ -15,7 +15,13 @@
 
     <!-- Calendar uygulamasi icin-->
     <link href="{{asset('./vendor/fullcalendar/css/fullcalendar.min.css')}}" rel="stylesheet">
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/tr.js')}}"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/tr.js')}}"></script>
 
+    <!-- ajax icin -->
+    <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css')}}" rel="stylesheet">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 
@@ -374,6 +380,14 @@
 
     <script src="{{asset('./vendor/fullcalendar/js/fullcalendar.min.js')}}"></script>
     <script src="{{asset('./js/plugins-init/fullcalendar-init.js')}}"></script>
+
+    <!-- AJAX ICIN -->
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js')}}"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/tr.js')}}"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js')}}"></script>
+    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/tr.js')}}"></script>
+    
 </body>
 
 </html>

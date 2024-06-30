@@ -8,9 +8,22 @@
             o = t.attr("data-class"),
             i = e.extend({}, a);
         i.start = n, o && (i.className = [o]), this.$calendar.fullCalendar("renderEvent", i, !0), e("#drop-remove").is(":checked") && t.remove()
-    }, t.prototype.onEventClick = function(t, n, a) {
+    };
+
+     // Meta etiketten CSRF token'ı al
+     var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+     // AJAX isteğine CSRF token'ını ekle
+     $.ajaxSetup({
+         headers: {
+             'X-CSRF-TOKEN': csrfToken
+         }
+     });
+     
+
+    t.prototype.onEventClick = function(t, n, a) {
         var o = this,
-            i = e("<form></form>");
+            i = e("<form>@csrf</form>");
         i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
             backdrop: "static"
         }), o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
@@ -18,28 +31,72 @@
                 return e._id == t._id
             }), o.$modal.modal("hide")
         }), o.$modal.find("form").on("submit", function() {
-            return t.title = i.find("input[type=text]").val(), o.$calendarObj.fullCalendar("updateEvent", t), o.$modal.modal("hide"), !1
-        })
-    }, t.prototype.onSelect = function(t, n, a) {
+            t.title = i.find("input[type=text]").val();
+            $.ajax({
+                url: '/program/update', // Güncelleme rotasi
+                method: 'POST',
+                data: {
+                    id: t._id, // Olay ID'si
+                    title: t.title,
+                    start: t.start.format(), // ISO formatında başlangıç tarihi
+                    end: t.end ? t.end.format() : null, // ISO formatında bitiş tarihi
+                    category: t.className[0]
+                },
+                success: function(response) {
+                    o.$calendarObj.fullCalendar("updateEvent", t);
+                    o.$modal.modal("hide");
+                }
+            });
+            return false;
+        });
+    };
+
+    t.prototype.onSelect = function(t, n, a) {
         var o = this;
         o.$modal.modal({
             backdrop: "static"
         });
         var i = e("<form></form>");
-        i.append("<div class='row'></div>"), i.find(".row").append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Müşteri Ünvanı</label><input class='form-control' placeholder='Ünvan' type='text' name='title'/></div></div>").append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Döküm Tipi</label><select class='form-control' name='category'></select></div></div>").find("select[name='category']").append("<option value='bg-success'>Pompalı Döküm</option>").append("<option value='bg-dark'>Mikserli Döküm</option>").append("<option value='bg-info'>Santral Altı</option>"), o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
-            i.submit()
-        }), o.$modal.find("form").on("submit", function() {
-            var e = i.find("input[name='title']").val(),
-                a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val());
-            return null !== e && 0 != e.length ? (o.$calendarObj.fullCalendar("renderEvent", {
-                title: e,
-                start: t,
-                end: n,
-                allDay: !1,
-                className: a,
-            }, !0), o.$modal.modal("hide")) : alert("You have to give a title to your event"), !1
-        }), o.$calendarObj.fullCalendar("unselect")
-    }, t.prototype.enableDrag = function() {
+        i.append("<div class='row'></div>");
+        i.find(".row").append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Event Name</label><input class='form-control' placeholder='Insert Event Name' type='text' name='title'/></div></div>").append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Category</label><select class='form-control' name='category'></select></div></div>").find("select[name='category']").append("<option value='bg-danger'>Danger</option>").append("<option value='bg-success'>Success</option>").append("<option value='bg-dark'>Dark</option>").append("<option value='bg-primary'>Primary</option>").append("<option value='bg-pink'>Pink</option>").append("<option value='bg-info'>Info</option>").append("<option value='bg-warning'>Warning</option></div></div>");
+        o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
+            i.submit();
+        });
+        o.$modal.find("form").on("submit", function() {
+            var title = i.find("input[name='title']").val(),
+                category = i.find("select[name='category'] option:checked").val();
+            if (title) {
+                var newEvent = {
+                    title: title,
+                    start: t,
+                    end: n,
+                    allDay: false,
+                    className: category
+                };
+                $.ajax({
+                    url: '/program/create', // Kaydetme rotanızı ayarlayın
+                    method: 'POST',
+                    data: {
+                        title: title,
+                        start: t.format(), // ISO formatında başlangıç tarihi
+                        end: n ? n.format() : null, // ISO formatında bitiş tarihi
+                        category: category
+                    },
+                    success: function(response) {
+                        newEvent.id = response.id; // Sunucudan dönen ID'yi kullanın
+                        o.$calendarObj.fullCalendar("renderEvent", newEvent, true);
+                        o.$modal.modal("hide");
+                    }
+                });
+            } else {
+                alert("You have to give a title to your event");
+            }
+            return false;
+        });
+        o.$calendarObj.fullCalendar("unselect");
+    };
+
+    t.prototype.enableDrag = function() {
         e(this.$event).each(function() {
             var t = {
                 title: e.trim(e(this).text())
@@ -47,8 +104,7 @@
             e(this).data("eventObject", t), e(this).draggable({
                 zIndex: 999,
                 revert: !0,
-                revertDuration: 0,
-                
+                revertDuration: 0
             })
         })
     }, t.prototype.init = function() {
@@ -56,38 +112,39 @@
         var t = new Date,
             n = (t.getDate(), t.getMonth(), t.getFullYear(), new Date(e.now())),
             a = [{
-               
+                title: "Chicken Burger",
+                start: new Date(e.now() + 158e6),
+                className: "bg-dark"
             }, {
-              
+                title: "Soft drinkaaas",
+                start: n,
+                end: n,
+                className: "bg-danger"
             }, {
-              
+                title: "Hot dog",
+                start: new Date(e.now() + 338e6),
+                className: "bg-primary"
             }],
             o = this;
         o.$calendarObj = o.$calendar.fullCalendar({
-            slotDuration: "00:15:00",
+            slotDuration: "00:30:00",
             minTime: "07:00:00",
-            maxTime: "22:00:00",
+            maxTime: "21:00:00",
             defaultView: "agendaDay",
             handleWindowResize: !0,
             height: e(window).height() - 100,
             header: {
-                left: "prev,today,next",
+                left: "prev,next today",
                 center: "title",
                 right: "month,agendaWeek,agendaDay, list"
-            },
-            buttonText:{
-                today: 'Bugün',
-                month: 'Ay',
-                week: 'Hafta',
-                day: 'Gün',
-                list: 'Liste'
-                
             },
             events: a,
             editable: !0,
             droppable: !0,
             eventLimit: !0,
             selectable: !0,
+            timeFormat: 'H:mm', // 24 saat formatı
+            slotLabelFormat: 'H:mm', // 24 saat formatı
             drop: function(t) {
                 o.onDrop(e(this), t)
             },
@@ -108,4 +165,3 @@ function(e) {
     "use strict";
     e.CalendarApp.init()
 }(window.jQuery);
-

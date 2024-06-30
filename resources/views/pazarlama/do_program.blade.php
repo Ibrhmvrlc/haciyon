@@ -19,22 +19,21 @@
     </div>
     <!-- row -->
 
-
+    
+    
     <div class="row">
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-intro-title">Calendar</h4>
-
                     <div class="">
                         <div id="external-events" class="my-3">
                             <p>*Program türünü seçip sürükle-bırak yöntemi ile saatlere uygun şekilde programı oluşturabilirsiniz.</p>
                             <p>*Eklediğiniz programın üzerine tıklayarak gerekli düzenlemeleri yapabilirsiniz.</p>
-                            <div class="external-event" data-class="bg-primary"><i class="fa fa-move"></i>Pompalı Program</div>
-                            <div class="external-event" data-class="bg-success"><i class="fa fa-move"></i>Mikserli Program
+                            <div class="external-event" data-class="bg-success"><i class="fa fa-move"></i>Pompalı Program</div>
+                            <div class="external-event" data-class="bg-warning"><i class="fa fa-move"></i>Mikserli Program
                             </div>
-                            <div class="external-event" data-class="bg-warning"><i class="fa fa-move"></i>Santral Altı Program</div>
-                            <div class="external-event" data-class="bg-dark"><i class="fa fa-move"></i>Boş Program</div>
+                            <div class="external-event" data-class="bg-dark"><i class="fa fa-move"></i>Santral altı Program</div>
                         </div>
                     </div>
                 </div>
@@ -46,49 +45,24 @@
                     <div id="calendar" class="app-fullcalendar"></div>
                 </div>
             </div>
-        </div>
-        <script>
-            $(document).ready(function() {
-                $('#calendar').fullCalendar(
-                   header:any
-                   {
-                    left: 'month, agendaWeek, agendaDay, list',
-                    center: 'title'
-                   }
-                );
-            });
-        </script>
+        </div>@csrf
         <!-- BEGIN MODAL -->
         <div class="modal fade none-border" id="event-modal">
-            <form action="{{route('Program.olustur')}}" method="POST">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title"><strong>Yeni Program Ekle</strong></h4>
-                        </div>
-                        <div class="modal-body"></div>
-                        <div class="modal-body-2">
-                            <div class='col-md-6'>
-                                <div class='form-group'>
-                                    <label class='control-label'>Pompacı</label>
-                                    <select class='form-control' name='pompa'>
-                                        <option value='pompaci1'>Ahmet Kaya</option>
-                                        <option value='pompaci2'>Şaban Kaya</option>
-                                        <option value='pompaci3'>Pompalı Döküm</option>
-                                        <option value='pompaci4'>Pompalı Döküm</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Kapat</button>
-                            <button type="submit" class="btn btn-success save-event waves-effect waves-light">Oluştur</button>
-    
-                            <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Sil</button>
-                        </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><strong>Add New Event</strong></h4>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success save-event waves-effect waves-light">Create
+                            event</button>
+
+                        <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
         <!-- Modal Add Category
         <div class="modal fade none-border" id="add-category">
@@ -125,7 +99,7 @@
                 </div>
             </div>
         </div>
-        -->
+         -->
     </div>
 
 </div>
