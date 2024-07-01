@@ -16,5 +16,6 @@ Route::prefix('/program')->group(function(){
     Route::get('/program-yap', [ProgramController::class, 'index'])->name('program.yap.git');
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
     Route::post('/create', [ProgramController::class, 'store'])->name('program.olustur');
+    Route::post('/create-onDrop', [ProgramController::class, 'onDropstore'])->name('program.surukle.olustur');
     Route::post('/update', [ProgramController::class, 'update'])->name('');
 });

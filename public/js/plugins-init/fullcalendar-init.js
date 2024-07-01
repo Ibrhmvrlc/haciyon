@@ -3,24 +3,91 @@
     var t = function() {
         this.$body = e("body"), this.$modal = e("#event-modal"), this.$event = "#external-events div.external-event", this.$calendar = e("#calendar"), this.$saveCategoryBtn = e(".save-category"), this.$categoryForm = e("#add-category form"), this.$extEvents = e("#external-events"), this.$calendarObj = null
     };
+
+    // CSRF tokenini meta etiketinden al
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
     t.prototype.onDrop = function(t, n) {
         var a = t.data("eventObject"),
             o = t.attr("data-class"),
             i = e.extend({}, a);
-        i.start = n, o && (i.className = [o]), this.$calendar.fullCalendar("renderEvent", i, !0), e("#drop-remove").is(":checked") && t.remove()
-    }, t.prototype.onEventClick = function(t, n, a) {
+        i.start = n, o && (i.className = [o]), this.$calendar.fullCalendar("renderEvent", i, !0), e("#drop-remove").is(":checked") && t.remove();
+
+        // AJAX request to save event to the database
+        $.ajax({
+            url: '/program/create-onDrop',
+            type: 'POST',
+            data: {
+                title: i.title,
+                start: i.start.format(), // Assuming you're using moment.js for date formatting
+                end:  n.format(),
+                className: i.className[0],
+                _token: csrfToken
+            },
+            success: function(response) {
+                console.log('Event saved successfully:', response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to save event:', error);
+            }
+        });
+    };
+
+
+    t.prototype.onEventClick = function(t, n, a) {
         var o = this,
             i = e("<form></form>");
-        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
+        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><span class='input-group-btn'><button type='button' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
             backdrop: "static"
         }), o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
             o.$calendarObj.fullCalendar("removeEvents", function(e) {
                 return e._id == t._id
-            }), o.$modal.modal("hide")
+            }), o.$modal.modal("hide");
+    
+            // AJAX request to delete event from the database
+            $.ajax({
+                url: '/path/to/your/delete/event',
+                type: 'POST',
+                data: {
+                    id: t._id,
+                    _token: csrfToken
+                },
+                success: function(response) {
+                    console.log('Event deleted successfully:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to delete event:', error);
+                }
+            });
         }), o.$modal.find("form").on("submit", function() {
-            return t.title = i.find("input[type=text]").val(), o.$calendarObj.fullCalendar("updateEvent", t), o.$modal.modal("hide"), !1
+            t.title = i.find("input[type=text]").val(), o.$calendarObj.fullCalendar("updateEvent", t), o.$modal.modal("hide");
+    
+            // AJAX request to update event in the database
+            $.ajax({
+                url: '/program/update',
+                type: 'POST',
+                data: {
+                    title: e,
+                    start: t.format(), // Assuming you're using moment.js for date formatting
+                    end: n.format(), // Assuming you're using moment.js for date formatting
+                    className: a,
+                    _token: csrfToken
+                },
+                success: function(response) {
+                    console.log('Event updated successfully:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to update event:', error);
+                }
+            });
+    
+            return !1;
         })
-    }, t.prototype.onSelect = function(t, n, a) {
+    };
+    
+    
+
+    t.prototype.onSelect = function(t, n, a) {
         var o = this;
         o.$modal.modal({
             backdrop: "static"
@@ -37,9 +104,35 @@
                 end: n,
                 allDay: !1,
                 className: a
-            }, !0), o.$modal.modal("hide")) : alert("You have to give a title to your event"), !1
+            }, !0), o.$modal.modal("hide"),
+            
+            // AJAX request to save new event to the database
+            $.ajax({
+                url: '/program/create',
+                type: 'POST',
+                data: {
+                    title: e,
+                    start: t.format(), // Assuming you're using moment.js for date formatting
+                    end: n.format(), // Assuming you're using moment.js for date formatting
+                    className: a,
+                    _token: csrfToken
+                },
+                success: function(response) {
+                    console.log('Event saved successfully:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Failed to save event:', error);
+                }
+            })) : alert("You have to give a title to your event"), !1
         }), o.$calendarObj.fullCalendar("unselect")
-    }, t.prototype.enableDrag = function() {
+    };
+    
+  
+    
+
+    
+    t.prototype.enableDrag = function() {
+        var o = this;
         e(this.$event).each(function() {
             var t = {
                 title: e.trim(e(this).text())
@@ -47,10 +140,36 @@
             e(this).data("eventObject", t), e(this).draggable({
                 zIndex: 999,
                 revert: !0,
-                revertDuration: 0
+                revertDuration: 0,
+                stop: function(t, n) {
+                    var a = e(this).data("eventObject");
+                    a.start = o.$calendarObj.fullCalendar("getDate"), a.className = [e(this).attr("data-class")], o.$calendarObj.fullCalendar("renderEvent", a, !0);
+    
+                    // AJAX request to save event to the database on drag
+                    e.ajax({
+                        url: '/program/create',
+                        type: 'POST',
+                        data: {
+                            title: a.title,
+                            start: a.start.format(), // Assuming you're using moment.js for date formatting
+                            end: n.format(), // Assuming you're using moment.js for date formatting
+                            className: a.className[0],
+                            _token: csrfToken
+                        },
+                        success: function(response) {
+                            console.log('Event updated successfully (dragged):', response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Failed to update event (dragged):', error);
+                        }
+                    });
+                }
             })
         })
-    }, t.prototype.init = function() {
+    };
+    
+    
+    t.prototype.init = function() {
         this.enableDrag();
         var t = new Date,
             n = (t.getDate(), t.getMonth(), t.getFullYear(), new Date(e.now())),
@@ -71,21 +190,23 @@
             o = this;
         o.$calendarObj = o.$calendar.fullCalendar({
             slotDuration: "00:15:00",
-            minTime: "08:00:00",
-            maxTime: "19:00:00",
-            defaultView: "month",
+            minTime: "07:00:00",
+            maxTime: "20:00:00",
+            defaultView: "agendaDay",
             handleWindowResize: !0,
             height: e(window).height() - 100,
             header: {
                 left: "prev,next today",
                 center: "title",
-                right: "month,agendaWeek,agendaDay"
+                right: "month,agendaWeek,agendaDay, list"
             },
             events: a,
             editable: !0,
             droppable: !0,
             eventLimit: !0,
             selectable: !0,
+            timeFormat: 'H:mm', // 24 saat formatı
+            slotLabelFormat: 'H:mm', // 24 saat formatı
             drop: function(t) {
                 o.onDrop(e(this), t)
             },

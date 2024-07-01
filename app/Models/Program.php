@@ -20,4 +20,7 @@ class Program extends Model
         'yapi_elemani',
         'odeme_bilgisi'
     ];
+
+    protected $dates = ['baslangic_saati', 'bitis_saati'];
+
 }
