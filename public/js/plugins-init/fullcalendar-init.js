@@ -167,56 +167,66 @@
             })
         })
     };
-    
+
+   
     
     t.prototype.init = function() {
         this.enableDrag();
         var t = new Date,
             n = (t.getDate(), t.getMonth(), t.getFullYear(), new Date(e.now())),
-            a = [{
-                title: "Chicken Burger",
-                start: new Date(e.now() + 158e6),
-                className: "bg-dark"
-            }, {
-                title: "Soft drinkaaas",
-                start: n,
-                end: n,
-                className: "bg-danger"
-            }, {
-                title: "Hot dog",
-                start: new Date(e.now() + 338e6),
-                className: "bg-primary"
-            }],
+            a = [],
             o = this;
-        o.$calendarObj = o.$calendar.fullCalendar({
-            slotDuration: "00:15:00",
-            minTime: "07:00:00",
-            maxTime: "20:00:00",
-            defaultView: "agendaDay",
-            handleWindowResize: !0,
-            height: e(window).height() - 100,
-            header: {
-                left: "prev,next today",
-                center: "title",
-                right: "month,agendaWeek,agendaDay, list"
-            },
-            events: a,
-            editable: !0,
-            droppable: !0,
-            eventLimit: !0,
-            selectable: !0,
-            timeFormat: 'H:mm', // 24 saat formatı
-            slotLabelFormat: 'H:mm', // 24 saat formatı
-            drop: function(t) {
-                o.onDrop(e(this), t)
-            },
-            select: function(e, t, n) {
-                o.onSelect(e, t, n)
-            },
-            eventClick: function(e, t, n) {
-                o.onEventClick(e, t, n)
-            }
-        }), this.$saveCategoryBtn.on("click", function() {
+
+    // Fetch events from the database
+    $.ajax({
+        url: '/program/events',
+        type: 'GET',
+        success: function(data) {
+            a = data.map(function(event) {
+                return {
+                    title: event.musteri_adi,
+                    start: event.baslangic_saati, // Assuming start date is in correct format
+                    end: event.bitis_saati, // Assuming end date is in correct format
+                    className: event.dokum_sekli
+                };
+            });
+
+            o.$calendarObj = o.$calendar.fullCalendar({
+                slotDuration: "00:15:00",
+                minTime: "07:00:00",
+                maxTime: "20:00:00",
+                defaultView: "agendaDay",
+                handleWindowResize: !0,
+                height: e(window).height() - 100,
+                header: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: "month,agendaWeek,agendaDay, list"
+                },
+                events: a,
+                editable: !0,
+                droppable: !0,
+                eventLimit: !0,
+                selectable: !0,
+                timeFormat: 'H:mm', // 24 saat formatı
+                slotLabelFormat: 'H:mm', // 24 saat formatı
+                drop: function(t) {
+                    o.onDrop(e(this), t)
+                },
+                select: function(e, t, n) {
+                    o.onSelect(e, t, n)
+                },
+                eventClick: function(e, t, n) {
+                    o.onEventClick(e, t, n)
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to fetch events:', error);
+        }
+    });
+       
+     this.$saveCategoryBtn.on("click", function() {
             var e = o.$categoryForm.find("input[name='category-name']").val(),
                 t = o.$categoryForm.find("select[name='category-color']").val();
             null !== e && 0 != e.length && (o.$extEvents.append('<div class="external-event bg-' + t + '" data-class="bg-' + t + '" style="position: relative;"><i class="fa fa-move"></i>' + e + "</div>"), o.enableDrag())

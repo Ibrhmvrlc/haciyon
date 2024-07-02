@@ -74,6 +74,12 @@ class ProgramController extends Controller
         }
     }
 
+    public function getEvents(){
+        $events = Program::all();
+        return response()->json($events);
+    }
+
+
     public function update(Request $request){
         if(auth()->check()){
             $validated = $request->validate([
