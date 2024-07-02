@@ -84,15 +84,17 @@ class ProgramController extends Controller
         if(auth()->check()){
             $validated = $request->validate([
                 'id' => 'required|exists:programs,id',
-                //'title' => 'required|string|max:255',
+                'title' => 'required|string|max:255',
                 'start' => 'required|date_format:Y-m-d\TH:i:s',
                 'end' => 'nullable|date_format:Y-m-d\TH:i:s',
-                //'className' => 'nullable|string',
+                'className' => 'nullable|string',
             ]);
 
             $program = Program::findOrFail($validated['id']);
             $program->baslangic_saati = $validated['start'];
             $program->bitis_saati = $validated['end'];
+            $program->musteri_adi = $validated['title'];
+            $program->dokum_sekli = $validated['className'];
             $program->save();
 
             return response()->json($program, 201);

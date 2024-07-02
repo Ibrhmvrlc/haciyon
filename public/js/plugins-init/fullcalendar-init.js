@@ -37,7 +37,7 @@
     t.prototype.onEventClick = function(t, n, a) {
         var o = this,
             i = e("<form></form>");
-        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><span class='input-group-btn'><button type='button' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
+        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
             backdrop: "static"
         }), o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
             o.$calendarObj.fullCalendar("removeEvents", function(e) {
@@ -60,17 +60,20 @@
                 }
             });
         }), o.$modal.find("form").on("submit", function() {
-            t.title = i.find("input[type=text]").val(), o.$calendarObj.fullCalendar("updateEvent", t), o.$modal.modal("hide");
-    
+            t.title = i.find("input[type=text]").val(), 
+            o.$calendarObj.fullCalendar("updateEvent", t), 
+            o.$modal.modal("hide");
+
             // AJAX request to update event in the database
             $.ajax({
                 url: '/program/update',
                 type: 'POST',
                 data: {
-                    title: e,
-                    start: t.format(), // Assuming you're using moment.js for date formatting
-                    end: n.format(), // Assuming you're using moment.js for date formatting
-                    className: a,
+                    id: t.id, // You need to pass the event ID to update the correct event
+                    title: t.title, // Use t.title instead of e
+                    start: t.start.format(), // Assuming you're using moment.js for date formatting
+                    end: t.end.format(), // Assuming you're using moment.js for date formatting
+                    className: 'mikserlii', // Assuming t.className is the correct property
                     _token: csrfToken
                 },
                 success: function(response) {
@@ -78,6 +81,8 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to update event:', error);
+                    console.error('Error status:', status);
+                    console.error('Error xhr:', xhr.responseText);
                 }
             });
     
