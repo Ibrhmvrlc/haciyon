@@ -90,6 +90,7 @@ class ProgramController extends Controller
                 'className' => 'nullable|string',
             ]);
 
+
             $program = Program::findOrFail($validated['id']);
             $program->baslangic_saati = $validated['start'];
             $program->bitis_saati = $validated['end'];

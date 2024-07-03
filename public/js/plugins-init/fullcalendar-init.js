@@ -37,7 +37,7 @@
     t.prototype.onEventClick = function(t, n, a) {
         var o = this,
             i = e("<form></form>");
-        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
+        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><input class='form-control' type=hidden name='id' value='" + t._id + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
             backdrop: "static"
         }), o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
             o.$calendarObj.fullCalendar("removeEvents", function(e) {
@@ -59,17 +59,20 @@
                     console.error('Failed to delete event:', error);
                 }
             });
-        }), o.$modal.find("form").on("submit", function() {
-            t.title = i.find("input[type=text]").val(), 
+        });
+
+        o.$modal.find("form").on("submit", function(id) {
+            e._id = parseInt(i.find("input[name='id']").val().replace(/\D/g, ''), 10),
+            t.title = i.find("input[type=text]").val(),
             o.$calendarObj.fullCalendar("updateEvent", t), 
             o.$modal.modal("hide");
-
+ 
             // AJAX request to update event in the database
             $.ajax({
                 url: '/program/update',
                 type: 'POST',
                 data: {
-                    id: t.id, // You need to pass the event ID to update the correct event
+                    id: e._id, // You need to pass the event ID to update the correct event
                     title: t.title, // Use t.title instead of e
                     start: t.start.format(), // Assuming you're using moment.js for date formatting
                     end: t.end.format(), // Assuming you're using moment.js for date formatting
