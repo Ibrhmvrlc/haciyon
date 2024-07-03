@@ -18,7 +18,7 @@
             url: '/program/create-onDrop',
             type: 'POST',
             data: {
-                title: i.title,
+                title: a.title,
                 start: i.start.format(), // Assuming you're using moment.js for date formatting
                 end:  n.format(),
                 className: i.className[0],
@@ -61,8 +61,31 @@
             });
         });
 
+        function kacinciTekilSayi(sayi) {
+            if (sayi <= 0) {
+                return 0; // Negatif veya sıfır verildiğinde 0 döndürsün
+            }
+        
+            let tekilSayiSayaci = 0;
+            let currentNumber = 1;
+        
+            while (true) {
+                if (isTekilSayi(currentNumber)) {
+                    tekilSayiSayaci++;
+                }
+                if (currentNumber === sayi) {
+                    return tekilSayiSayaci;
+                }
+                currentNumber++;
+            }
+        }
+        
+        function isTekilSayi(num) {
+            return num % 2 !== 0; // Tekil sayıyı kontrol eden fonksiyon
+        }
+
         o.$modal.find("form").on("submit", function(id) {
-            e._id = parseInt(i.find("input[name='id']").val().replace(/\D/g, ''), 10),
+            e._id = kacinciTekilSayi(parseInt(i.find("input[name='id']").val().replace(/\D/g, ''), 10)),
             t.title = i.find("input[type=text]").val(),
             o.$calendarObj.fullCalendar("updateEvent", t), 
             o.$modal.modal("hide");
