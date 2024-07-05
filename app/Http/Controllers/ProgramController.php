@@ -24,10 +24,11 @@ class ProgramController extends Controller
                 'start' => 'required|date_format:Y-m-d\TH:i:s',
                 'end' => 'nullable|date_format:Y-m-d\TH:i:s',
                 'className' => 'nullable|string',
+                'pompaci' => 'nullable|string',
             ]);
     
             $program = Program::create([
-                'pompaci' => 'saban kaya',
+                'pompaci' => $validated['pompaci'],
                 'baslangic_saati' => $validated['start'],
                 'bitis_saati' => $validated['end'],
                 'musteri_adi' => $validated['title'],

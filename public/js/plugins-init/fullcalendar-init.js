@@ -116,7 +116,6 @@
         })
     };
     
-    
 
     t.prototype.onSelect = function(t, n, a) {
         var o = this;
@@ -137,9 +136,9 @@
         i.find(".row")
             .append("<div class='col-md-6'><div class='form-group' id='pompaci-group' style='display:none;'><label class='control-label'>Pompa ve Operatörü</label><select class='form-control' name='pompaci'><option value=''>Lütfen seçiniz...</option></select></div></div>")
             .find("select[name='pompaci']")
-            .append("<option value='pompacibir'>Ahmet Kaya</option>")
-            .append("<option value='pompaciiki'>Şaban Kaya</option>")
-            .append("<option value='pompaciuc'>Lütfü Taş</option>");
+            .append("<option value='pompacibir'>P1 38lik - Ahmet Kaya</option>")
+            .append("<option value='pompaciiki'>P2 38lik - Şaban Kaya</option>")
+            .append("<option value='pompaciuc'>P3  47lik - Lütfü Taş</option>");
         
         o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
             i.submit();
@@ -147,7 +146,7 @@
         
         // Olay dinleyicisi ekleyin
         i.find("select[name='category']").on("change", function() {
-            if ($(this).val() === 'bg-primary') {
+            if ($(this).val() === 'pompali') {
                 $("#pompaci-group").show();
             } else {
                 $("#pompaci-group").hide();
@@ -155,16 +154,16 @@
             }
         });
 
-        
         o.$modal.find("form").on("submit", function() {
             var e = i.find("input[name='title']").val(),
                 a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val());
+                
             return null !== e && 0 != e.length ? (o.$calendarObj.fullCalendar("renderEvent", {
                 title: e,
                 start: t,
                 end: a,
                 allDay: !1,
-                className: a
+                className: a,
             }, !0), o.$modal.modal("hide"),
             
             // AJAX request to save new event to the database
@@ -187,10 +186,6 @@
             })) : alert("You have to give a title to your event"), !1
         }), o.$calendarObj.fullCalendar("unselect")
     };
-    
-  
-    
-
     
     t.prototype.enableDrag = function() {
         var o = this;
