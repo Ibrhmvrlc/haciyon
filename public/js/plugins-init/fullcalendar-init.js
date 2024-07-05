@@ -123,16 +123,46 @@
         o.$modal.modal({
             backdrop: "static"
         });
-        var i = e("<form></form>");
-        i.append("<div class='row'></div>"), i.find(".row").append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Event Name</label><input class='form-control' placeholder='Insert Event Name' type='text' name='title'/></div></div>").append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Category</label><select class='form-control' name='category'></select></div></div>").find("select[name='category']").append("<option value='bg-danger'>Danger</option>").append("<option value='bg-success'>Success</option>").append("<option value='bg-dark'>Dark</option>").append("<option value='bg-primary'>Primary</option>").append("<option value='bg-pink'>Pink</option>").append("<option value='bg-info'>Info</option>").append("<option value='bg-warning'>Warning</option></div></div>"), o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
-            i.submit()
-        }), o.$modal.find("form").on("submit", function() {
+        var i = $("<form></form>");
+        i.append("<div class='row'></div>");
+        i.find(".row")
+            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Müşteri Ünvanı</label><input class='form-control' placeholder='Ünvan giriniz...' type='text' name='title'/></div></div>")
+            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Döküm Şekli</label><select class='form-control' name='category'></select></div></div>")
+            .find("select[name='category']")
+            .append("<option value=''>Lütfen seçiniz...</option>")
+            .append("<option value='pompali'>Pompalı</option>")
+            .append("<option value='mikserli'>Mikserli</option>")
+            .append("<option value='santralalti'>Santral Altı</option>");
+        
+        i.find(".row")
+            .append("<div class='col-md-6'><div class='form-group' id='pompaci-group' style='display:none;'><label class='control-label'>Pompa ve Operatörü</label><select class='form-control' name='pompaci'><option value=''>Lütfen seçiniz...</option></select></div></div>")
+            .find("select[name='pompaci']")
+            .append("<option value='pompacibir'>Ahmet Kaya</option>")
+            .append("<option value='pompaciiki'>Şaban Kaya</option>")
+            .append("<option value='pompaciuc'>Lütfü Taş</option>");
+        
+        o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
+            i.submit();
+        });
+        
+        // Olay dinleyicisi ekleyin
+        i.find("select[name='category']").on("change", function() {
+            if ($(this).val() === 'bg-primary') {
+                $("#pompaci-group").show();
+            } else {
+                $("#pompaci-group").hide();
+                $("#pompaci-group select").val('');
+            }
+        });
+
+        
+        o.$modal.find("form").on("submit", function() {
             var e = i.find("input[name='title']").val(),
                 a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val());
             return null !== e && 0 != e.length ? (o.$calendarObj.fullCalendar("renderEvent", {
                 title: e,
                 start: t,
-                end: n,
+                end: a,
                 allDay: !1,
                 className: a
             }, !0), o.$modal.modal("hide"),
@@ -144,7 +174,7 @@
                 data: {
                     title: e,
                     start: t.format(), // Assuming you're using moment.js for date formatting
-                    end: n.format(), // Assuming you're using moment.js for date formatting
+                    end: n.add(1, 'hours').add(45, 'minutes').format(), // Assuming you're using moment.js for date formatting
                     className: a,
                     _token: csrfToken
                 },

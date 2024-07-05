@@ -28,12 +28,9 @@
                     <h4 class="card-intro-title">Calendar</h4>
                     <div class="">
                         <div id="external-events" class="my-3">
-                            <p>*Program türünü seçip sürükle-bırak yöntemi ile saatlere uygun şekilde programı oluşturabilirsiniz.</p>
+                            <p>*Programın başlayacağı saate tıklayarak program oluşturabilirsiniz.</p>
                             <p>*Eklediğiniz programın üzerine tıklayarak gerekli düzenlemeleri yapabilirsiniz.</p>
-                            <div class="external-event" data-class="bg-success"><i class="fa fa-move"></i>Pompalı Program</div>
-                            <div class="external-event" data-class="bg-warning"><i class="fa fa-move"></i>Mikserli Program
-                            </div>
-                            <div class="external-event" data-class="bg-dark"><i class="fa fa-move"></i>Santral altı Program</div>
+                           
                         </div>
                     </div>
                 </div>
