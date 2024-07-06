@@ -25,6 +25,8 @@ class ProgramController extends Controller
                 'end' => 'nullable|date_format:Y-m-d\TH:i:s',
                 'className' => 'nullable|string',
                 'pompaci' => 'nullable|string',
+                'santiye' => 'required|string|max:255',
+                'metraj' => 'required|integer|min:1',
             ]);
     
             $program = Program::create([
@@ -33,8 +35,8 @@ class ProgramController extends Controller
                 'bitis_saati' => $validated['end'],
                 'musteri_adi' => $validated['title'],
                 'dokum_sekli' => $validated['className'],
-                'santiye' => 'karamursel',
-                'metraj' => '35',
+                'santiye' => $validated['santiye'],
+                'metraj' => $validated['metraj'],
                 'yapi_elemani' => 'kolon',
                 'odeme_bilgisi' => 'ay basi'
             ]);
@@ -53,6 +55,7 @@ class ProgramController extends Controller
             $validated = $request->validate([
                 'start' => 'required|date_format:Y-m-d\TH:i:s',
                 'end' => 'nullable|date_format:Y-m-d\TH:i:s',
+                'className' => 'nullable|string',
                 'className' => 'nullable|string',
             ]);
     
