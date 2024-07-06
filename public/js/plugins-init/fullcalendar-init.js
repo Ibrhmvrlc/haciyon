@@ -1,3 +1,4 @@
+
 ! function(e) {
     "use strict";
     var t = function() {
@@ -18,6 +19,7 @@
             url: '/program/create-onDrop',
             type: 'POST',
             data: {
+                title: i.title,
                 title: a.title,
                 start: i.start.format(), // Assuming you're using moment.js for date formatting
                 end:  n.format(),
@@ -85,6 +87,7 @@
         }
 
         o.$modal.find("form").on("submit", function(id) {
+            e._id = parseInt(i.find("input[name='id']").val().replace(/\D/g, ''), 10),
             e._id = kacinciTekilSayi(parseInt(i.find("input[name='id']").val().replace(/\D/g, ''), 10)),
             t.title = i.find("input[type=text]").val(),
             o.$calendarObj.fullCalendar("updateEvent", t), 
@@ -116,34 +119,37 @@
         })
     };
     
+    
 
     t.prototype.onSelect = function(t, n, a) {
         var o = this;
         o.$modal.modal({
             backdrop: "static"
         });
-        var i = $("<form></form>");
-        i.append("<div class='row'></div>");
-        i.find(".row")
-            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Müşteri Ünvanı</label><input class='form-control' placeholder='Ünvan giriniz...' type='text' name='title'/></div></div>")
-            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Döküm Şekli</label><select class='form-control' name='category'></select></div></div>")
+        var i = e("<form></form>");
+            i.append("<div class='row'></div>"), 
+            i.find(".row")
+            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Event Name</label><input class='form-control' placeholder='Insert Event Name' type='text' name='title'/></div></div>")
+            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Category</label><select class='form-control' name='category'></select></div></div>")
             .find("select[name='category']")
-            .append("<option value=''>Lütfen seçiniz...</option>")
+            .append("<option value=''>Seçiniz</option>")
             .append("<option value='pompali'>Pompalı</option>")
             .append("<option value='mikserli'>Mikserli</option>")
             .append("<option value='santralalti'>Santral Altı</option>");
-        
-        i.find(".row")
+
+            i.find(".row")
             .append("<div class='col-md-6'><div class='form-group' id='pompaci-group' style='display:none;'><label class='control-label'>Pompa ve Operatörü</label><select class='form-control' name='pompaci'><option value=''>Lütfen seçiniz...</option></select></div></div>")
             .find("select[name='pompaci']")
             .append("<option value='pompacibir'>P1 38lik - Ahmet Kaya</option>")
             .append("<option value='pompaciiki'>P2 38lik - Şaban Kaya</option>")
             .append("<option value='pompaciuc'>P3  47lik - Lütfü Taş</option>");
-        
+
+            
+            
         o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
-            i.submit();
+            i.submit()
         });
-        
+
         // Olay dinleyicisi ekleyin
         i.find("select[name='category']").on("change", function() {
             if ($(this).val() === 'pompali') {
@@ -156,14 +162,15 @@
 
         o.$modal.find("form").on("submit", function() {
             var e = i.find("input[name='title']").val(),
-                a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val());
-                
+                a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val()),
+                v = i.find("select[name='pompaci'] option:checked").val();
             return null !== e && 0 != e.length ? (o.$calendarObj.fullCalendar("renderEvent", {
                 title: e,
                 start: t,
-                end: a,
+                end: n.add(1, 'hours').add(45, 'minutes').format(),
                 allDay: !1,
-                className: a,
+                className: a, 
+                pompaci: v
             }, !0), o.$modal.modal("hide"),
             
             // AJAX request to save new event to the database
@@ -175,6 +182,7 @@
                     start: t.format(), // Assuming you're using moment.js for date formatting
                     end: n.add(1, 'hours').add(45, 'minutes').format(), // Assuming you're using moment.js for date formatting
                     className: a,
+                    pompaci: v,
                     _token: csrfToken
                 },
                 success: function(response) {
@@ -186,6 +194,7 @@
             })) : alert("You have to give a title to your event"), !1
         }), o.$calendarObj.fullCalendar("unselect")
     };
+
     
     t.prototype.enableDrag = function() {
         var o = this;
@@ -243,7 +252,9 @@
                     title: event.musteri_adi,
                     start: event.baslangic_saati, // Assuming start date is in correct format
                     end: event.bitis_saati, // Assuming end date is in correct format
-                    className: event.dokum_sekli
+                    className: event.dokum_sekli,
+                    pompaci: event.pompaci,
+                    metraj: event.metraj
                 };
             });
 
@@ -274,6 +285,14 @@
                 },
                 eventClick: function(e, t, n) {
                     o.onEventClick(e, t, n)
+                },
+                eventRender: function(event, element) {
+                    if (event.pompaci) {
+                        element.find('.fc-title').append('<div class="fc-operator">' + event.pompaci + '</div>');
+                    }
+                    if (event.metraj) {
+                        element.find('.fc-title').append('<div class="fc-metraj">' + event.metraj + ' m3</div>');
+                    }
                 }
             });
         },

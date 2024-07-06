@@ -19,13 +19,11 @@
     </div>
     <!-- row -->
 
-    
-    
     <div class="row">
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-intro-title">Calendar</h4>
+                    <h4 class="card-intro-title">İpuçları</h4>
                     <div class="">
                         <div id="external-events" class="my-3">
                             <p>*Programın başlayacağı saate tıklayarak program oluşturabilirsiniz.</p>
