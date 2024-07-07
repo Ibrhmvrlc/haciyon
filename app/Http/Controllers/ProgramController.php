@@ -111,4 +111,23 @@ class ProgramController extends Controller
         }
     }
 
+    public function updateDrag(Request $request){
+        if(auth()->check()){
+            $validated = $request->validate([
+                'id' => 'required|exists:programs,id',
+                'start' => 'required|date_format:Y-m-d\TH:i:s',
+                'end' => 'nullable|date_format:Y-m-d\TH:i:s'
+            ]);
+
+            $program = Program::findOrFail($validated['id']);
+            $program->baslangic_saati = $validated['start'];
+            $program->bitis_saati = $validated['end'];
+            $program->save();
+
+            return response()->json($program, 201);
+        }else{
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    }
+
 }

@@ -8,38 +8,18 @@
     // CSRF tokenini meta etiketinden al
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    t.prototype.onDrop = function(t, n) {
+   /* t.prototype.onDrop = function(t, n) {
         var a = t.data("eventObject"),
             o = t.attr("data-class"),
             i = e.extend({}, a);
         i.start = n, o && (i.className = [o]), this.$calendar.fullCalendar("renderEvent", i, !0), e("#drop-remove").is(":checked") && t.remove();
-
-        // AJAX request to save event to the database
-        $.ajax({
-            url: '/program/create-onDrop',
-            type: 'POST',
-            data: {
-                title: i.title,
-                title: a.title,
-                start: i.start.format(), // Assuming you're using moment.js for date formatting
-                end:  n.format(),
-                className: i.className[0],
-                _token: csrfToken
-            },
-            success: function(response) {
-                console.log('Event saved successfully:', response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Failed to save event:', error);
-            }
-        });
     };
-
+    */
 
     t.prototype.onEventClick = function(t, n, a) {
         var o = this,
             i = e("<form></form>");
-        i.append("<label>Change event name</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><input class='form-control' type=hidden name='id' value='" + t._id + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
+        i.append("<label>Programı Güncelle</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><input class='form-control' type=hidden name='id' value='" + t._id + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
             backdrop: "static"
         }), o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
             o.$calendarObj.fullCalendar("removeEvents", function(e) {
@@ -192,8 +172,7 @@
 
         o.$modal.find("form").on("submit", function() {
             var e = i.find("input[name='title']").val(),
-                a = (i.find("input[name='beginning']").val(), i.find("select[name='category'] option:checked").val()),
-                b = i.find("input[name='ending']").val(),
+                a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val()),
                 c = i.find("select[name='category'] option:checked").val(),
                 p = i.find("select[name='pompaci'] option:checked").val(),
                 s = i.find("input[name='santiye']").val(),
@@ -204,7 +183,7 @@
             return null !== e && 0 != e.length ? (o.$calendarObj.fullCalendar("renderEvent", {
                 title: e,
                 start: t,
-                end: b,
+                end: n.add(1, 'hours').add(45, 'minutes').format(),
                 allDay: !1,
                 className: a,
                 pompaci: p,
@@ -222,7 +201,7 @@
                 data: {
                     title: e,
                     start: t.format(), // Assuming you're using moment.js for date formatting
-                    end: n.add(1, 'hours').add(45, 'minutes').format(), // Assuming you're using moment.js for date formatting
+                    end: t.add(2, 'hours').format(), // Assuming you're using moment.js for date formatting
                     className: a,
                     pompaci: p,
                     santiye: s,
@@ -240,6 +219,7 @@
             })) : alert("You have to give a title to your event"), !1
         }), o.$calendarObj.fullCalendar("unselect")
     };
+
     
     t.prototype.enableDrag = function() {
         var o = this;
@@ -253,26 +233,9 @@
                 revertDuration: 0,
                 stop: function(t, n) {
                     var a = e(this).data("eventObject");
-                    a.start = o.$calendarObj.fullCalendar("getDate"), a.className = [e(this).attr("data-class")], o.$calendarObj.fullCalendar("renderEvent", a, !0);
-    
-                    // AJAX request to save event to the database on drag
-                    e.ajax({
-                        url: '/program/create',
-                        type: 'POST',
-                        data: {
-                            title: a.title,
-                            start: a.start.format(), // Assuming you're using moment.js for date formatting
-                            end: n.format(), // Assuming you're using moment.js for date formatting
-                            className: a.className[0],
-                            _token: csrfToken
-                        },
-                        success: function(response) {
-                            console.log('Event updated successfully (dragged):', response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Failed to update event (dragged):', error);
-                        }
-                    });
+                        a.start = o.$calendarObj.fullCalendar("getDate"),
+                        a.className = [e(this).attr("data-class")],
+                        o.$calendarObj.fullCalendar("renderEvent", a, !0);
                 }
             })
         })
@@ -292,6 +255,7 @@
             success: function(data) {
                 a = data.map(function(event) {
                     return {
+                        id: event.id,
                         title: event.musteri_adi,
                         start: event.baslangic_saati, // Assuming start date is in correct format
                         end: event.bitis_saati, // Assuming end date is in correct format
@@ -346,7 +310,29 @@
                         if (event.yapi_elemani) {
                             element.find('.fc-title').append('<div class="fc-santiye"><b>Yapı Elemanı:</b> ' + event.yapi_elemani + '</div>');
                         }
+                    },
+                    eventDrop: function(event, revertFunc) {
+                        // Update the event in the database
+                        $.ajax({
+                            url: '/program/update-drag',
+                            type: 'POST',
+                            data: {
+                                id: event.id,
+                                start: event.start.format(), // Use the updated start date
+                                end: event.end.format(), // Use the updated end date
+                                _token: csrfToken // Ensure this token is correct and present
+                            },
+                            success: function(response) {
+                                console.log('Event updated successfully:', response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Failed to update event:', xhr.responseText); // Log the full response for debugging
+                                revertFunc(); // Revert the event to its original position if the update fails
+                            }
+                        });
                     }
+                    
+                               
                 });
             },
             error: function(xhr, status, error) {
