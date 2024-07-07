@@ -14,6 +14,7 @@ class Program extends Model
         'baslangic_saati',
         'bitis_saati',
         'musteri_adi',
+        'beton_cinsi',
         'dokum_sekli',
         'santiye',
         'metraj',

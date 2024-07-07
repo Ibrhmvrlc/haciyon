@@ -17,6 +17,7 @@ return new class extends Migration
             $table->datetime('baslangic_saati');
             $table->datetime('bitis_saati');
             $table->string('musteri_adi');
+            $table->string('beton_cinsi');
             $table->string('dokum_sekli');
             $table->string('santiye');
             $table->double('metraj')->default(0);

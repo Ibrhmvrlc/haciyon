@@ -27,6 +27,8 @@ class ProgramController extends Controller
                 'pompaci' => 'nullable|string',
                 'santiye' => 'required|string|max:255',
                 'metraj' => 'required|integer|min:1',
+                'yapi_elemani' => 'required|string|max:255',
+                'beton_cinsi' => 'required|string|max:255',
             ]);
     
             $program = Program::create([
@@ -34,10 +36,11 @@ class ProgramController extends Controller
                 'baslangic_saati' => $validated['start'],
                 'bitis_saati' => $validated['end'],
                 'musteri_adi' => $validated['title'],
+                'beton_cinsi' => $validated['beton_cinsi'],
                 'dokum_sekli' => $validated['className'],
                 'santiye' => $validated['santiye'],
                 'metraj' => $validated['metraj'],
-                'yapi_elemani' => 'kolon',
+                'yapi_elemani' => $validated['yapi_elemani'],
                 'odeme_bilgisi' => 'ay basi'
             ]);
 

@@ -129,7 +129,24 @@
         var i = e("<form></form>");
             i.append("<div class='row'></div>"), 
             i.find(".row")
-            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Müşteri Ünvanı</label><input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/></div></div>")
+            .append("<div class='col-md-12'><div class='form-group'><label class='control-label'>Müşteri Ünvanı</label><input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/></div></div>")
+            
+            i.find(".row")
+            .append("<div class='col-md-6'><div class='form-group' id='beton-cinsi-group'><label class='control-label'>Beton Cinsi</label><select class='form-control' name='betoncinsi'><option value='' selected disabled>Lütfen seçiniz...</option></select></div></div>")
+            .find("select[name='betoncinsi']")
+            .append("<option value='Gro'>C16</option>")
+            .append("<option value='C20'>C20</option>")
+            .append("<option value='C25'>C25</option>")
+            .append("<option value='C30'>C30</option>")
+            .append("<option value='C35'>C35</option>")
+            .append("<option value='C40'>C40</option>")
+            .append("<option value='C45'>C45</option>")
+            .append("<option value='C50'>C50</option>");
+
+            i.find(".row")
+            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Metraj</label><input class='form-control' placeholder='Metraj Giriniz' type='text' name='metraj'/></div></div>");
+
+            i.find(".row")
             .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Döküm Şekli</label><select class='form-control' name='category'></select></div></div>")
             .find("select[name='category']")
             .append("<option value='' disabled selected>Seçiniz</option>")
@@ -138,7 +155,7 @@
             .append("<option value='santralalti'>Santral Altı</option>");
 
             i.find(".row")
-            .append("<div class='col-md-12'><div class='form-group' id='pompaci-group' style='display:none;'><label class='control-label'>Pompa ve Operatörü</label><select class='form-control' name='pompaci'><option value='' selected disabled>Lütfen seçiniz...</option></select></div></div>")
+            .append("<div class='col-md-6'><div class='form-group' id='pompaci-group' style='display:none;'><label class='control-label'>Pompa ve Operatörü</label><select class='form-control' name='pompaci'><option value='' selected disabled>Lütfen seçiniz...</option></select></div></div>")
             .find("select[name='pompaci']")
             .append("<option value='pompacibir'>P1 38lik - Ahmet Kaya</option>")
             .append("<option value='pompaciiki'>P2 38lik - Şaban Kaya</option>")
@@ -148,19 +165,16 @@
             .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Şantiye</label><input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye'/></div></div>");
 
             i.find(".row")
-            .append("<div class='col-md-6'><div class='form-group'><label class='control-label'>Metraj</label><input class='form-control' placeholder='Metraj Giriniz' type='text' name='metraj'/></div></div>");
-
-            i.find(".row")
-            .append("<div class='col-md-12'><div class='form-group' id='yapi-elemani-group'><label class='control-label'>Yapı Elemanı</label><select class='form-control' name='yapielemani'><option value='' selected disabled>Lütfen seçiniz...</option></select></div></div>")
+            .append("<div class='col-md-6'><div class='form-group' id='yapi-elemani-group'><label class='control-label'>Yapı Elemanı</label><select class='form-control' name='yapielemani'><option value='' selected disabled>Lütfen seçiniz...</option></select></div></div>")
             .find("select[name='yapielemani']")
-            .append("<option value='yer'>Yer</option>")
-            .append("<option value='saha'>Saha</option>")
-            .append("<option value='temel'>Temel</option>")
-            .append("<option value='perde'>Perde</option>")
-            .append("<option value='kolon'>Kolon</option>")
-            .append("<option value='kiris'>Kiriş</option>")
-            .append("<option value='tabliye'>Tabliye</option>")
-            .append("<option value='diger'>Diğer</option>");
+            .append("<option value='Yer'>Yer</option>")
+            .append("<option value='Saha'>Saha</option>")
+            .append("<option value='Temel'>Temel</option>")
+            .append("<option value='Perde'>Perde</option>")
+            .append("<option value='Kolon'>Kolon</option>")
+            .append("<option value='Kiriş'>Kiriş</option>")
+            .append("<option value='Tabliye'>Tabliye</option>")
+            .append("<option value='Diğer'>Diğer</option>");
             
         o.$modal.find(".delete-event").hide().end().find(".save-event").show().end().find(".modal-body").empty().prepend(i).end().find(".save-event").unbind("click").on("click", function() {
             i.submit()
@@ -178,22 +192,27 @@
 
         o.$modal.find("form").on("submit", function() {
             var e = i.find("input[name='title']").val(),
-                a = (i.find("input[name='beginning']").val(), i.find("input[name='ending']").val(), i.find("select[name='category'] option:checked").val()),
+                a = (i.find("input[name='beginning']").val(), i.find("select[name='category'] option:checked").val()),
+                b = i.find("input[name='ending']").val(),
                 c = i.find("select[name='category'] option:checked").val(),
                 p = i.find("select[name='pompaci'] option:checked").val(),
                 s = i.find("input[name='santiye']").val(),
-                m = i.find("input[name='metraj']").val();
+                m = i.find("input[name='metraj']").val(),
+                y = i.find("select[name='yapielemani'] option:checked").val(),
+                u = i.find("select[name='betoncinsi'] option:checked").val();
 
             return null !== e && 0 != e.length ? (o.$calendarObj.fullCalendar("renderEvent", {
                 title: e,
                 start: t,
-                end: n.add(1, 'hours').add(45, 'minutes').format(),
+                end: b,
                 allDay: !1,
                 className: a,
                 pompaci: p,
                 dokum_sekli: c,
                 santiye: s,
                 metraj: m,
+                yapi_elemani: y,
+                beton_cinsi: u,
             }, !0), o.$modal.modal("hide"),
             
             // AJAX request to save new event to the database
@@ -208,6 +227,8 @@
                     pompaci: p,
                     santiye: s,
                     metraj: m,
+                    yapi_elemani: y,
+                    beton_cinsi: u,
                     _token: csrfToken
                 },
                 success: function(response) {
@@ -219,7 +240,6 @@
             })) : alert("You have to give a title to your event"), !1
         }), o.$calendarObj.fullCalendar("unselect")
     };
-
     
     t.prototype.enableDrag = function() {
         var o = this;
@@ -265,79 +285,79 @@
             a = [],
             o = this;
 
-    // Fetch events from the database
-    $.ajax({
-        url: '/program/events',
-        type: 'GET',
-        success: function(data) {
-            a = data.map(function(event) {
-                return {
-                    title: event.musteri_adi,
-                    start: event.baslangic_saati, // Assuming start date is in correct format
-                    end: event.bitis_saati, // Assuming end date is in correct format
-                    className: event.dokum_sekli,
-                    pompaci: event.pompaci,
-                    metraj: event.metraj,
-                    santiye: event.santiye,
-                    yapi_elemani: event.yapi_elemani
-                };
-            });
+        // Fetch events from the database
+        $.ajax({
+            url: '/program/events',
+            type: 'GET',
+            success: function(data) {
+                a = data.map(function(event) {
+                    return {
+                        title: event.musteri_adi,
+                        start: event.baslangic_saati, // Assuming start date is in correct format
+                        end: event.bitis_saati, // Assuming end date is in correct format
+                        className: event.dokum_sekli,
+                        pompaci: event.pompaci,
+                        metraj: event.metraj,
+                        santiye: event.santiye,
+                        yapi_elemani: event.yapi_elemani
+                    };
+                });
 
-            o.$calendarObj = o.$calendar.fullCalendar({
-                slotDuration: "00:15:00",
-                minTime: "07:00:00",
-                maxTime: "20:00:00",
-                defaultView: "agendaDay",
-                handleWindowResize: !0,
-                height: e(window).height() - 100,
-                header: {
-                    left: "prev,next today",
-                    center: "title",
-                    right: "month,agendaWeek,agendaDay, list"
-                },
-                events: a,
-                editable: !0,
-                droppable: !0,
-                eventLimit: !0,
-                selectable: !0,
-                timeFormat: 'H:mm', // 24 saat formatı
-                slotLabelFormat: 'H:mm', // 24 saat formatı
-                drop: function(t) {
-                    o.onDrop(e(this), t)
-                },
-                select: function(e, t, n) {
-                    o.onSelect(e, t, n)
-                },
-                eventClick: function(e, t, n) {
-                    o.onEventClick(e, t, n)
-                },
-                eventRender: function(event, element) {
-                    if (event.pompaci) {
-                        element.find('.fc-title').append('<div class="fc-operator"><b>Pompa:</b> ' + event.pompaci + '</div>');
-                    }else{
-                        element.find('.fc-title').append('<div class="fc-dokumsekli"><b>Mikserli</b></div>');
+                o.$calendarObj = o.$calendar.fullCalendar({
+                    slotDuration: "00:15:00",
+                    minTime: "07:00:00",
+                    maxTime: "20:00:00",
+                    defaultView: "agendaDay",
+                    handleWindowResize: !0,
+                    height: e(window).height() - 100,
+                    header: {
+                        left: "prev,next today",
+                        center: "title",
+                        right: "month,agendaWeek,agendaDay, list"
+                    },
+                    events: a,
+                    editable: !0,
+                    droppable: !0,
+                    eventLimit: !0,
+                    selectable: !0,
+                    timeFormat: 'H:mm', // 24 saat formatı
+                    slotLabelFormat: 'H:mm', // 24 saat formatı
+                    drop: function(t) {
+                        o.onDrop(e(this), t)
+                    },
+                    select: function(e, t, n) {
+                        o.onSelect(e, t, n)
+                    },
+                    eventClick: function(e, t, n) {
+                        o.onEventClick(e, t, n)
+                    },
+                    eventRender: function(event, element) {
+                        if (event.pompaci) {
+                            element.find('.fc-title').append('<div class="fc-operator"><b>Pompa:</b> ' + event.pompaci + '</div>');
+                        }else{
+                            element.find('.fc-title').append('<div class="fc-dokumsekli"><b>Mikserli</b></div>');
+                        }
+                        if (event.metraj) {
+                            element.find('.fc-title').append('<div class="fc-metraj"><b>Metraj:</b> ' + event.metraj + ' m3</div>');
+                        }
+                        if (event.santiye) {
+                            element.find('.fc-title').append('<div class="fc-santiye"><b>Şantiye:</b> ' + event.santiye + '</div>');
+                        }
+                        if (event.yapi_elemani) {
+                            element.find('.fc-title').append('<div class="fc-santiye"><b>Yapı Elemanı:</b> ' + event.yapi_elemani + '</div>');
+                        }
                     }
-                    if (event.metraj) {
-                        element.find('.fc-title').append('<div class="fc-metraj"><b>Metraj:</b> ' + event.metraj + ' m3</div>');
-                    }
-                    if (event.santiye) {
-                        element.find('.fc-title').append('<div class="fc-santiye"><b>Şantiye:</b> ' + event.santiye + '</div>');
-                    }
-                    if (event.yapi_elemani) {
-                        element.find('.fc-title').append('<div class="fc-santiye"><b>Yapı Elemanı:</b> ' + event.yapi_elemani + '</div>');
-                    }
-                }
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error('Failed to fetch events:', error);
-        }
-    });
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch events:', error);
+            }
+        });
        
-     this.$saveCategoryBtn.on("click", function() {
-            var e = o.$categoryForm.find("input[name='category-name']").val(),
-                t = o.$categoryForm.find("select[name='category-color']").val();
-            null !== e && 0 != e.length && (o.$extEvents.append('<div class="external-event bg-' + t + '" data-class="bg-' + t + '" style="position: relative;"><i class="fa fa-move"></i>' + e + "</div>"), o.enableDrag())
+        this.$saveCategoryBtn.on("click", function() {
+                var e = o.$categoryForm.find("input[name='category-name']").val(),
+                    t = o.$categoryForm.find("select[name='category-color']").val();
+                null !== e && 0 != e.length && (o.$extEvents.append('<div class="external-event bg-' + t + '" data-class="bg-' + t + '" style="position: relative;"><i class="fa fa-move"></i>' + e + "</div>"), o.enableDrag())
         })
     }, e.CalendarApp = new t, e.CalendarApp.Constructor = t
 }(window.jQuery),
