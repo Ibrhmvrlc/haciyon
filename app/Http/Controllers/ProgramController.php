@@ -114,7 +114,7 @@ class ProgramController extends Controller
     public function updateDrag(Request $request){
         if(auth()->check()){
             $validated = $request->validate([
-                'id' => 'required|exists:programs,id',
+                'id' => 'required|integer',
                 'start' => 'required|date_format:Y-m-d\TH:i:s',
                 'end' => 'nullable|date_format:Y-m-d\TH:i:s'
             ]);

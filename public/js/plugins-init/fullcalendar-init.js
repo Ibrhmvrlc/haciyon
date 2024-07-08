@@ -19,9 +19,11 @@
     t.prototype.onEventClick = function(t, n, a) {
         var o = this,
             i = e("<form></form>");
-        i.append("<label>Programı Güncelle</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><input class='form-control' type=hidden name='id' value='" + t._id + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
+        i.append("<label>Programı Güncelle</label>"), i.append("<div class='input-group'><input class='form-control' type=text value='" + t.title + "' /><input class='form-control' id='myInput' type=hidden name='id' value='" + t._id + "' /><span class='input-group-btn'><button type='submit' class='btn btn-success waves-effect waves-light'><i class='fa fa-check'></i> Save</button></span></div>"), o.$modal.modal({
             backdrop: "static"
-        }), o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
+        });
+        
+        o.$modal.find(".delete-event").show().end().find(".save-event").hide().end().find(".modal-body").empty().prepend(i).end().find(".delete-event").unbind("click").on("click", function() {
             o.$calendarObj.fullCalendar("removeEvents", function(e) {
                 return e._id == t._id
             }), o.$modal.modal("hide");
@@ -98,7 +100,6 @@
             return !1;
         })
     };
-    
     
 
     t.prototype.onSelect = function(t, n, a) {
@@ -253,7 +254,7 @@
             url: '/program/events',
             type: 'GET',
             success: function(data) {
-                a = data.map(function(event) {
+                var events = data.map(function(event) {
                     return {
                         id: event.id,
                         title: event.musteri_adi,
@@ -266,20 +267,20 @@
                         yapi_elemani: event.yapi_elemani
                     };
                 });
-
+        
                 o.$calendarObj = o.$calendar.fullCalendar({
                     slotDuration: "00:15:00",
                     minTime: "07:00:00",
                     maxTime: "20:00:00",
                     defaultView: "agendaDay",
                     handleWindowResize: !0,
-                    height: e(window).height() - 100,
+                    height: $(window).height() - 100,
                     header: {
                         left: "prev,next today",
                         center: "title",
                         right: "month,agendaWeek,agendaDay, list"
                     },
-                    events: a,
+                    events: events,
                     editable: !0,
                     droppable: !0,
                     eventLimit: !0,
@@ -287,18 +288,18 @@
                     timeFormat: 'H:mm', // 24 saat formatı
                     slotLabelFormat: 'H:mm', // 24 saat formatı
                     drop: function(t) {
-                        o.onDrop(e(this), t)
+                        o.onDrop($(this), t);
                     },
-                    select: function(e, t, n) {
-                        o.onSelect(e, t, n)
+                    select: function(start, end, allDay) {
+                        o.onSelect(start, end, allDay);
                     },
-                    eventClick: function(e, t, n) {
-                        o.onEventClick(e, t, n)
+                    eventClick: function(calEvent, jsEvent, view) {
+                        o.onEventClick(calEvent, jsEvent, view);
                     },
                     eventRender: function(event, element) {
                         if (event.pompaci) {
                             element.find('.fc-title').append('<div class="fc-operator"><b>Pompa:</b> ' + event.pompaci + '</div>');
-                        }else{
+                        } else {
                             element.find('.fc-title').append('<div class="fc-dokumsekli"><b>Mikserli</b></div>');
                         }
                         if (event.metraj) {
@@ -311,7 +312,36 @@
                             element.find('.fc-title').append('<div class="fc-santiye"><b>Yapı Elemanı:</b> ' + event.yapi_elemani + '</div>');
                         }
                     },
-                    eventDrop: function(event, revertFunc) {
+                    eventDrop: function(event, delta, revertFunc) {
+                        function kacinciTekilSayi(sayi) {
+                            if (sayi <= 0) {
+                                return 0; // Negatif veya sıfır verildiğinde 0 döndürsün
+                            }
+                        
+                            let tekilSayiSayaci = 0;
+                            let currentNumber = 1;
+                        
+                            while (true) {
+                                if (isTekilSayi(currentNumber)) {
+                                    tekilSayiSayaci++;
+                                }
+                                if (currentNumber === sayi) {
+                                    return tekilSayiSayaci;
+                                }
+                                currentNumber++;
+                            }
+                        }
+                        
+                        function isTekilSayi(num) {
+                            return num % 2 !== 0; // Tekil sayıyı kontrol eden fonksiyon
+                        }
+        
+                        var inputVal = $("#myInput").val();
+                        if (inputVal) {
+                            var cleanedVal = parseInt(inputVal.replace(/\D/g, ''), 10);
+                            event.id = kacinciTekilSayi(cleanedVal);
+                        }
+        
                         // Update the event in the database
                         $.ajax({
                             url: '/program/update-drag',
@@ -331,14 +361,13 @@
                             }
                         });
                     }
-                    
-                               
                 });
             },
             error: function(xhr, status, error) {
                 console.error('Failed to fetch events:', error);
             }
         });
+        
        
         this.$saveCategoryBtn.on("click", function() {
                 var e = o.$categoryForm.find("input[name='category-name']").val(),
