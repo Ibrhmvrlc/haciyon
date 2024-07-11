@@ -213,6 +213,7 @@
                 },
                 success: function(response) {
                     console.log('Event saved successfully:', response);
+                    location.reload(); // event olustuktan sonra direkt suruklemek suretiyle guncelletemedigim icin olustugu gibi id'sini cekmek amaciyla sayfa yeniletiyoruz :*\
                 },
                 error: function(xhr, status, error) {
                     console.log('Failed to save event:', error);
@@ -313,35 +314,6 @@
                         }
                     },
                     eventDrop: function(event, delta, revertFunc) {
-                        function kacinciTekilSayi(sayi) {
-                            if (sayi <= 0) {
-                                return 0; // Negatif veya sıfır verildiğinde 0 döndürsün
-                            }
-                        
-                            let tekilSayiSayaci = 0;
-                            let currentNumber = 1;
-                        
-                            while (true) {
-                                if (isTekilSayi(currentNumber)) {
-                                    tekilSayiSayaci++;
-                                }
-                                if (currentNumber === sayi) {
-                                    return tekilSayiSayaci;
-                                }
-                                currentNumber++;
-                            }
-                        }
-                        
-                        function isTekilSayi(num) {
-                            return num % 2 !== 0; // Tekil sayıyı kontrol eden fonksiyon
-                        }
-        
-                        var inputVal = $("#myInput").val();
-                        if (inputVal) {
-                            var cleanedVal = parseInt(inputVal.replace(/\D/g, ''), 10);
-                            event.id = kacinciTekilSayi(cleanedVal);
-                        }
-        
                         // Update the event in the database
                         $.ajax({
                             url: '/program/update-drag',
