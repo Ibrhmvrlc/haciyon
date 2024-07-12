@@ -11,8 +11,9 @@ class ProgramController extends Controller
 {
     public function index(){
         $title = 'Program Yap';
-
-        return view('pazarlama.do_program', compact('title'));
+        $events = Program::all();
+        
+        return view('pazarlama.do_program', compact('title', 'events'));
     }
 
     public function store(Request $request){
@@ -80,12 +81,6 @@ class ProgramController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-
-    public function getEvents(){
-        $events = Program::all();
-        return response()->json($events);
-    }
-
 
     public function update(Request $request){
         if(auth()->check()){
