@@ -18,41 +18,48 @@ class ProgramController extends Controller
         return view('pazarlama.do_program', compact('title', 'events', 'pompacilar'));
     }
 
-    public function store(Request $request){
+    // Pompali program olustur
+    public function storePompali(Request $request, $id){ 
         if(auth()->check()){
             $user =  User::findOrFail(auth()->id());
 
             $validated = $request->validate([
+                // 'start' => 'required|date_format:Y-m-d\TH:i:s', !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 'title' => 'required|string|max:255',
-                'start' => 'required|date_format:Y-m-d\TH:i:s',
-                'end' => 'nullable|date_format:Y-m-d\TH:i:s',
-                'className' => 'nullable|string',
-                'pompaci' => 'nullable|string',
+                'beton_cinsi' => 'required|string|max:255',
                 'santiye' => 'required|string|max:255',
                 'metraj' => 'required|integer|min:1',
                 'yapi_elemani' => 'required|string|max:255',
-                'beton_cinsi' => 'required|string|max:255',
-            ]);
-    
-            $program = Program::create([
-                'pompaci' => $validated['pompaci'],
-                'baslangic_saati' => $validated['start'],
-                'bitis_saati' => $validated['end'],
-                'musteri_adi' => $validated['title'],
-                'beton_cinsi' => $validated['beton_cinsi'],
-                'dokum_sekli' => $validated['className'],
-                'santiye' => $validated['santiye'],
-                'metraj' => $validated['metraj'],
-                'yapi_elemani' => $validated['yapi_elemani'],
-                'odeme_bilgisi' => 'ay basi'
             ]);
 
+            $program = new Program();
+            $program->pompaci_id = $id;
+            $program->baslangic_saati = now(); //DUZELT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $program->musteri_adi = mb_strtoupper($validated['title'], 'UTF-8');
+            $program->beton_cinsi = mb_strtoupper($validated['beton_cinsi'], 'UTF-8');
+            $program->dokum_sekli = 'POMPALI';
+            $program->santiye = mb_strtoupper($validated['santiye'], 'UTF-8');
+            $program->metraj = mb_strtoupper($validated['metraj'], 'UTF-8');
+            $program->yapi_elemani = mb_strtoupper($validated['yapi_elemani'], 'UTF-8');
+            $program->odeme_bilgisi = 'ay basi'; //DUZELT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $program->save();
 
-            return response()->json($program, 201);
+            return redirect()->back();
         }else{
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 401); // GIRIS YAPINIZ SAYFASINA YONLENDIR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 
     public function onDropstore(Request $request){
         if(auth()->check()){

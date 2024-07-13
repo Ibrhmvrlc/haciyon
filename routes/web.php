@@ -15,9 +15,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('/program')->group(function(){
     Route::get('/program-yap', [ProgramController::class, 'index'])->name('program.yap.git');
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
-    Route::post('/create', [ProgramController::class, 'store'])->name('program.olustur');
+    Route::post('/create-pompali/{id}', [ProgramController::class, 'storePompali'])->name('program.olustur.pompali');
    // Route::post('/create-onDrop', [ProgramController::class, 'onDropstore'])->name('program.surukle.olustur');
-   // Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');
+    Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');
     Route::post('/update', [ProgramController::class, 'update'])->name('programlar.guncelle');
     Route::post('/update-drag', [ProgramController::class, 'updateDrag'])->name('programlar.surukle.guncelle');
 });
