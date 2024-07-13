@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pompacilar;
 use App\Models\Program;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,8 +13,9 @@ class ProgramController extends Controller
     public function index(){
         $title = 'Program Yap';
         $events = Program::all();
+        $pompacilar = Pompacilar::all();
         
-        return view('pazarlama.do_program', compact('title', 'events'));
+        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar'));
     }
 
     public function store(Request $request){
