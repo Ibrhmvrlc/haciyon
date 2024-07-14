@@ -14,11 +14,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('/program')->group(function(){
     Route::get('/program-yap/{tarih}', [ProgramController::class, 'index'])->name('program.yap.git');
-    Route::post('/create-pompali/{id}', [ProgramController::class, 'storePompali'])->name('program.olustur.pompali');
-    Route::post('/create-mikserli', [ProgramController::class, 'storeMikserli'])->name('program.olustur.mikserli');
-    Route::post('/create-santral-alti', [ProgramController::class, 'storeSantralAlti'])->name('program.olustur.santralalti');
-    Route::get('/tarih-ileri/{tarih}', [ProgramController::class, 'tarihIleri'])->name('program.tarih.ileri');
-
+    Route::post('/create-pompali/{id}/{tarih}', [ProgramController::class, 'storePompali'])->name('program.olustur.pompali');
+    Route::post('/create-mikserli/{tarih}', [ProgramController::class, 'storeMikserli'])->name('program.olustur.mikserli');
+    Route::post('/create-santral-alti/{tarih}', [ProgramController::class, 'storeSantralAlti'])->name('program.olustur.santralalti');
+    Route::get('/ileri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.ileri');
+    Route::get('/geri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.geri');
     
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
     Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');

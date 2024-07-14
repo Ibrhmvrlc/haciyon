@@ -17,32 +17,20 @@ class ProgramController extends Controller
         $pompacilar = Pompacilar::all();
         
         $carbonTarih = Carbon::parse($tarih);
-        $tarih = Carbon::parse($tarih)->addDay();
-        $formatli_tarih = strftime('%d %B %Y %A', $carbonTarih->timestamp); // Türkçe tarih formatı
-    
-        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar', 'formatli_tarih', 'tarih'));
-    }
-
-    public function tarihIleri($tarih) {
-        setlocale(LC_TIME, 'tr_TR.UTF-8'); // Türkçe lokal ayarı
-        $title = 'Program Yap';
-        $events = Program::all();
-        $pompacilar = Pompacilar::all();
+       
+        // Carbon'ın translatedFormat fonksiyonunu kullanarak Türkçe tarih formatla
+        $carbonTarih->locale('tr');
+        $formatli_tarih = $carbonTarih->translatedFormat('d F Y l');
         
-        $carbonTarih = Carbon::parse($tarih);
-        $tarih = Carbon::parse($tarih)->addDay();
-        $formatli_tarih = strftime('%d %B %Y %A', $carbonTarih->timestamp); // Türkçe tarih formatı
-    
         return view('pazarlama.do_program', compact('title', 'events', 'pompacilar', 'formatli_tarih', 'tarih'));
     }
 
     // Pompali program olustur
-    public function storePompali(Request $request, $id){ 
+    public function storePompali(Request $request, $id, $tarih){ 
         if(auth()->check()){
             $user =  User::findOrFail(auth()->id());
 
             $time = $request->input('start');
-            $tarih = $request->input('tarihPompa' . $id);
             
             // Tarihi ve zamanı birleştirerek Carbon objesi oluşturun
             $dateTimeString = $tarih . ' ' . $time;
@@ -79,12 +67,20 @@ class ProgramController extends Controller
     }
 
     // Mikserli program olustur
-    public function storeMikserli(Request $request){ 
+    public function storeMikserli(Request $request, $tarih){ 
         if(auth()->check()){
             $user =  User::findOrFail(auth()->id());
 
+            $time = $request->input('start');
+
+            // Tarihi ve zamanı birleştirerek Carbon objesi oluşturun
+            $dateTimeString = $tarih . ' ' . $time;
+            $dateTime = Carbon::createFromFormat('Y-m-d H:i', $dateTimeString);
+             
+            // İstenen formatta string olarak alın
+            $start = $dateTime->format('Y-m-d\TH:i:s');
+
             $validated = $request->validate([
-                // 'start' => 'required|date_format:Y-m-d\TH:i:s', !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 'title' => 'required|string|max:255',
                 'beton_cinsi' => 'required|string|max:255',
                 'santiye' => 'required|string|max:255',
@@ -94,7 +90,7 @@ class ProgramController extends Controller
 
             $program = new Program();
             $program->pompaci_id = '0';
-            $program->baslangic_saati = now(); //DUZELT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $program->baslangic_saati = $start;
             $program->musteri_adi = mb_strtoupper($validated['title'], 'UTF-8');
             $program->beton_cinsi = mb_strtoupper($validated['beton_cinsi'], 'UTF-8');
             $program->dokum_sekli = 'MİKSERLİ';
@@ -111,12 +107,20 @@ class ProgramController extends Controller
     }
 
     // Santral Alti program olustur
-    public function storeSantralAlti(Request $request){ 
+    public function storeSantralAlti(Request $request, $tarih){ 
         if(auth()->check()){
             $user =  User::findOrFail(auth()->id());
 
+            $time = $request->input('start');
+
+            // Tarihi ve zamanı birleştirerek Carbon objesi oluşturun
+            $dateTimeString = $tarih . ' ' . $time;
+            $dateTime = Carbon::createFromFormat('Y-m-d H:i', $dateTimeString);
+             
+            // İstenen formatta string olarak alın
+            $start = $dateTime->format('Y-m-d\TH:i:s');
+
             $validated = $request->validate([
-                // 'start' => 'required|date_format:Y-m-d\TH:i:s', !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 'title' => 'required|string|max:255',
                 'beton_cinsi' => 'required|string|max:255',
                 'santiye' => 'required|string|max:255',
@@ -126,7 +130,7 @@ class ProgramController extends Controller
 
             $program = new Program();
             $program->pompaci_id = '0';
-            $program->baslangic_saati = now(); //DUZELT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $program->baslangic_saati = $start; //DUZELT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             $program->musteri_adi = mb_strtoupper($validated['title'], 'UTF-8');
             $program->beton_cinsi = mb_strtoupper($validated['beton_cinsi'], 'UTF-8');
             $program->dokum_sekli = 'SANTRAL ALTI';

@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+@php use Carbon\Carbon; @endphp
 <div class="container-fluid">
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
@@ -26,13 +27,29 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 id="date-heading" style="text-align: center;">{{$formatli_tarih}}</h5>
+                    
                     <div style="text-align: center;">
                       <div class="date-picker-container">
                         <div class="date-picker-buttons">
-                          <a href="xxxxxxx">&lt;</a>
-                          <input type="date" id="date" name="date" style="border: 0;">
-                          <a href="{{route('program.tarih.ileri', $tarih)}}">&gt;</a>
+                          <?php
+                            $eski_tarih = Carbon::parse($tarih)->subDay(); 
+                          ?>
+                          <a href="{{route('program.tarih.geri', $eski_tarih->format('Y-m-d'))}}" style="display: block; margin-bottom: 10px;">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                              </svg>
+                          </a>
+                          &nbsp;
+                          <h5 id="date-heading" style="text-align: center;">{{$formatli_tarih}}</h5>
+                          &nbsp;
+                          <?php
+                            $ileri_tarih = Carbon::parse($tarih)->addDay(); 
+                          ?>
+                          <a href="{{route('program.tarih.ileri', $ileri_tarih->format('Y-m-d'))}}" style="display: block; margin-bottom: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                            </svg>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -107,6 +124,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $event)
+                                @php
+                                    $tarihKismi = Carbon::parse($event->baslangic_saati)->format('Y-m-d');
+                                @endphp
+                                @if ($tarihKismi == $tarih)
                                 @if ($event->pompaci_id == $pompaci->id)
                                 <tr>
                                     <th>{{$event->baslangic_saati}}</th>
@@ -116,6 +137,7 @@
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
                                 </tr>
+                                @endif
                                 @endif
                                 @endforeach
                             </tbody>
@@ -156,6 +178,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $event)
+                                @php
+                                $tarihKismi = Carbon::parse($event->baslangic_saati)->format('Y-m-d');
+                                @endphp
+                                @if ($tarihKismi == $tarih)
                                 @if (($event->dokum_sekli == 'MİKSERLİ'))
                                 <tr>
                                     <th>{{$event->baslangic_saati}}</th>
@@ -165,6 +191,7 @@
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
                                 </tr>
+                                @endif
                                 @endif
                                 @endforeach
                             </tbody>
@@ -203,6 +230,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $event)
+                                @php
+                                $tarihKismi = Carbon::parse($event->baslangic_saati)->format('Y-m-d');
+                                @endphp
+                                @if ($tarihKismi == $tarih)
                                 @if (($event->dokum_sekli == 'SANTRAL ALTI'))
                                 <tr>
                                     <th>{{$event->baslangic_saati}}</th>
@@ -212,6 +243,7 @@
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
                                 </tr>
+                                @endif
                                 @endif
                                 @endforeach
                             </tbody>
@@ -230,9 +262,8 @@
 <div class="modal fade" id="pompaModal{{$pompaci->id}}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ route('program.olustur.pompali', $pompaci->id) }}" method="post">
+            <form action="{{ route('program.olustur.pompali',  ['id' => $pompaci->id, 'tarih' => $tarih]) }}" method="post">
                 @csrf
-                <input type="hidden" name="tarihPompa{{$pompaci->id}}" id="tarihIDPompa{{$pompaci->id}}" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">{{$pompaci->ad_soyad}} Program ekle</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
@@ -315,9 +346,8 @@
 <div class="modal fade" id="mikserliModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ route('program.olustur.mikserli')}}" method="post">
+            <form action="{{ route('program.olustur.mikserli', $tarih)}}" method="post">
                 @csrf
-                <input type="hidden" name="tarihMikser" id="tarihIDMikser" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">Mikserli Program ekle</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
@@ -328,6 +358,13 @@
                         <div class='form-group'>
                             <label class='control-label'>Müşteri Ünvanı</label>
                             <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Saat</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600"/>
                         </div>
                     </div>
 
@@ -393,9 +430,8 @@
 <div class="modal fade" id="santralAltiModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{route('program.olustur.santralalti')}}" method="POST">
+            <form action="{{route('program.olustur.santralalti', $tarih)}}" method="POST">
                 @csrf
-                <input type="hidden" name="tarihSantralalti" id="tarihIDSantralalti" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">Santral Altı Program ekle</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
@@ -406,6 +442,13 @@
                         <div class='form-group'>
                             <label class='control-label'>Müşteri Ünvanı</label>
                             <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Saat</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600"/>
                         </div>
                     </div>
 

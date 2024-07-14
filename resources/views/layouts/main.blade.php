@@ -20,7 +20,7 @@
 
     <!-- ajax icin -->
     <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css')}}" rel="stylesheet">
-
+    
 </head>
 
 <body>
