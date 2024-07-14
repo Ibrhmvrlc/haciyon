@@ -10,12 +10,30 @@ use Carbon\Carbon;
 
 class ProgramController extends Controller
 {
-    public function index(){
+    public function index($tarih) {
+        setlocale(LC_TIME, 'tr_TR.UTF-8'); // Türkçe lokal ayarı
         $title = 'Program Yap';
         $events = Program::all();
         $pompacilar = Pompacilar::all();
         
-        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar'));
+        $carbonTarih = Carbon::parse($tarih);
+        $tarih = Carbon::parse($tarih)->addDay();
+        $formatli_tarih = strftime('%d %B %Y %A', $carbonTarih->timestamp); // Türkçe tarih formatı
+    
+        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar', 'formatli_tarih', 'tarih'));
+    }
+
+    public function tarihIleri($tarih) {
+        setlocale(LC_TIME, 'tr_TR.UTF-8'); // Türkçe lokal ayarı
+        $title = 'Program Yap';
+        $events = Program::all();
+        $pompacilar = Pompacilar::all();
+        
+        $carbonTarih = Carbon::parse($tarih);
+        $tarih = Carbon::parse($tarih)->addDay();
+        $formatli_tarih = strftime('%d %B %Y %A', $carbonTarih->timestamp); // Türkçe tarih formatı
+    
+        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar', 'formatli_tarih', 'tarih'));
     }
 
     // Pompali program olustur

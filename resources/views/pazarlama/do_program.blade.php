@@ -26,85 +26,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 id="date-heading" style="text-align: center;"></h5>
+                    <h5 id="date-heading" style="text-align: center;">{{$formatli_tarih}}</h5>
                     <div style="text-align: center;">
                       <div class="date-picker-container">
                         <div class="date-picker-buttons">
-                          <button id="prevDay" style="border: 0;">&lt;</button>
+                          <a href="xxxxxxx">&lt;</a>
                           <input type="date" id="date" name="date" style="border: 0;">
-                          <button id="nextDay" style="border: 0;">&gt;</button>
+                          <a href="{{route('program.tarih.ileri', $tarih)}}">&gt;</a>
                         </div>
                       </div>
                     </div>
                 </div>
-                
-                <script>
-                    document.addEventListener('DOMContentLoaded', (event) => {
-                        const dateInput = document.getElementById('date');
-                        const dateHeading = document.getElementById('date-heading');
-                        const prevDayBtn = document.getElementById('prevDay');
-                        const nextDayBtn = document.getElementById('nextDay');
-                
-                        const updateHeading = (date) => {
-                            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-                            const formattedDate = new Date(date).toLocaleDateString('tr-TR', options);
-                            dateHeading.textContent = `${formattedDate} Programı`;
-                        };
-                
-                        const today = new Date();
-                        today.setDate(today.getDate() + 1); // Add one day to today's date
-                        const year = today.getFullYear();
-                        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                        const day = String(today.getDate()).padStart(2, '0');
-                        const defaultDate = `${year}-${month}-${day}`;
-                        
-                        dateInput.value = defaultDate;
-                        updateHeading(defaultDate);
-                        @foreach ($pompacilar as $pompaci)
-                        document.getElementById('tarihIDPompa{{$pompaci->id}}').value = defaultDate;
-                        @endforeach
-                        document.getElementById('tarihIDMikser').value = defaultDate;
-                        document.getElementById('tarihIDSantralalti').value = defaultDate;
-
-
-                        dateInput.addEventListener('input', (event) => {
-                            updateHeading(event.target.value);
-                            @foreach ($pompacilar as $pompaci)
-                            document.getElementById('tarihIDPompa{{$pompaci->id}}').value = event.target.value;
-                            @endforeach
-                            document.getElementById('tarihIDMikser').value = event.target.value;
-                            document.getElementById('tarihIDSantralalti').value = event.target.value;
-                        });
-                
-                        // Previous day button functionality
-                        prevDayBtn.addEventListener('click', () => {
-                            const currentDate = new Date(dateInput.value);
-                            currentDate.setDate(currentDate.getDate() - 1);
-                            const prevDate = currentDate.toISOString().split('T')[0];
-                            dateInput.value = prevDate;
-                            updateHeading(prevDate);
-                            @foreach ($pompacilar as $pompaci)
-                            document.getElementById('tarihIDPompa{{$pompaci->id}}').value = prevDate;
-                            @endforeach
-                            document.getElementById('tarihIDMikser').value = prevDate;
-                            document.getElementById('tarihIDSantralalti').value = prevDate;
-                        });
-                
-                        // Next day button functionality
-                        nextDayBtn.addEventListener('click', () => {
-                            const currentDate = new Date(dateInput.value);
-                            currentDate.setDate(currentDate.getDate() + 1);
-                            const nextDate = currentDate.toISOString().split('T')[0];
-                            dateInput.value = nextDate;
-                            updateHeading(nextDate);
-                            @foreach ($pompacilar as $pompaci)
-                            document.getElementById('tarihIDPompa{{$pompaci->id}}').value = nextDate;
-                            @endforeach
-                            document.getElementById('tarihIDMikser').value = nextDate;
-                            document.getElementById('tarihIDSantralalti').value = nextDate;
-                        });
-                    });
-                </script>
             </div>
             
             <style>

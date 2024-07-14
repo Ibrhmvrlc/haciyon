@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="utf-8">
@@ -184,7 +184,17 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-layout-25"></i><span class="nav-text">Program</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="{{route('program.yap.git')}}">Beton Programı Yap</a></li>
+                            <?php 
+                                // DateTime sınıfını kullanarak bugünün tarihini alıyoruz
+                                $today = new DateTime();
+
+                                // Bir gün ekliyoruz
+                                $today->modify('+1 day');
+
+                                // Tarihi formatlayarak bir değişkene aktarıyoruz
+                                $tarih = $today->format('Y-m-d');
+                            ?>
+                            <li><a href="{{route('program.yap.git', $tarih)}}">Beton Programı Yap</a></li>
                         </ul>
                     </li>
                     <li class="nav-label">Apps</li>
