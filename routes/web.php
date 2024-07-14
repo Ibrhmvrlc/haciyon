@@ -19,9 +19,10 @@ Route::prefix('/program')->group(function(){
     Route::post('/create-santral-alti/{tarih}', [ProgramController::class, 'storeSantralAlti'])->name('program.olustur.santralalti');
     Route::get('/ileri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.ileri');
     Route::get('/geri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.geri');
+    Route::post('/update/{id}', [ProgramController::class, 'update'])->name('programlar.guncelle');
+
     
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
     Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');
-    Route::post('/update', [ProgramController::class, 'update'])->name('programlar.guncelle');
     Route::post('/update-drag', [ProgramController::class, 'updateDrag'])->name('programlar.surukle.guncelle');
 });

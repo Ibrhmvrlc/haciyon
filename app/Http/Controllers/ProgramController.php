@@ -146,7 +146,40 @@ class ProgramController extends Controller
         }
     }
 
+    public function update(Request $request, $id){
+        if(auth()->check()){
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'beton_cinsi' => 'required|string|max:255',
+                'metraj' => 'required|integer|min:1',
+                'santiye' => 'required|string|max:255',
+                'yapi_elemani' => 'required|string|max:255',
+            ]);
 
+            $time = $request->input('start');
+            $tarih = $request->input('tarihKismi');
+
+            // Tarihi ve zamanı birleştirerek Carbon objesi oluşturun
+            $dateTimeString = $tarih . ' ' . $time;
+            $dateTime = Carbon::createFromFormat('Y-m-d H:i', $dateTimeString);
+              
+            // İstenen formatta string olarak alın
+            $startGuncellenmis = $dateTime->format('Y-m-d\TH:i:s');
+
+            $program = Program::findOrFail($id);
+            $program->baslangic_saati = $startGuncellenmis;
+            $program->musteri_adi = mb_strtoupper($validated['title']);
+            $program->beton_cinsi = mb_strtoupper($validated['beton_cinsi']);
+            $program->metraj = mb_strtoupper($validated['metraj']);
+            $program->santiye = mb_strtoupper($validated['santiye']);
+            $program->yapi_elemani = mb_strtoupper($validated['yapi_elemani']);
+            $program->save();
+
+            return redirect()->back();
+        }else{
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    }
 
 
 
@@ -193,29 +226,7 @@ class ProgramController extends Controller
         }
     }
 
-    public function update(Request $request){
-        if(auth()->check()){
-            $validated = $request->validate([
-                'id' => 'required|exists:programs,id',
-                'title' => 'required|string|max:255',
-                'start' => 'required|date_format:Y-m-d\TH:i:s',
-                'end' => 'nullable|date_format:Y-m-d\TH:i:s',
-                'className' => 'nullable|string',
-            ]);
-
-
-            $program = Program::findOrFail($validated['id']);
-            $program->baslangic_saati = $validated['start'];
-            $program->bitis_saati = $validated['end'];
-            $program->musteri_adi = $validated['title'];
-            $program->dokum_sekli = $validated['className'];
-            $program->save();
-
-            return response()->json($program, 201);
-        }else{
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-    }
+   
 
     public function updateDrag(Request $request){
         if(auth()->check()){
