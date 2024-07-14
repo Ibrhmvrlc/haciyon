@@ -6,7 +6,11 @@
         <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
                 <h4 class="mb-2">Beton Programı Yap</h4>
-                <p class="mb-0">Pompalı, mikserli ya da santral altı program ekleyebilirsiniz.</p>
+                <p class="mb-0">
+                    Pompalı, mikserli ya da santral altı program ekleyebilirsiniz. 
+                    Tarih, varsayılan olarak bulunduğunuz günden bir sonraki güne ayarlıdır.
+                    Tarih seçme kısmından tarihi değiştirebilirsiniz.
+                </p>
             </div>
         </div>
         <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -18,6 +22,129 @@
     </div>
     <!-- row -->
     <div class="row">
+        <!-- Hangi tarihin programı -->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 id="date-heading" style="text-align: center;"></h5>
+                    <div style="text-align: center;">
+                      <div class="date-picker-container">
+                        <div class="date-picker-buttons">
+                          <button id="prevDay" style="border: 0;">&lt;</button>
+                          <input type="date" id="date" name="date" style="border: 0;">
+                          <button id="nextDay" style="border: 0;">&gt;</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const dateInput = document.getElementById('date');
+                        const dateHeading = document.getElementById('date-heading');
+                        const prevDayBtn = document.getElementById('prevDay');
+                        const nextDayBtn = document.getElementById('nextDay');
+                
+                        const updateHeading = (date) => {
+                            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+                            const formattedDate = new Date(date).toLocaleDateString('tr-TR', options);
+                            dateHeading.textContent = `${formattedDate} Programı`;
+                        };
+                
+                        const today = new Date();
+                        today.setDate(today.getDate() + 1); // Add one day to today's date
+                        const year = today.getFullYear();
+                        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                        const day = String(today.getDate()).padStart(2, '0');
+                        const defaultDate = `${year}-${month}-${day}`;
+                        
+                        dateInput.value = defaultDate;
+                        updateHeading(defaultDate);
+                        @foreach ($pompacilar as $pompaci)
+                        document.getElementById('tarihIDPompa{{$pompaci->id}}').value = defaultDate;
+                        @endforeach
+                        document.getElementById('tarihIDMikser').value = defaultDate;
+                        document.getElementById('tarihIDSantralalti').value = defaultDate;
+
+
+                        dateInput.addEventListener('input', (event) => {
+                            updateHeading(event.target.value);
+                            @foreach ($pompacilar as $pompaci)
+                            document.getElementById('tarihIDPompa{{$pompaci->id}}').value = event.target.value;
+                            @endforeach
+                            document.getElementById('tarihIDMikser').value = event.target.value;
+                            document.getElementById('tarihIDSantralalti').value = event.target.value;
+                        });
+                
+                        // Previous day button functionality
+                        prevDayBtn.addEventListener('click', () => {
+                            const currentDate = new Date(dateInput.value);
+                            currentDate.setDate(currentDate.getDate() - 1);
+                            const prevDate = currentDate.toISOString().split('T')[0];
+                            dateInput.value = prevDate;
+                            updateHeading(prevDate);
+                            @foreach ($pompacilar as $pompaci)
+                            document.getElementById('tarihIDPompa{{$pompaci->id}}').value = prevDate;
+                            @endforeach
+                            document.getElementById('tarihIDMikser').value = prevDate;
+                            document.getElementById('tarihIDSantralalti').value = prevDate;
+                        });
+                
+                        // Next day button functionality
+                        nextDayBtn.addEventListener('click', () => {
+                            const currentDate = new Date(dateInput.value);
+                            currentDate.setDate(currentDate.getDate() + 1);
+                            const nextDate = currentDate.toISOString().split('T')[0];
+                            dateInput.value = nextDate;
+                            updateHeading(nextDate);
+                            @foreach ($pompacilar as $pompaci)
+                            document.getElementById('tarihIDPompa{{$pompaci->id}}').value = nextDate;
+                            @endforeach
+                            document.getElementById('tarihIDMikser').value = nextDate;
+                            document.getElementById('tarihIDSantralalti').value = nextDate;
+                        });
+                    });
+                </script>
+            </div>
+            
+            <style>
+                .date-picker-container {
+                  display: flex;
+                  justify-content: center;
+                }
+                
+                .date-picker-buttons {
+                  display: flex;
+                  align-items: center;
+                }
+                
+                .date-picker-buttons button {
+                  padding: 5px 10px;
+                  cursor: pointer;
+                }
+                
+                .date-picker-buttons input[type="date"] {
+                  padding: 5px 10px;
+                }
+              </style>
+            
+        </div>
+
+        <!-- Herhangi bir hata bildirimi alanı -->
+        @if ($errors->any())
+            <div class="col-lg-12">
+                <div class="card alert alert-danger">
+                    <div class="card-body">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+
 
         @foreach ($pompacilar as $pompaci)
         <!-- {{$pompaci->id}}.Pompaciya Ait Programlar -->
@@ -97,9 +224,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $event)
-                                @if (isset($event->pompaci_id) OR ($event->pompaci_id == 'POMPALI' AND $event->pompaci_id != 'MİKSERLİ'))
-                                    @continue
-                                @endif
+                                @if (($event->dokum_sekli == 'MİKSERLİ'))
                                 <tr>
                                     <th>{{$event->baslangic_saati}}</th>
                                     <td>{{$event->musteri_adi}}</td>
@@ -108,6 +233,7 @@
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
                                 </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -145,9 +271,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $event)
-                                @if (isset($event->pompaci_id) OR ($event->pompaci_id == 'POMPALI' AND $event->pompaci_id != 'SANTRAL ALTI'))
-                                    @continue
-                                @endif
+                                @if (($event->dokum_sekli == 'SANTRAL ALTI'))
                                 <tr>
                                     <th>{{$event->baslangic_saati}}</th>
                                     <td>{{$event->musteri_adi}}</td>
@@ -156,6 +280,7 @@
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
                                 </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -175,6 +300,7 @@
         <div class="modal-content">
             <form action="{{ route('program.olustur.pompali', $pompaci->id) }}" method="post">
                 @csrf
+                <input type="hidden" name="tarihPompa{{$pompaci->id}}" id="tarihIDPompa{{$pompaci->id}}" value="">
                 <div class="modal-header">
                     <h5 class="modal-title">{{$pompaci->ad_soyad}} Program ekle</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
@@ -185,6 +311,13 @@
                         <div class='form-group'>
                             <label class='control-label'>Müşteri Ünvanı</label>
                             <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Saat</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600"/>
                         </div>
                     </div>
 
@@ -250,72 +383,76 @@
 <div class="modal fade" id="mikserliModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Mikserli Program ekle</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class='col-md-12'>
-                    <div class='form-group'>
-                        <label class='control-label'>Müşteri Ünvanı</label>
-                        <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
-                    </div>
+            <form action="{{ route('program.olustur.mikserli')}}" method="post">
+                @csrf
+                <input type="hidden" name="tarihMikser" id="tarihIDMikser" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mikserli Program ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    </button>
                 </div>
-
-                <div class='col-md-12'>
-                    <div class='form-group' id='beton-cinsi-group'>
-                        <label class='control-label'>Beton Cinsi</label>
-                        <select class='form-control' name='betoncinsi'>
-                            <option value='' selected disabled>Lütfen seçiniz...</option>
-                            <option value='Gro'>C16</option>
-                            <option value='C20'>C20</option>
-                            <option value='C25'>C25</option>
-                            <option value='C30'>C30</option>
-                            <option value='C35'>C35</option>
-                            <option value='C40'>C40</option>
-                            <option value='C45'>C45</option>
-                            <option value='C50'>C50</option>
-                        </select>
+                <div class="modal-body">
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Müşteri Ünvanı</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
+                        </div>
                     </div>
-                </div>
 
-                <div class='col-md-12'>
-                    <div class='form-group'>
-                        <label class='control-label'>Metraj</label>
-                        <input name='metraj' class='form-control' placeholder='Metraj Giriniz' type='number' min="0" />
+                    <div class='col-md-12'>
+                        <div class='form-group' id='beton-cinsi-group'>
+                            <label class='control-label'>Beton Cinsi</label>
+                            <select class='form-control' name='beton_cinsi'>
+                                <option value='' selected disabled>Lütfen seçiniz...</option>
+                                <option value='Gro'>C16</option>
+                                <option value='C20'>C20</option>
+                                <option value='C25'>C25</option>
+                                <option value='C30'>C30</option>
+                                <option value='C35'>C35</option>
+                                <option value='C40'>C40</option>
+                                <option value='C45'>C45</option>
+                                <option value='C50'>C50</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class='col-md-12'>
-                    <div class='form-group'>
-                        <label class='control-label'>Şantiye</label>
-                        <input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye'/>
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Metraj</label>
+                            <input name='metraj' class='form-control' placeholder='Metraj Giriniz' type='number' min="0" />
+                        </div>
                     </div>
-                </div>
 
-                <div class='col-md-12'>
-                    <div class='form-group' id='yapi-elemani-group'>
-                        <label class='control-label'>Yapı Elemanı</label>
-                        <select class='form-control' name='yapielemani'>
-                            <option value='' selected disabled>Lütfen seçiniz...</option>
-                            <option value='Yer'>Yer</option>
-                            <option value='Saha'>Saha</option>
-                            <option value='Temel'>Temel</option>
-                            <option value='Perde'>Perde</option>
-                            <option value='Kolon'>Kolon</option>
-                            <option value='Kiriş'>Kiriş</option>
-                            <option value='Tabliye'>Tabliye</option>
-                            <option value='Diğer'>Diğer</option>
-                        </select>
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Şantiye</label>
+                            <input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye'/>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-success">Kaydet</button>
-            </div>
+                    <div class='col-md-12'>
+                        <div class='form-group' id='yapi-elemani-group'>
+                            <label class='control-label'>Yapı Elemanı</label>
+                            <select class='form-control' name='yapi_elemani'>
+                                <option value='' selected disabled>Lütfen seçiniz...</option>
+                                <option value='Yer'>Yer</option>
+                                <option value='Saha'>Saha</option>
+                                <option value='Temel'>Temel</option>
+                                <option value='Perde'>Perde</option>
+                                <option value='Kolon'>Kolon</option>
+                                <option value='Kiriş'>Kiriş</option>
+                                <option value='Tabliye'>Tabliye</option>
+                                <option value='Diğer'>Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -324,74 +461,77 @@
 <div class="modal fade" id="santralAltiModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Santral Altı Program ekle</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class='col-md-12'>
-                    <div class='form-group'>
-                        <label class='control-label'>Müşteri Ünvanı</label>
-                        <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
-                    </div>
+            <form action="{{route('program.olustur.santralalti')}}" method="POST">
+                @csrf
+                <input type="hidden" name="tarihSantralalti" id="tarihIDSantralalti" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title">Santral Altı Program ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    </button>
                 </div>
-
-                <div class='col-md-12'>
-                    <div class='form-group' id='beton-cinsi-group'>
-                        <label class='control-label'>Beton Cinsi</label>
-                        <select class='form-control' name='betoncinsi'>
-                            <option value='' selected disabled>Lütfen seçiniz...</option>
-                            <option value='Gro'>C16</option>
-                            <option value='C20'>C20</option>
-                            <option value='C25'>C25</option>
-                            <option value='C30'>C30</option>
-                            <option value='C35'>C35</option>
-                            <option value='C40'>C40</option>
-                            <option value='C45'>C45</option>
-                            <option value='C50'>C50</option>
-                        </select>
+                <div class="modal-body">
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Müşteri Ünvanı</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title'/>
+                        </div>
                     </div>
-                </div>
 
-                <div class='col-md-12'>
-                    <div class='form-group'>
-                        <label class='control-label'>Metraj</label>
-                        <input name='metraj' class='form-control' placeholder='Metraj Giriniz' type='number' min="0" />
+                    <div class='col-md-12'>
+                        <div class='form-group' id='beton-cinsi-group'>
+                            <label class='control-label'>Beton Cinsi</label>
+                            <select class='form-control' name='beton_cinsi'>
+                                <option value='' selected disabled>Lütfen seçiniz...</option>
+                                <option value='Gro'>C16</option>
+                                <option value='C20'>C20</option>
+                                <option value='C25'>C25</option>
+                                <option value='C30'>C30</option>
+                                <option value='C35'>C35</option>
+                                <option value='C40'>C40</option>
+                                <option value='C45'>C45</option>
+                                <option value='C50'>C50</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class='col-md-12'>
-                    <div class='form-group'>
-                        <label class='control-label'>Şantiye</label>
-                        <input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye'/>
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Metraj</label>
+                            <input name='metraj' class='form-control' placeholder='Metraj Giriniz' type='number' min="0" />
+                        </div>
                     </div>
-                </div>
 
-                <div class='col-md-12'>
-                    <div class='form-group' id='yapi-elemani-group'>
-                        <label class='control-label'>Yapı Elemanı</label>
-                        <select class='form-control' name='yapielemani'>
-                            <option value='' selected disabled>Lütfen seçiniz...</option>
-                            <option value='Yer'>Yer</option>
-                            <option value='Saha'>Saha</option>
-                            <option value='Temel'>Temel</option>
-                            <option value='Perde'>Perde</option>
-                            <option value='Kolon'>Kolon</option>
-                            <option value='Kiriş'>Kiriş</option>
-                            <option value='Tabliye'>Tabliye</option>
-                            <option value='Diğer'>Diğer</option>
-                        </select>
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Şantiye</label>
+                            <input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye'/>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-success">Kaydet</button>
-            </div>
+                    <div class='col-md-12'>
+                        <div class='form-group' id='yapi-elemani-group'>
+                            <label class='control-label'>Yapı Elemanı</label>
+                            <select class='form-control' name='yapi_elemani'>
+                                <option value='' selected disabled>Lütfen seçiniz...</option>
+                                <option value='Yer'>Yer</option>
+                                <option value='Saha'>Saha</option>
+                                <option value='Temel'>Temel</option>
+                                <option value='Perde'>Perde</option>
+                                <option value='Kolon'>Kolon</option>
+                                <option value='Kiriş'>Kiriş</option>
+                                <option value='Tabliye'>Tabliye</option>
+                                <option value='Diğer'>Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 @endsection
