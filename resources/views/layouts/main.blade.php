@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="{{asset('vendor/owl-carousel/css/owl.theme.default.min.css')}}">
     <link href="{{asset('vendor/jqvmap/css/jqvmap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="./vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <!-- Calendar uygulamasi icin-->
-    <link href="{{asset('./vendor/fullcalendar/css/fullcalendar.min.css')}}" rel="stylesheet">
-    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/tr.js')}}"></script>
-    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/tr.js')}}"></script>
+    
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- ajax icin -->
     <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css')}}" rel="stylesheet">
@@ -379,23 +379,15 @@
 
     <script src="{{asset('./js/dashboard/dashboard-1.js')}}"></script>
 
-    <!-- Calendar uygulamasi icin-->
-    <!-- Demo scripts -->
-    <script src="{{asset('./js/styleSwitcher.js')}}"></script>
-
-    <script src="{{asset('./vendor/jqueryui/js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('./vendor/moment/moment.min.js')}}"></script>
-
-    <script src="{{asset('./vendor/fullcalendar/js/fullcalendar.min.js')}}"></script>
-    <script src="{{asset('./js/plugins-init/fullcalendar-init.js')}}"></script>
-
     <!-- AJAX ICIN -->
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/tr.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/tr.js')}}"></script>
-    
+
+     <!-- SweetAlert JS -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

@@ -166,6 +166,7 @@ class ProgramController extends Controller
             // İstenen formatta string olarak alın
             $startGuncellenmis = $dateTime->format('Y-m-d\TH:i:s');
 
+
             $program = Program::findOrFail($id);
             $program->baslangic_saati = $startGuncellenmis;
             $program->musteri_adi = mb_strtoupper($validated['title']);
@@ -181,70 +182,24 @@ class ProgramController extends Controller
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function onDropstore(Request $request){
-        if(auth()->check()){
-            $user =  User::findOrFail(auth()->id());
-
-            $validated = $request->validate([
-                'start' => 'required|date_format:Y-m-d\TH:i:s',
-                'end' => 'nullable|date_format:Y-m-d\TH:i:s',
-                'className' => 'nullable|string',
-                'className' => 'nullable|string',
-            ]);
+    public function destroy($id) {
+        $event = Program::findOrFail($id);
+        $event->delete();
     
-            $program = Program::create([
-                'pompaci' => 'saban kaya',
-                'baslangic_saati' => $validated['start'],
-                'bitis_saati' => Carbon::parse($validated['end'])->addHours(2),
-                'musteri_adi' => null,
-                'dokum_sekli' => $validated['className'],
-                'santiye' => 'karamursel',
-                'metraj' => '35',
-                'yapi_elemani' => 'kolon',
-                'odeme_bilgisi' => 'ay basi'
-            ]);
-
-
-            return response()->json($program, 201);
-        }else{
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        return redirect()->back()->with('success', 'Öğe başarıyla silindi!');
     }
 
-   
 
-    public function updateDrag(Request $request){
-        if(auth()->check()){
-            $validated = $request->validate([
-                'id' => 'required|integer',
-                'start' => 'required|date_format:Y-m-d\TH:i:s',
-                'end' => 'nullable|date_format:Y-m-d\TH:i:s'
-            ]);
 
-            $program = Program::findOrFail($validated['id']);
-            $program->baslangic_saati = $validated['start'];
-            $program->bitis_saati = $validated['end'];
-            $program->save();
 
-            return response()->json($program, 201);
-        }else{
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-    }
+
+
+
+
+
+
+
+
+
 
 }

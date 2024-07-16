@@ -20,6 +20,7 @@ Route::prefix('/program')->group(function(){
     Route::get('/ileri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.ileri');
     Route::get('/geri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.geri');
     Route::post('/update/{id}', [ProgramController::class, 'update'])->name('programlar.guncelle');
+    Route::delete('/items/{id}', [ProgramController::class, 'destroy'])->name('items.destroy');
 
     
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');

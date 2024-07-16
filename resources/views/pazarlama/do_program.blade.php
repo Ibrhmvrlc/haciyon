@@ -140,11 +140,14 @@
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
                                     <td style="width: 5px;"><a href="#" data-toggle="modal" data-target="#guncellePompaModal{{$pompaci->id}}"><span class="ti-settings"></span></a></td>
-                                    <td style="width: 5px;"><a href="asd"><span class="ti-trash"></span></a></td>
+                                    <td style="width: 5px;"><a href="#badge" class="delete-button" data-id="{{ $event->id }}"><span class="ti-trash"></span></a></td>
                                 </tr>
                                 @endif
                                 @endif
                                 @endforeach
+                              
+                              
+
                             </tbody>
                         </table>
                     </div>
@@ -194,6 +197,8 @@
                                     <td>{{$event->beton_cinsi}}</td>
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
+                                    <td style="width: 5px;"><a href="#" data-toggle="modal" data-target="#guncelleMikserModal"><span class="ti-settings"></span></a></td>
+                                    <td style="width: 5px;"><a href="#badge" class="delete-button" data-id="{{ $event->id }}"><span class="ti-trash"></span></a></td>
                                 </tr>
                                 @endif
                                 @endif
@@ -246,6 +251,8 @@
                                     <td>{{$event->beton_cinsi}}</td>
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
+                                    <td style="width: 5px;"><a href="#" data-toggle="modal" data-target="#guncelleMikserModal"><span class="ti-settings"></span></a></td>
+                                    <td style="width: 5px;"><a href="#badge" class="delete-button" data-id="{{ $event->id }}"><span class="ti-trash"></span></a></td>
                                 </tr>
                                 @endif
                                 @endif
@@ -258,6 +265,55 @@
         </div>
         <!--**********************************
             PROGRAM GOSTERIM ALANI SONU
+        ***********************************-->
+
+        <!--**********************************
+            PROGRAM SILME ALANI
+        ***********************************-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+        <script>
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Emin misiniz?',
+                        text: "Bu işlemi geri alamazsınız!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Evet, sil!',
+                        cancelButtonText: 'Hayır, iptal et'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Silme formunu oluşturup gönderebiliriz
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `/program/items/${itemId}`;
+                            
+                            const csrfField = document.createElement('input');
+                            csrfField.type = 'hidden';
+                            csrfField.name = '_token';
+                            csrfField.value = '{{ csrf_token() }}';
+                            form.appendChild(csrfField);
+                            
+                            const methodField = document.createElement('input');
+                            methodField.type = 'hidden';
+                            methodField.name = '_method';
+                            methodField.value = 'DELETE';
+                            form.appendChild(methodField);
+
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <!--**********************************
+            PROGRAM SILME ALANI SONU
         ***********************************-->
 
     </div>
@@ -531,7 +587,7 @@
 @foreach ($pompacilar as $pompaci)
 @foreach ($events as $event)
 @if ($event->pompaci_id == $pompaci->id)
-<!-- {{$event->id}}.id'li programi guncelleme alani -->
+<!-- POMPALI {{$event->id}}.id'li programi guncelleme alani -->
 <div class="modal fade" id="guncellePompaModal{{$pompaci->id}}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -685,6 +741,320 @@
 </div>
 @endif
 @endforeach
+@endforeach
+
+@foreach ($events as $event)
+@if ($event->pompaci_id == 0 AND $event->dokum_sekli == 'MİKSERLİ')
+<!-- MIKSERLI {{$event->id}}.id'li programi guncelleme alani -->
+<div class="modal fade" id="guncelleMikserModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{route('programlar.guncelle', $event->id)}}" method="post"> 
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">{{$event->musteri_adi}} Programını Güncelle</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Müşteri Ünvanı</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title' value="{{$event->musteri_adi}}"/>
+                        </div>
+                    </div>
+
+                    @php
+                    $tarihKismi = Carbon::parse($event->baslangic_saati)->format('Y-m-d');
+                    $saatKismi = Carbon::parse($event->baslangic_saati)->format('H:i');
+                    @endphp
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Saat</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
+                            <input type="hidden" name="tarihKismi" value="{{$tarihKismi}}">
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group' id='beton-cinsi-group'>
+                            <label class='control-label'>Beton Cinsi</label>
+                            <select class='form-control' name='beton_cinsi'>
+                                <option value='' disabled>Lütfen seçiniz...</option>
+                                @if ($event->beton_cinsi == 'Gro')
+                                <option value='Gro' selected>C16</option>
+                                @else
+                                <option value='Gro'>C16</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C20')
+                                <option value='C20' selected>C20</option>
+                                @else
+                                <option value='C20'>C20</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C25')
+                                <option value='C25' selected>C25</option>
+                                @else
+                                <option value='C25'>C25</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C30')
+                                <option value='C30' selected>C30</option>
+                                @else
+                                <option value='C30'>C30</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C35')
+                                <option value='C35' selected>C35</option>
+                                @else
+                                <option value='C35'>C35</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C40')
+                                <option value='C40' selected>C40</option>
+                                @else
+                                <option value='C40'>C40</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C45')
+                                <option value='C45' selected>C45</option>
+                                @else
+                                <option value='C45'>C45</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C50')
+                                <option value='C50' selected>C50</option>
+                                @else
+                                <option value='C50'>C50</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Metraj</label>
+                            <input name='metraj' class='form-control' placeholder='Metraj Giriniz' type='number' min="0" value="{{$event->metraj}}" />
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Şantiye</label>
+                            <input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye' value="{{$event->santiye}}" />
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group' id='yapi-elemani-group'>
+                            <label class='control-label'>Yapı Elemanı</label>
+                            <select class='form-control' name='yapi_elemani'>
+                                <option value='' disabled>Lütfen seçiniz...</option>
+                                @if ($event->yapi_elemani == 'Yer')
+                                <option value='Yer' selected>Yer</option>
+                                @else
+                                <option value='Yer'>Yer</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Saha')
+                                <option value='Saha' selected>Saha</option>
+                                @else
+                                <option value='Saha'>Saha</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Temel')
+                                <option value='Temel' selected>Temel</option>
+                                @else
+                                <option value='Temel'>Temel</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Perde')
+                                <option value='Perde' selected>Perde</option>
+                                @else
+                                <option value='Perde'>Perde</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Kolon')
+                                <option value='Kolon' selected>Kolon</option>
+                                @else
+                                <option value='Kolon'>Kolon</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Kiriş')
+                                <option value='Kiriş' selected>Kiriş</option>
+                                @else
+                                <option value='Kiriş'>Kiriş</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Tabliye')
+                                <option value='Tabliye' selected>Tabliye</option>
+                                @else
+                                <option value='Tabliye'>Tabliye</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Diğer')
+                                <option value='Diğer' selected>Diğer</option>
+                                @else
+                                <option value='Diğer'>Diğer</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+@endforeach
+
+@foreach ($events as $event)
+@if ($event->pompaci_id == 0 AND $event->dokum_sekli == 'SANTRAL ALTI')
+<!-- SANTRAL ALTI {{$event->id}}.id'li programi guncelleme alani -->
+<div class="modal fade" id="guncelleMikserModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{route('programlar.guncelle', $event->id)}}" method="post"> 
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">{{$event->musteri_adi}} Programını Güncelle</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Müşteri Ünvanı</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='text' name='title' value="{{$event->musteri_adi}}"/>
+                        </div>
+                    </div>
+
+                    @php
+                    $tarihKismi = Carbon::parse($event->baslangic_saati)->format('Y-m-d');
+                    $saatKismi = Carbon::parse($event->baslangic_saati)->format('H:i');
+                    @endphp
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Saat</label>
+                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
+                            <input type="hidden" name="tarihKismi" value="{{$tarihKismi}}">
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group' id='beton-cinsi-group'>
+                            <label class='control-label'>Beton Cinsi</label>
+                            <select class='form-control' name='beton_cinsi'>
+                                <option value='' disabled>Lütfen seçiniz...</option>
+                                @if ($event->beton_cinsi == 'Gro')
+                                <option value='Gro' selected>C16</option>
+                                @else
+                                <option value='Gro'>C16</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C20')
+                                <option value='C20' selected>C20</option>
+                                @else
+                                <option value='C20'>C20</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C25')
+                                <option value='C25' selected>C25</option>
+                                @else
+                                <option value='C25'>C25</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C30')
+                                <option value='C30' selected>C30</option>
+                                @else
+                                <option value='C30'>C30</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C35')
+                                <option value='C35' selected>C35</option>
+                                @else
+                                <option value='C35'>C35</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C40')
+                                <option value='C40' selected>C40</option>
+                                @else
+                                <option value='C40'>C40</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C45')
+                                <option value='C45' selected>C45</option>
+                                @else
+                                <option value='C45'>C45</option>
+                                @endif
+                                @if ($event->beton_cinsi == 'C50')
+                                <option value='C50' selected>C50</option>
+                                @else
+                                <option value='C50'>C50</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Metraj</label>
+                            <input name='metraj' class='form-control' placeholder='Metraj Giriniz' type='number' min="0" value="{{$event->metraj}}" />
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label class='control-label'>Şantiye</label>
+                            <input class='form-control' placeholder='Şantiye Giriniz' type='text' name='santiye' value="{{$event->santiye}}" />
+                        </div>
+                    </div>
+
+                    <div class='col-md-12'>
+                        <div class='form-group' id='yapi-elemani-group'>
+                            <label class='control-label'>Yapı Elemanı</label>
+                            <select class='form-control' name='yapi_elemani'>
+                                <option value='' disabled>Lütfen seçiniz...</option>
+                                @if ($event->yapi_elemani == 'Yer')
+                                <option value='Yer' selected>Yer</option>
+                                @else
+                                <option value='Yer'>Yer</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Saha')
+                                <option value='Saha' selected>Saha</option>
+                                @else
+                                <option value='Saha'>Saha</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Temel')
+                                <option value='Temel' selected>Temel</option>
+                                @else
+                                <option value='Temel'>Temel</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Perde')
+                                <option value='Perde' selected>Perde</option>
+                                @else
+                                <option value='Perde'>Perde</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Kolon')
+                                <option value='Kolon' selected>Kolon</option>
+                                @else
+                                <option value='Kolon'>Kolon</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Kiriş')
+                                <option value='Kiriş' selected>Kiriş</option>
+                                @else
+                                <option value='Kiriş'>Kiriş</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Tabliye')
+                                <option value='Tabliye' selected>Tabliye</option>
+                                @else
+                                <option value='Tabliye'>Tabliye</option>
+                                @endif
+                                @if ($event->yapi_elemani == 'Diğer')
+                                <option value='Diğer' selected>Diğer</option>
+                                @else
+                                <option value='Diğer'>Diğer</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
 @endforeach
 
 <!--**********************************
