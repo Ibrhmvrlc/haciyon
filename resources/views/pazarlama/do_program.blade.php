@@ -52,10 +52,82 @@
                         </div>
                       </div>
                     </div>
+
+
+
+
+
+                    <div class="container">
+                        <div class="left-content">Sol İçerik</div>
+                        <div class="chart-container">
+                            <canvas id="myChart"></canvas>
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                            <script>
+                                const ctx = document.getElementById('myChart');
+                              
+                                new Chart(ctx, {
+                                  type: 'doughnut',
+                                  data: {
+                                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                                    datasets: [{
+                                      label: '# of Votes',
+                                      data: [12, 19, 3, 5, 2, 3],
+                                      borderWidth: 1
+                                    }]
+                                  },
+                                  options: {
+                                    responsive: true
+                                  }
+                                });
+                                
+                            </script>
+                        </div>
+                        
+                        <div class="right-content">Sağ İçerik</div>
+                    </div>
+                      
+
                 </div>
             </div>
-            
             <style>
+                  .container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 24vh; /* İsteğe bağlı olarak ayarlayabilirsiniz */
+                    flex-direction: column; /* Dar ekranda dikey düzen */
+                }
+                .chart-container {
+                    text-align: center;
+                    height: 28vh;
+                    border: 1px solid red;
+                    position: relative; 
+,l.m                }
+                #myChart {
+                    max-width: 250px;
+                    height: auto;
+                }
+
+                .left-content, .right-content {
+                    max-width: 200px; /* İçerik genişliğini ayarlayabilirsiniz */
+                    text-align: center;
+                }
+
+                /* Geniş ekranda yatay düzen */
+                @media(min-width: 768px) {
+                    .container {
+                    flex-direction: row; /* Yatay düzen */
+                    justify-content: center;
+                    align-items: center;
+                    }
+                    .chart-container {
+                    flex-grow: 0; /* Ortadaki chart container genişleyebilir */
+                    }
+                    .left-content, .right-content {
+                        max-width: 200px; /* İçerik genişliği */
+                    }
+                }
+
                 .date-picker-container {
                   display: flex;
                   justify-content: center;
@@ -75,6 +147,7 @@
                   padding: 5px 10px;
                 }
               </style>
+
             
         </div>
 
@@ -99,7 +172,7 @@
 
         @foreach ($pompacilar as $pompaci)
         <!-- {{$pompaci->id}}.Pompaciya Ait Programlar -->
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">{{$pompaci->ad_soyad}} &nbsp;&nbsp;&nbsp;
@@ -157,7 +230,7 @@
         @endforeach
 
         <!-- Mikserli Programlar -->
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Mikserliler &nbsp;&nbsp;&nbsp;
@@ -211,7 +284,7 @@
         </div>
 
         <!-- Santral Alti Programlar -->
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Santral Altı &nbsp;&nbsp;&nbsp;
