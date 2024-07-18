@@ -90,19 +90,25 @@
                 </div>
             </div>
             <style>
-                  .container {
+                .container {
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     height: 24vh; /* İsteğe bağlı olarak ayarlayabilirsiniz */
                     flex-direction: column; /* Dar ekranda dikey düzen */
                 }
+
                 .chart-container {
                     text-align: center;
                     height: 28vh;
                     border: 1px solid red;
                     position: relative; 
-,l.m                }
+                    min-width: 300px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
                 #myChart {
                     max-width: 250px;
                     height: auto;
