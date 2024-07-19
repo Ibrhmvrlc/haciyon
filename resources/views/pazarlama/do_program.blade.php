@@ -64,14 +64,36 @@
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
                                 const ctx = document.getElementById('myChart');
+                                var labels = [];
+                                var values = [];
+                                  
+                                @foreach ($pompacilar as $pompaci)
+                                    labels.push('{{ $pompaci->ad_soyad }}');
+                                    pompaciid.push('{{ $pompaci->id }}');
+
+                                @endforeach
+
+
+                                @foreach ($events as $event)
+
+                                    @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
+                                        @if ($event->pompaci_id == pompaciid)
+                                            values.push('{{ $event->pompaci_id }}');
+                                        @endif
+                                    @endif
+
+                                @endforeach
+
+
+                                
                               
                                 new Chart(ctx, {
                                   type: 'doughnut',
                                   data: {
-                                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                                    labels: labels,
                                     datasets: [{
-                                      label: '# of Votes',
-                                      data: [12, 19, 3, 5, 2, 3],
+                                      label: 'Programlar',
+                                      data: values,
                                       borderWidth: 1
                                     }]
                                   },
