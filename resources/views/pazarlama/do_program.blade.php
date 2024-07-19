@@ -50,133 +50,30 @@
                             </svg>
                           </a>
                         </div>
+                        <style>
+                            .date-picker-container {
+                            display: flex;
+                            justify-content: center;
+                            }
+                            
+                            .date-picker-buttons {
+                            display: flex;
+                            align-items: center;
+                            }
+                            
+                            .date-picker-buttons button {
+                            padding: 5px 10px;
+                            cursor: pointer;
+                            }
+                            
+                            .date-picker-buttons input[type="date"] {
+                            padding: 5px 10px;
+                            }
+                        </style>
                       </div>
                     </div>
-
-
-
-
-
-                    <div class="container">
-                        <div class="left-content">Sol İçerik</div>
-                        <div class="chart-container">
-                            <canvas id="myChart"></canvas>
-                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                            <script>
-                                const ctx = document.getElementById('myChart');
-                                var labels = [];
-                                var values = [];
-                                  
-                                @foreach ($pompacilar as $pompaci)
-                                    labels.push('{{ $pompaci->ad_soyad }}');
-                                    pompaciid.push('{{ $pompaci->id }}');
-
-                                @endforeach
-
-
-                                @foreach ($events as $event)
-
-                                    @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
-                                        @if ($event->pompaci_id == pompaciid)
-                                            values.push('{{ $event->pompaci_id }}');
-                                        @endif
-                                    @endif
-
-                                @endforeach
-
-
-                                
-                              
-                                new Chart(ctx, {
-                                  type: 'doughnut',
-                                  data: {
-                                    labels: labels,
-                                    datasets: [{
-                                      label: 'Programlar',
-                                      data: values,
-                                      borderWidth: 1
-                                    }]
-                                  },
-                                  options: {
-                                    responsive: true
-                                  }
-                                });
-                                
-                            </script>
-                        </div>
-                        
-                        <div class="right-content">Sağ İçerik</div>
-                    </div>
-                      
-
                 </div>
             </div>
-            <style>
-                .container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 24vh; /* İsteğe bağlı olarak ayarlayabilirsiniz */
-                    flex-direction: column; /* Dar ekranda dikey düzen */
-                }
-
-                .chart-container {
-                    text-align: center;
-                    height: 28vh;
-                    border: 1px solid red;
-                    position: relative; 
-                    min-width: 300px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                #myChart {
-                    max-width: 250px;
-                    height: auto;
-                }
-
-                .left-content, .right-content {
-                    max-width: 200px; /* İçerik genişliğini ayarlayabilirsiniz */
-                    text-align: center;
-                }
-
-                /* Geniş ekranda yatay düzen */
-                @media(min-width: 768px) {
-                    .container {
-                    flex-direction: row; /* Yatay düzen */
-                    justify-content: center;
-                    align-items: center;
-                    }
-                    .chart-container {
-                    flex-grow: 0; /* Ortadaki chart container genişleyebilir */
-                    }
-                    .left-content, .right-content {
-                        max-width: 200px; /* İçerik genişliği */
-                    }
-                }
-
-                .date-picker-container {
-                  display: flex;
-                  justify-content: center;
-                }
-                
-                .date-picker-buttons {
-                  display: flex;
-                  align-items: center;
-                }
-                
-                .date-picker-buttons button {
-                  padding: 5px 10px;
-                  cursor: pointer;
-                }
-                
-                .date-picker-buttons input[type="date"] {
-                  padding: 5px 10px;
-                }
-              </style>
-
-            
         </div>
 
         <!-- Herhangi bir hata bildirimi alanı -->
@@ -366,6 +263,71 @@
         </div>
         <!--**********************************
             PROGRAM GOSTERIM ALANI SONU
+        ***********************************-->
+
+        <!--**********************************
+            PROGRAM OZET ALANI BASLANGICI
+        ***********************************-->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body"  style="display: flex;">
+                    <div class="col-lg-3 col-12" style="border: 1px solid red; display: flex;">
+                        <canvas id="myChart"></canvas>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                            const ctx = document.getElementById('myChart');
+                            var labels = [];
+                            var values = [];
+                            
+                            @foreach ($pompacilar as $pompaci)
+                                labels.push('{{ $pompaci->ad_soyad }}');
+
+                                var count = 0;
+                                @foreach ($events as $event)
+                                    @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
+                                        @if ($event->pompaci_id == $pompaci->id)
+                                            count++;
+                                        @endif
+                                    @endif
+                                @endforeach
+                                values.push(count);
+                            @endforeach
+
+                            new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                label: 'Programlar',
+                                data: values,
+                                borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true
+                            }
+                            });
+                            
+                        </script>
+                    </div>
+                    <div class="col-lg-9 col-12" style="">
+                        <h5>Program Analizi</h5>
+                        <ul>
+                            <li><b>Toplam: </b> xxxx m<sup>3</sup></li>
+                            <li><b>xxxx</b> Pompalı Program</li>
+                            <li><b>xxxx</b> Mikserli Program</li>
+                            <li><b>xxxx</b> Santral Altı Program</li>
+                            <li><b>xxxx</b> Pompa Operatörü</li>
+                            <li><b>xxxx</b> Mikser Operatörü</li>
+                            <li><b>xxxx</b> Laboratuvar Personeli</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--**********************************
+            PROGRAM OZET ALANI SONU
         ***********************************-->
 
         <!--**********************************
