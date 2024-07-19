@@ -39,7 +39,6 @@ class ProgramController extends Controller
             // İstenen formatta string olarak alın
             $start = $dateTime->format('Y-m-d\TH:i:s');
 
-
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
                 'beton_cinsi' => 'required|string|max:255',
