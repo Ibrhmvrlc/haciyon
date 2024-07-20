@@ -2,18 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProgramsExport;
 use App\Models\Pompacilar;
 use App\Models\Program;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramController extends Controller
 {
     public function index($tarih) {
         setlocale(LC_TIME, 'tr_TR.UTF-8'); // Türkçe lokal ayarı
+        $baslangic_saati = $tarih . ' 00:00:00';
+        $bitis_saati = $tarih . ' 23:59:59';
         $title = 'Program Yap';
         $events = Program::all();
+        $toplamMKup = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->sum('metraj');
+        $pompaliMetraj = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->where('dokum_sekli', 'POMPALI')->sum('metraj');
+        $pompaliAdet = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->where('dokum_sekli', 'POMPALI')->count();
+        $mikserliMetraj = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->where('dokum_sekli', 'MİKSERLİ')->sum('metraj');
+        $mikserliAdet = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->where('dokum_sekli', 'MİKSERLİ')->count();
+        $santralAltiMetraj = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->where('dokum_sekli', 'SANTRAL ALTI')->sum('metraj');
+        $santralAltiAdet = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->where('dokum_sekli', 'SANTRAL ALTI')->count();
+
         $pompacilar = Pompacilar::all();
         
         $carbonTarih = Carbon::parse($tarih);
@@ -22,7 +34,8 @@ class ProgramController extends Controller
         $carbonTarih->locale('tr');
         $formatli_tarih = $carbonTarih->translatedFormat('d F Y l');
         
-        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar', 'formatli_tarih', 'tarih'));
+        return view('pazarlama.do_program', compact('title', 'events', 'pompacilar', 'formatli_tarih', 'tarih', 
+        'toplamMKup', 'pompaliMetraj', 'pompaliAdet', 'mikserliMetraj', 'mikserliAdet', 'santralAltiMetraj', 'santralAltiAdet'));
     }
 
     // Pompali program olustur
@@ -187,10 +200,6 @@ class ProgramController extends Controller
     
         return redirect()->back()->with('success', 'Öğe başarıyla silindi!');
     }
-
-
-
-
 
 
 

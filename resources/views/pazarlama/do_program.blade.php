@@ -39,7 +39,7 @@
                               </svg>
                           </a>
                           &nbsp;
-                          <h5 id="date-heading" style="text-align: center;">{{$formatli_tarih}}</h5>
+                          <h4 id="date-heading" style="text-align: center;">{{$formatli_tarih}}</h4>
                           &nbsp;
                           <?php
                             $ileri_tarih = Carbon::parse($tarih)->addDay(); 
@@ -71,6 +71,9 @@
                             }
                         </style>
                       </div>
+                    </div>
+                    <div style="text-align: center:">
+                        <h5 style="text-align: center;">Toplam {{$pompaliAdet+$mikserliAdet+$santralAltiAdet}} Program {{$toplamMKup}} m<sup>3</sup></h5>
                     </div>
                 </div>
             </div>
@@ -270,57 +273,100 @@
         ***********************************-->
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-body"  style="display: flex;">
-                    <div class="col-lg-3 col-12" style="border: 1px solid red; display: flex;">
-                        <canvas id="myChart"></canvas>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                        <script>
-                            const ctx = document.getElementById('myChart');
-                            var labels = [];
-                            var values = [];
-                            
-                            @foreach ($pompacilar as $pompaci)
-                                labels.push('{{ $pompaci->ad_soyad }}');
-
-                                var count = 0;
-                                @foreach ($events as $event)
-                                    @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
-                                        @if ($event->pompaci_id == $pompaci->id)
-                                            count++;
-                                        @endif
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-3 col-12 mb-4">
+                                <canvas id="myChart"></canvas>
+                                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                                <script>
+                                    const ctx = document.getElementById('myChart');
+                                    var labels = [];
+                                    var values = [];
+                                    
+                                    @foreach ($pompacilar as $pompaci)
+                                        labels.push('{{ $pompaci->ad_soyad }}');
+        
+                                        var count = 0;
+                                        @foreach ($events as $event)
+                                            @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
+                                                @if ($event->pompaci_id == $pompaci->id)
+                                                    count++;
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                        values.push(count);
+                                    @endforeach
+        
+                                    new Chart(ctx, {
+                                    type: 'doughnut',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                        label: 'Programlar',
+                                        data: values,
+                                        borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: false
+                                    }
+                                    });
+                                    
+                                </script>
+                            </div>
+                            <div class="col-lg-9 col-12 mb-2">
+                              
+                                <h5>Program Analizi ({{$toplamMKup}} m<sup>3</sup>)</h5>
+                                <ul>
+                                    <li><b>{{$pompaliMetraj}}</b> m<sup>3</sup> <b>{{$pompaliAdet}}</b> Pompalı Program</li>
+                                    @if ($mikserliMetraj AND $mikserliAdet)
+                                    <li><b>{{$mikserliMetraj}}</b> m<sup>3</sup> <b>{{$mikserliAdet}}</b> Mikserli Program</li>
                                     @endif
-                                @endforeach
-                                values.push(count);
-                            @endforeach
+                                    @if ($santralAltiMetraj AND $santralAltiAdet)
+                                    <li><b>{{$santralAltiMetraj}}</b> m<sup>3</sup> <b>{{$santralAltiAdet}}</b> Santral Altı Program</li>
+                                    @endif
+                                    <!-- IK MODULU ILE CALISACAK -->
+                                    <li><b>xxxx</b> Pompa Operatörü</li>
+                                    <li><b>xxxx</b> Mikser Operatörü</li>
+                                    <li><b>xxxx</b> Laboratuvar Personeli</li>
+                                    <!-- IK MODULU ILE CALISACAK SONU -->
+                                </ul>
 
-                            new Chart(ctx, {
-                            type: 'doughnut',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                label: 'Programlar',
-                                data: values,
-                                borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true
-                            }
-                            });
-                            
-                        </script>
-                    </div>
-                    <div class="col-lg-9 col-12" style="">
-                        <h5>Program Analizi</h5>
-                        <ul>
-                            <li><b>Toplam: </b> xxxx m<sup>3</sup></li>
-                            <li><b>xxxx</b> Pompalı Program</li>
-                            <li><b>xxxx</b> Mikserli Program</li>
-                            <li><b>xxxx</b> Santral Altı Program</li>
-                            <li><b>xxxx</b> Pompa Operatörü</li>
-                            <li><b>xxxx</b> Mikser Operatörü</li>
-                            <li><b>xxxx</b> Laboratuvar Personeli</li>
-                        </ul>
+                                
+                            </div>
+                            <div class="col-lg-12">
+                                
+                                <button type="button" class="btn btn-rounded btn-success text-light" 
+                                data-toggle="modal" data-target="xxxxxx">
+                                    <span class="btn-icon-left text-success">
+                                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    </span>Excel
+                                </button>
+
+                                &nbsp;
+                                &nbsp;
+
+                                <button type="button" class="btn btn-rounded btn-warning text-light" 
+                                data-toggle="modal" data-target="xxxxxx">
+                                    <span class="btn-icon-left text-warning">
+                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                    </span>PDF
+                                </button>
+
+                                &nbsp;
+                                &nbsp;
+
+                                <button type="button" class="btn btn-rounded btn-google text-light"
+                                data-toggle="modal" data-target="xxxxxx">
+                                    <span class="btn-icon-left" style="color: #0078d4;">
+                                        <i class="fa fa-envelope color-danger"></i>
+                                    </span>Email
+                                </button>
+
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
