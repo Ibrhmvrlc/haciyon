@@ -178,7 +178,6 @@ class ProgramController extends Controller
             // İstenen formatta string olarak alın
             $startGuncellenmis = $dateTime->format('Y-m-d\TH:i:s');
 
-
             $program = Program::findOrFail($id);
             $program->baslangic_saati = $startGuncellenmis;
             $program->musteri_adi = mb_strtoupper($validated['title']);
@@ -199,6 +198,11 @@ class ProgramController extends Controller
         $event->delete();
     
         return redirect()->back()->with('success', 'Öğe başarıyla silindi!');
+    }
+
+    public function export($tarih)
+    {
+        return Excel::download(new ProgramsExport, 'Taşköprü-Program-' . $tarih . '.xlsx');
     }
 
 

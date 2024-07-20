@@ -336,13 +336,11 @@
                                 
                             </div>
                             <div class="col-lg-12">
-                                
-                                <button type="button" class="btn btn-rounded btn-success text-light" 
-                                data-toggle="modal" data-target="xxxxxx">
+                                <a href="{{route('excel.export', $tarih)}}" class="btn btn-rounded btn-success text-light">
                                     <span class="btn-icon-left text-success">
                                         <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                     </span>Excel
-                                </button>
+                                </a>
 
                                 &nbsp;
                                 &nbsp;

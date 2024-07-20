@@ -22,7 +22,8 @@ Route::prefix('/program')->group(function(){
     Route::post('/update/{id}', [ProgramController::class, 'update'])->name('programlar.guncelle');
     Route::delete('/items/{id}', [ProgramController::class, 'destroy'])->name('items.destroy');
 
-    
+    Route::get('/export/{tarih}', [ProgramController::class, 'export'])->name('excel.export');;
+
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
     Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');
     Route::post('/update-drag', [ProgramController::class, 'updateDrag'])->name('programlar.surukle.guncelle');
