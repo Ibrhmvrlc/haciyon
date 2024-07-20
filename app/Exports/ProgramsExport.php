@@ -2,51 +2,42 @@
 
 namespace App\Exports;
 
+use App\Models\Pompacilar;
 use App\Models\Program;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ProgramsExport implements FromCollection, WithMapping, WithHeadings, ShouldAutoSize
+class ProgramsExport implements FromView, ShouldAutoSize
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    protected $tarih;
+
+    public function __construct($tarih)
     {
-        // Veritabanından verileri istediğiniz şekilde çekin ve dönüştürün
-        return Program::all();
+        $this->tarih = $tarih;
     }
 
-    public function headings(): array
+    public function view(): View
     {
-        return [
-            'Pompacı ID',
-            'Tarih Saat',
-            'Müşteri Adı',
-            'Beton Cinsi',
-            'Döküm Şekli',
-            'Şantiye',
-            'Metraj',
-            'Yapı Elemanı',
-        ];
-    }
+        $baslangic_saati = $this->tarih . ' 00:00:00';
+        $bitis_saati = $this->tarih . ' 23:59:59';
 
-     /**
-    * @param Program $event
-    */
-    public function map($event): array
-    {
-        return [
-            $event->pompaci_id,
-            $event->baslangic_saati,
-            $event->musteri_adi,
-            $event->beton_cinsi,
-            $event->dokum_sekli,
-            $event->santiye,
-            $event->metraj,
-            $event->yapi_elemani,
-        ];
+        $pompacilar = Pompacilar::all();
+        $events = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->get();
+
+        $data = [];
+        foreach ($pompacilar as $pompaci) {
+            $pompaciEvents = $events->where('pompaci_id', $pompaci->id);
+            if ($pompaciEvents->isNotEmpty()) {
+                $data[] = [
+                    'pompaci' => $pompaci,
+                    'events' => $pompaciEvents,
+                    'event_count' => $pompaciEvents->count(),
+                ];
+            }
+        }
+
+        return view('example_export', compact('data'));
     }
 }

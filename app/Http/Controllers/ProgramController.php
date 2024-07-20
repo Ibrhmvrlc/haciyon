@@ -202,16 +202,6 @@ class ProgramController extends Controller
 
     public function export($tarih)
     {
-        return Excel::download(new ProgramsExport, 'Taşköprü-Program-' . $tarih . '.xlsx');
+        return Excel::download(new ProgramsExport($tarih), 'Taşköprü-Program-' . $tarih . '.xlsx');
     }
-
-
-
-
-
-
-
-
-
-
 }
