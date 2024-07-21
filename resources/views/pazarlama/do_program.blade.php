@@ -252,7 +252,7 @@
                                     <td>{{$event->beton_cinsi}}</td>
                                     <td>{{$event->metraj}}</td>
                                     <td class="color-primary">{{$event->yapi_elemani}}</td>
-                                    <td style="width: 5px;"><a href="#" data-toggle="modal" data-target="#guncelleMikserModal"><span class="ti-settings"></span></a></td>
+                                    <td style="width: 5px;"><a href="#" data-toggle="modal" data-target="#guncelleSantralAltiModal"><span class="ti-settings"></span></a></td>
                                     <td style="width: 5px;"><a href="#badge" class="delete-button" data-id="{{ $event->id }}"><span class="ti-trash"></span></a></td>
                                 </tr>
                                 @endif
@@ -317,8 +317,8 @@
                             </div>
                             <div class="col-lg-8 col-12 mb-2">
                               
-                                <h5>Program Analizi ({{$toplamMKup}} m<sup>3</sup>)</h5>
-                                <ul>
+                                <h5>Program Analizi ({{$toplamMKup}} m<sup>3</sup>, {{$pompaliAdet + $mikserliAdet + $santralAltiAdet}} adet)</h5>
+                                <ul> 
                                     <li><b>{{$pompaliMetraj}}</b> m<sup>3</sup> <b>{{$pompaliAdet}}</b> Pompalı Program</li>
                                     @if ($mikserliMetraj AND $mikserliAdet)
                                     <li><b>{{$mikserliMetraj}}</b> m<sup>3</sup> <b>{{$mikserliAdet}}</b> Mikserli Program</li>
@@ -336,8 +336,8 @@
 
                                 
                             </div>
-                            <div class="col-lg-12">
-                                <a href="{{route('excel.export', $tarih)}}" class="btn btn-rounded btn-success text-light">
+                            <div class="col-lg-12 text-center">
+                                <a href="{{route('excel.export', $tarih)}}" class="btn btn-rounded btn-success text-light mb-3">
                                     <span class="btn-icon-left text-success">
                                         <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                     </span>Excel
@@ -346,7 +346,7 @@
                                 &nbsp;
                                 &nbsp;
 
-                                <button type="button" class="btn btn-rounded btn-warning text-light" 
+                                <button type="button" class="btn btn-rounded btn-warning text-light mb-3" 
                                 data-toggle="modal" data-target="xxxxxx">
                                     <span class="btn-icon-left text-warning">
                                         <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
@@ -356,14 +356,12 @@
                                 &nbsp;
                                 &nbsp;
 
-                                <button type="button" class="btn btn-rounded btn-google text-light"
+                                <button type="button" class="btn btn-rounded btn-google text-light mb-3"
                                 data-toggle="modal" data-target="xxxxxx">
                                     <span class="btn-icon-left" style="color: #0078d4;">
                                         <i class="fa fa-envelope color-danger"></i>
                                     </span>Email
                                 </button>
-
-
                             </div>
                         </div>
                     </div>
@@ -1011,7 +1009,7 @@
 @foreach ($events as $event)
 @if ($event->pompaci_id == 0 AND $event->dokum_sekli == 'SANTRAL ALTI')
 <!-- SANTRAL ALTI {{$event->id}}.id'li programi guncelleme alani -->
-<div class="modal fade" id="guncelleMikserModal">
+<div class="modal fade" id="guncelleSantralAltiModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="{{route('programlar.guncelle', $event->id)}}" method="post"> 

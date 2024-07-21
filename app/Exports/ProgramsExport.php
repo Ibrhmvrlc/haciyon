@@ -25,6 +25,12 @@ class ProgramsExport implements FromView, ShouldAutoSize
 
         $pompacilar = Pompacilar::all();
         $events = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])->get();
+        // Programs tablosundan pompacı_id'si 0 olan ve dokum_sekli 'MİKSERLİ' olanları çek
+        $mikserliler = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])
+        ->where('pompaci_id', 0)->where('dokum_sekli', 'MİKSERLİ')->get();
+        // Programs tablosundan pompacı_id'si 0 olan ve dokum_sekli 'MİKSERLİ' olanları çek
+        $santralaltilar = Program::whereBetween('baslangic_saati', [$baslangic_saati, $bitis_saati])
+        ->where('pompaci_id', 0)->where('dokum_sekli', 'SANTRAL ALTI')->get();
 
         $data = [];
         foreach ($pompacilar as $pompaci) {
@@ -38,6 +44,6 @@ class ProgramsExport implements FromView, ShouldAutoSize
             }
         }
 
-        return view('example_export', compact('data', 'events'));
+        return view('example_export', compact('data', 'mikserliler', 'santralaltilar'));
     }
 }
