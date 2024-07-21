@@ -42,6 +42,28 @@
 
 
 
+
+        @foreach ($events->where('pompaci_id', 0)->where('dokum_sekli', 'Mikserli') as $event)
+        @php
+            $mikserliEventCount = $events->where('pompaci_id', 0)->where('dokum_sekli', 'Mikserli');
+        @endphp
+            <tr>
+                @if ($first)
+                    <td rowspan="{{ $mikserliEventCount }}" style="text-align: center; vertical-align: middle;">Mikserli</td>
+                    @php $first = false; @endphp
+                @endif
+                @php $saatKismi = Carbon::parse($event->baslangic_saati)->format('H:i'); @endphp
+                <td>{{$saatKismi}}</td>
+                <td>{{$event->musteri_adi}}</td>
+                <td>{{$event->santiye}}</td>
+                <td>{{$event->beton_cinsi}}</td>
+                <td>{{$event->metraj}}  m<sup>3</sup></td>
+                <td>{{$event->yapi_elemani}}</td>
+            </tr>
+        @endforeach
+
+
+
         <tr>
             <td>MİKSERLİLER</td>
             <td></td>

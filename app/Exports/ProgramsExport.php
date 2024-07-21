@@ -38,6 +38,6 @@ class ProgramsExport implements FromView, ShouldAutoSize
             }
         }
 
-        return view('example_export', compact('data'));
+        return view('example_export', compact('data', 'events'));
     }
 }

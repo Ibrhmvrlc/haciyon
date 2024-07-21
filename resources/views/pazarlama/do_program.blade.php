@@ -276,7 +276,7 @@
                 <div class="card-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-3 col-12 mb-4">
+                            <div class="col-lg-4 col-12 mb-4">
                                 <canvas id="myChart"></canvas>
                                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                                 <script>
@@ -315,7 +315,7 @@
                                     
                                 </script>
                             </div>
-                            <div class="col-lg-9 col-12 mb-2">
+                            <div class="col-lg-8 col-12 mb-2">
                               
                                 <h5>Program Analizi ({{$toplamMKup}} m<sup>3</sup>)</h5>
                                 <ul>
@@ -326,6 +326,7 @@
                                     @if ($santralAltiMetraj AND $santralAltiAdet)
                                     <li><b>{{$santralAltiMetraj}}</b> m<sup>3</sup> <b>{{$santralAltiAdet}}</b> Santral Altı Program</li>
                                     @endif
+                                    <br />
                                     <!-- IK MODULU ILE CALISACAK -->
                                     <li><b>xxxx</b> Pompa Operatörü</li>
                                     <li><b>xxxx</b> Mikser Operatörü</li>
@@ -1167,259 +1168,4 @@
 <!--**********************************
     PROGRAM GUNCELLEME MODALLARI SONU
 ***********************************-->
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>OPERATÖR</th>
-            <th>SAAT</th>
-            <th>MÜŞTERİ ADI ÜNVANI</th>
-            <th>ŞANTİYESİ</th>
-            <th>BETON CİNSİ</th>
-            <th>m3</th>
-            <th>DÖKÜM ŞEKLİ</th>
-            <th>AÇIKLAMA</th>
-        </tr>
-    </thead>
-
-    <tr>
-        <td></td>
-        <td>08.00</td>
-        <td>HİCRİ ERCİLİ</td>
-        <td>HERSEK</td>
-        <td>C30 KTZ</td>
-        <td>  200  m3</td>
-        <td>POMPALI</td>
-        <td>YER</td>
-    </tr>
-    <tr>
-        <th>ÖZKAN</th>
-        <td>13.00</td>
-        <td>ERTEK TEKNİK</td>
-        <td>LALEDERE İMES</td>
-        <td>C35</td>
-        <td>  60  m3</td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>15.00</td>
-        <td>KÜÇÜKLER MİM.</td>
-        <td>LALEDERE İMES</td>
-        <td>C30</td>
-        <td>  30  m3</td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>08.00</td>
-        <td>MUSTAFA ÇİMEN</td>
-        <td>KARAMÜRSEL</td>
-        <td>C30 KTZ</td>
-        <td>  8  m3</td>
-        <td>POMPALI</td>
-        <td>YER</td>
-    </tr>
-    <tr>
-        <td>ŞABAN</td>
-        <td>12.00</td>
-        <td>YUSUF BEŞBAŞ</td>
-        <td>KARAMÜRSEL</td>
-        <td>C30</td>
-        <td>  16  m3</td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>16.00</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>08.00</td>
-        <td>ÖZKAYALAR GROUP</td>
-        <td>KAYTAZDERE</td>
-        <td>C30</td>
-        <td>  100  m3</td>
-        <td>POMPALI</td>
-        <td>TABLİYE</td>
-    </tr>
-    <tr>
-        <td>LÜTFÜ</td>
-        <td>14.00</td>
-        <td>VİSİONF</td>
-        <td>HERSEK</td>
-        <td>GRO</td>
-        <td>  90  m3</td>
-        <td>POMPALI</td>
-        <td>YER</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>16.00</td>
-        <td>UMSEL</td>
-        <td>KARAMÜRSEL</td>
-        <td>C30</td>
-        <td>  6  m3</td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>08.00</td>
-        <td>AKGİRİŞİM</td>
-        <td>DOĞU AKSA</td>
-        <td>C25</td>
-        <td>  40  m3</td>
-        <td>POMPALI</td>
-        <td>YER</td>
-    </tr>
-    <tr>
-        <td>İSMET</td>
-        <td>13.00</td>
-        <td>ART77</td>
-        <td>HERSEK</td>
-        <td>C30</td>
-        <td>  44  m3</td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>15.00</td>
-        <td>MODART</td>
-        <td>LALEDERE İMES</td>
-        <td>C35</td>
-        <td>  25  m3</td>
-        <td>POMPALI</td>
-        <td>PERDE</td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>10.00</td>
-        <td>GEMAK</td>
-        <td>HERSEK</td>
-        <td>C40</td>
-        <td>  220  m3</td>
-        <td>POMPALI</td>
-        <td>KAZIK</td>
-    </tr>
-    <tr>
-        <td>AHMET KAYA</td>
-        <td>12.00</td>
-        <td>İRFAN BALEKOĞLU</td>
-        <td>KARAPINAR</td>
-        <td>C30 ÖZEL</td>
-        <td>  21  m3</td>
-        <td>POMPALI</td>
-        <td>YER</td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td>MİKSERLİLER</td>
-        <td></td>
-        <td>NEBİOĞLU</td>
-        <td>TAŞKÖPRÜ</td>
-        <td>C45</td>
-        <td>  24  m3</td>
-        <td>MİKSERLİ</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td>HATSAN</td>
-        <td>HERSEK</td>
-        <td>GRO</td>
-        <td>  77  m3</td>
-        <td>MİKSERLİ</td>
-        <td></td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td>SANTRAL ALTI</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="table-dark">
-        <td colspan="8"><!-- Karismamasi adina koyulmus serit --></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>TOPLAM SANTRAL ALTI                      :</td>
-        <td></td>
-        <td>    m3</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>TOPLAM MİKSERLİ SEVKİYAT              :</td>
-        <td></td>
-        <td>  101  m3</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>TOPLAM POMPALI SEVKİYAT               :</td>
-        <td></td>
-        <td>  860  m3</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>TAŞKÖPRÜ TOPLAM          :</td>
-        <td></td>
-        <td>  961  m3</td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
-
-
-
-
-
-
-
-
 @endsection
