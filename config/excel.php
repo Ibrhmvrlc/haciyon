@@ -71,6 +71,9 @@ return [
             'manager'        => '',
             'company'        => '',
         ],
+        'pdf' => [
+            'driver' => 'dompdf',
+        ],
     ],
 
     'imports'            => [

@@ -8,6 +8,8 @@ use App\Models\Program;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramController extends Controller
@@ -203,5 +205,27 @@ class ProgramController extends Controller
     public function export($tarih)
     {
         return Excel::download(new ProgramsExport($tarih), 'Taşköprü-Program-' . $tarih . '.xlsx');
+    }
+
+    public function generatePDF($tarih)
+    {   
+        // İlk olarak, HTML'yi almak için Export sınıfını kullanın
+        $export = new ProgramsExport($tarih);
+        $view = $export->view();
+
+        // Dompdf ayarlarını yapın
+        $options = new Options();
+        $options->set('defaultFont', 'DejaVu Sans');
+        $dompdf = new Dompdf($options);
+
+        // HTML içeriğini Dompdf'ye yükleyin
+        $dompdf->loadHtml($view->render());
+
+        // PDF ayarlarını yapın ve çıktıyı oluşturun
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        // PDF dosyasını tarayıcıda görüntüleyin veya indirin
+        return $dompdf->stream('Tashkopru-Program-' . $tarih . '.pdf');
     }
 }

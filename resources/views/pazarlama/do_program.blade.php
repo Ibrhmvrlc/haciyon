@@ -346,12 +346,11 @@
                                 &nbsp;
                                 &nbsp;
 
-                                <button type="button" class="btn btn-rounded btn-warning text-light mb-3" 
-                                data-toggle="modal" data-target="xxxxxx">
+                                <a href="{{route('pdf.export', $tarih)}}" type="button" class="btn btn-rounded btn-warning text-light mb-3" >
                                     <span class="btn-icon-left text-warning">
                                         <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                     </span>PDF
-                                </button>
+                                </a>
 
                                 &nbsp;
                                 &nbsp;

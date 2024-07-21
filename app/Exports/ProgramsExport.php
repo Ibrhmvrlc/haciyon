@@ -8,8 +8,13 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ProgramsExport implements FromView, ShouldAutoSize
+class ProgramsExport implements FromView, ShouldAutoSize, WithStyles
 {
     protected $tarih;
 
@@ -45,5 +50,42 @@ class ProgramsExport implements FromView, ShouldAutoSize
         }
 
         return view('example_export', compact('data', 'mikserliler', 'santralaltilar'));
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        
+        $startRow = 1; // Başlıklar ilk satırda
+        $endRow = 15; // Veri satırları
+        $startColumn = 'A';
+        $endColumn = 'C'; // Bu aralığı view'deki tabloya göre ayarlayın
+
+        // Son sütunu dinamik olarak belirleyin
+        $endColumn = $sheet->getHighestColumn();
+
+        // Son satırı dinamik olarak belirleyin
+        $endRow = $sheet->getHighestRow();
+
+        // Verinin olduğu hücre aralığını tanımlayın
+        $cellRange = $startColumn . $startRow . ':' . $endColumn . $endRow;
+
+        // Tüm hücrelerin sınırlarını ayarlayın
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => 'FF000000'],
+                ],
+            ],
+        ];
+
+        $sheet->getStyle($cellRange)->applyFromArray($styleArray);
+
+        // Alternatif olarak, belirli hücrelere sınır eklemek isterseniz:
+        // $sheet->getStyle('A1:C1')->applyFromArray($styleArray);
+
+        return [
+            // Başka stil ayarları varsa burada yapabilirsiniz
+        ];
     }
 }
