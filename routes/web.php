@@ -24,6 +24,7 @@ Route::prefix('/program')->group(function(){
 
     Route::get('/export-xlsx/{tarih}', [ProgramController::class, 'export'])->name('excel.export');
     Route::get('/export-pdf/{tarih}', [ProgramController::class, 'generatePDF'])->name('pdf.export');
+    Route::get('/email-pdf/{tarih}', [ProgramController::class, 'sendMailWithPDF'])->name('pdf.email');
 
     Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
     Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');

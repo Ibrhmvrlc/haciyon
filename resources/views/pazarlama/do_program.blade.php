@@ -276,46 +276,50 @@
                 <div class="card-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-4 col-12 mb-4">
-                                <canvas id="myChart"></canvas>
-                                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                                <script>
-                                    const ctx = document.getElementById('myChart');
-                                    var labels = [];
-                                    var values = [];
-                                    
-                                    @foreach ($pompacilar as $pompaci)
-                                        labels.push('{{ $pompaci->ad_soyad }}');
-        
-                                        var count = 0;
-                                        @foreach ($events as $event)
-                                            @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
-                                                @if ($event->pompaci_id == $pompaci->id)
-                                                    count++;
+                            <div class="col-lg-3 col-12 mb-4">
+                                <div>
+                                    <canvas id="myChart"></canvas>
+                                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                                    <script>
+                                        const ctx = document.getElementById('myChart');
+                                        var labels = [];
+                                        var values = [];
+                                        
+                                        @foreach ($pompacilar as $pompaci)
+                                            labels.push('{{ $pompaci->ad_soyad }}');
+            
+                                            var count = 0;
+                                            @foreach ($events as $event)
+                                                @if (Carbon::parse($event->baslangic_saati)->format('Y-m-d') == $tarih)
+                                                    @if ($event->pompaci_id == $pompaci->id)
+                                                        count++;
+                                                    @endif
                                                 @endif
-                                            @endif
+                                            @endforeach
+                                            values.push(count);
                                         @endforeach
-                                        values.push(count);
-                                    @endforeach
-        
-                                    new Chart(ctx, {
-                                    type: 'doughnut',
-                                    data: {
-                                        labels: labels,
-                                        datasets: [{
-                                        label: 'Programlar',
-                                        data: values,
-                                        borderWidth: 1
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: false
-                                    }
-                                    });
-                                    
-                                </script>
+            
+                                        new Chart(ctx, {
+                                        type: 'doughnut',
+                                        data: {
+                                            labels: labels,
+                                            datasets: [{
+                                            label: 'Programlar',
+                                            data: values,
+                                            borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false
+                                        }
+                                        });
+                                        
+                                    </script>
+                                </div>
+                                
                             </div>
-                            <div class="col-lg-8 col-12 mb-2">
+                            <div class="col-lg-9 col-12 mb-2">
                               
                                 <h5>Program Analizi ({{$toplamMKup}} m<sup>3</sup>, {{$pompaliAdet + $mikserliAdet + $santralAltiAdet}} adet)</h5>
                                 <ul> 
@@ -355,12 +359,11 @@
                                 &nbsp;
                                 &nbsp;
 
-                                <button type="button" class="btn btn-rounded btn-google text-light mb-3"
-                                data-toggle="modal" data-target="xxxxxx">
+                                <a href="{{route('pdf.email', $tarih)}}" class="btn btn-rounded btn-google text-light mb-3">
                                     <span class="btn-icon-left" style="color: #0078d4;">
                                         <i class="fa fa-envelope color-danger"></i>
                                     </span>Email
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1161,7 +1164,6 @@
 </div>
 @endif
 @endforeach
-
 <!--**********************************
     PROGRAM GUNCELLEME MODALLARI SONU
 ***********************************-->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProgramsExport;
+use App\Mail\ProgramMail;
 use App\Models\Pompacilar;
 use App\Models\Program;
 use App\Models\User;
@@ -10,6 +11,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramController extends Controller
@@ -226,6 +230,41 @@ class ProgramController extends Controller
         $dompdf->render();
 
         // PDF dosyasını tarayıcıda görüntüleyin veya indirin
-        return $dompdf->stream('Tashkopru-Program-' . $tarih . '.pdf');
+        return $dompdf->stream('Taskopru-Program-' . $tarih . '.pdf');
+    }
+
+    public function generatePDFForMail($tarih) {
+        $export = new ProgramsExport($tarih);
+        $view = $export->view();
+
+        $options = new Options();
+        $options->set('defaultFont', 'DejaVu Sans');
+        $dompdf = new Dompdf($options);
+
+        $dompdf->loadHtml($view->render());
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        $fileName = 'Taskopru-Program-' . $tarih . '.pdf';
+        $filePath = storage_path('app/public/' . $fileName);
+        file_put_contents($filePath, $dompdf->output());
+
+        return $filePath;
+    }
+
+    public function sendMailWithPDF($tarih) {
+        try {
+            $filePath = $this->generatePDFForMail($tarih);
+    
+            Mail::to('ibrahimvarelci@adenstudio.co')->send(new ProgramMail($tarih, $filePath));
+    
+            return redirect()->back()->with('message', 'E-posta başarıyla gönderildi!');
+        } catch (Exception $e) {
+            // Hata mesajını günlük dosyasına yaz
+            Log::error('Mail gönderim hatası: ' . $e->getMessage());
+    
+            // Kullanıcıya hata mesajı göster
+            return redirect()->back()->with('error', 'E-posta gönderiminde bir hata oluştu: ' . $e->getMessage());
+        }
     }
 }
