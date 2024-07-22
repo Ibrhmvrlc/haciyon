@@ -148,10 +148,11 @@
     }
     th, td {
         border: 1px solid black;
-        padding: 8px;
+        padding: 4px; /* Reduced padding */
         text-align: left;
+        font-size: 10px; /* Reduced font size */
     }
     th {
-        background-color: #f2f2f2;
+        background-color: #e0ffce;
     }
 </style>
