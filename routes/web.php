@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MusteriController;
 use App\Http\Controllers\ProgramController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +11,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); // TUM KULLANICILAR
 
-Route::prefix('/program')->group(function(){
+Route::middleware(['auth'])->prefix('/program')->group(function(){ // PAZARLAMACILAR, YONETICELER
     Route::get('/program-yap/{tarih}', [ProgramController::class, 'index'])->name('program.yap.git');
     Route::post('/create-pompali/{id}/{tarih}', [ProgramController::class, 'storePompali'])->name('program.olustur.pompali');
     Route::post('/create-mikserli/{tarih}', [ProgramController::class, 'storeMikserli'])->name('program.olustur.mikserli');
@@ -21,12 +22,11 @@ Route::prefix('/program')->group(function(){
     Route::get('/geri/{tarih}', [ProgramController::class, 'index'])->name('program.tarih.geri');
     Route::post('/update/{id}', [ProgramController::class, 'update'])->name('programlar.guncelle');
     Route::delete('/items/{id}', [ProgramController::class, 'destroy'])->name('items.destroy');
-
     Route::get('/export-xlsx/{tarih}', [ProgramController::class, 'export'])->name('excel.export');
     Route::get('/export-pdf/{tarih}', [ProgramController::class, 'generatePDF'])->name('pdf.export');
     Route::get('/email-pdf/{tarih}', [ProgramController::class, 'sendMailWithPDF'])->name('pdf.email');
+});
 
-    Route::get('/eski-programlar', [ProgramController::class, ''])->name('');
-    Route::get('/events', [ProgramController::class, 'getEvents'])->name('programlari.goster');
-    Route::post('/update-drag', [ProgramController::class, 'updateDrag'])->name('programlar.surukle.guncelle');
+Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMACILAR, YONETICELER
+    Route::get('/tum-musteri-listesi', [MusteriController::class, 'index'])->name('tum.musteri.listesi');
 });

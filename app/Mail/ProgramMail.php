@@ -60,7 +60,7 @@ class ProgramMail extends Mailable
         return $this->view('emails.program')
                     ->subject('Program PDF')
                     ->to('varelci.i@gmail.com') // Alıcı e-posta adresi
-                    ->cc('ibrahim.varelci@haciogullari.com.tr') // CC e-posta adresleri
+                 // ->cc('ibrahim.varelci@haciogullari.com.tr')
                     ->attach($this->filePath, [
                         'as' => 'Taskopru-Program-' . $this->tarih . '.pdf',
                         'mime' => 'application/pdf',

@@ -14,9 +14,11 @@
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
     <link href="./vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 
-    
+    <!-- Datatable -->
+    <link href="{{asset('./vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+
     <!-- SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css')}}">
 
     <!-- ajax icin -->
     <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css')}}" rel="stylesheet">
@@ -180,9 +182,9 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">ANA MENU</li>
+                    <li class="nav-label first">Program</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-layout-25"></i><span class="nav-text">Program</span></a>
+                        class="icon icon-layout-25"></i><span class="nav-text">Günlük Program</span></a>
                         <ul aria-expanded="false">
                             <?php 
                                 // DateTime sınıfını kullanarak bugünün tarihini alıyoruz
@@ -195,21 +197,23 @@
                                 $tarih = $today->format('Y-m-d');
                             ?>
                             <li><a href="{{route('program.yap.git', $tarih)}}">Beton Programı Yap</a></li>
+                            <li><a href="XXXXXXXX">Geçmiş Porgramlar</a></li>
                         </ul>
                     </li>
-                    <li class="nav-label">Apps</li>
+                    <li class="nav-label">Müşteri</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-app-store"></i><span class="nav-text">Apps</span></a>
+                                class="mdi mdi-account"></i><span class="nav-text">Müşteri Yönetimi</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Profile</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
+                            <li><a href="{{route('tum.musteri.listesi')}}">Tüm Müşteriler</a></li>
+                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Fiyat Güncelleme</a>
                                 <ul aria-expanded="false">
-                                    <li><a href="./email-compose.html">Compose</a></li>
-                                    <li><a href="./email-inbox.html">Inbox</a></li>
-                                    <li><a href="./email-read.html">Read</a></li>
+                                    <li><a href="./email-compose.html">Tersaneler</a></li>
+                                    <li><a href="./email-compose.html">Organize Sanayi</a></li>
+                                    <li><a href="./email-inbox.html">Piyasa</a></li>
+                                    <li><a href="./email-read.html">Özel Firmalar</a></li>
+                                    <li><a href="./email-read.html">Hepsi</a></li>
                                 </ul>
                             </li>
-                            <li><a href="./app-calender.html">Calendar</a></li>
                         </ul>
                     </li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
@@ -352,6 +356,10 @@
     <script src="{{asset('./vendor/global/global.min.js')}}"></script>
     <script src="{{asset('./js/quixnav-init.js')}}"></script>
     <script src="{{asset('./js/custom.min.js')}}"></script>
+
+    <!-- Datatable -->
+    <script src="{{asset('./vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('./js/plugins-init/datatables.init.js')}}"></script>
 
 
     <!-- Vectormap -->
