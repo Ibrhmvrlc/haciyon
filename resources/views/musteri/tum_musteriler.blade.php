@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Basic Datatable</h4>
+                                <h4 class="card-title">TÜM MÜŞTERİLER (DÜZENSİZ VERİ)</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -29,33 +29,53 @@
                                         <thead>
                                             <tr>
                                                 <th>Müşteri Ünvanı</th>
+                                                <th>Yetkili</th>
                                                 <th>Telefon</th>
                                                 <th>E-Posta</th>
-                                                <th>En Aktif Şantiye</th>
-                                                <th>Fiyatı</th>
-                                                <th>Pompa Bedeli</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                        
                                         <tbody>
+                                            @foreach($musteriler as $musteri)
                                             <tr>
-                                                <td>Mustafa Çimen / Şükür Ticaret</td>
-                                                <td>0555 555 55 55</td>
-                                                <td>mustafa@cimen.com.tr</td>
-                                                <td>Karamürsel</td>
-                                                <td>2450</td>
-                                                <td>4000</td>
+                                                <td>{{$musteri->unvani}}</td>
+
+                                                @if ($musteri->yetkili_bir)
+                                                    <td>{{$musteri->yetkili_bir}}</td>
+                                                    <td>{{$musteri->yetkili_bir_tel}}</td>
+                                                    <td>{{$musteri->yetkili_bir_email}}</td>
+                                                @elseif ($musteri->yetkili_iki)
+                                                    <td>{{$musteri->yetkili_iki}}</td>
+                                                    <td>{{$musteri->yetkili_iki_tel}}</td>
+                                                    <td>{{$musteri->yetkili_iki_email}}</td>
+                                                @elseif ($musteri->yetkili_uc)
+                                                    <td>{{$musteri->yetkili_uc}}</td>
+                                                    <td>{{$musteri->yetkili_uc_tel}}</td>
+                                                    <td>{{$musteri->yetkili_uc_email}}</td>
+                                                @else
+                                                    <td>BELİRTİLMEMİŞ</td>
+                                                    <td>{{$musteri->tel_ana}}</td>
+                                                    <td>{{$musteri->mail_ana}}</td>
+                                                @endif
+                                                <td>
+                                                    <a href="{{route('musteri.profil', $musteri->id)}}">
+                                                        <span class="ti-more-alt"></span>
+                                                    </a>
+                                                </td>
                                             </tr>
+
+                                            @endforeach
+
                                         </tbody>
 
                                         <tfoot>
                                             <tr>
                                                 <th>Müşteri Ünvanı</th>
+                                                <th>Yetkili</th>
                                                 <th>Telefon</th>
                                                 <th>E-Posta</th>
-                                                <th>En Aktif Şantiye</th>
-                                                <th>Fiyatı</th>
-                                                <th>Pompa Bedeli</th>
+                                                <th></th>
                                             </tr>
                                         </tfoot>
                                     </table>
