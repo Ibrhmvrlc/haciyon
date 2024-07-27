@@ -205,34 +205,166 @@
                                 </li>
                                 <li class="nav-item"><a href="#fiyat" data-toggle="tab" class="nav-link">Fiyat</a> <!-- OLUSTUR -->
                                 </li>
-                                <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Düzenle</a>
+                                <li class="nav-item"><a href="#settings" data-toggle="tab" class="nav-link">Düzenle</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div id="genel" class="tab-pane fade active show">
                                     <div class="my-post-content pt-3">
                                         <div class="post-input">
+                                            
                                             <textarea name="textarea" id="textarea" cols="30" rows="5" class="form-control bg-transparent" placeholder="Müşteri ile ilgili not al...."></textarea>
-                                            <a href="xxxxxxxxxxxxxxxxx" class="btn btn-primary">Kaydet</a> 
+                                            <a href="xxxxxxxxxxxxxxxxx" class="btn btn-dark">Kaydet</a> 
                                            
                                         </div>
+                                        <div class="profile-uoloaded-post border-bottom-1 pb-5 my-div">
+                                            <span class="check-btn">
+                                                <a href="#">&#10003;</a> <!-- !!!!!!!!!!TOOLTİP EKLENECEK!!!!!!!!!!!! -->
+                                            </span>
+                                            <span class="close-btn">
+                                                <a href="#">&times;</a> <!-- !!!!!!!!!!TOOLTİP EKLENECEK!!!!!!!!!!!! -->
+                                            </span>
+                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+                                            <script>
+                                                document.querySelectorAll('.close-btn').forEach(button => {
+                                                    button.addEventListener('click', function() {
+                                                        const itemId = this.getAttribute('data-id');
+                                    
+                                                        Swal.fire({
+                                                            title: 'Emin misiniz?',
+                                                            text: "Bu işlemi geri alamazsınız!",
+                                                            icon: 'warning',
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: '#3085d6',
+                                                            cancelButtonColor: '#d33',
+                                                            confirmButtonText: 'Evet, sil!',
+                                                            cancelButtonText: 'Hayır, iptal et'
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                // Silme formunu oluşturalım
+                                                                const form = document.createElement('form');
+                                                                form.method = 'POST';
+                                                                form.action = `XXXXXXX`;// NOTLARIN TUTULDUĞU TABLODAN SİLME ROUTESİ
+                                                                
+                                                                const csrfField = document.createElement('input');
+                                                                csrfField.type = 'hidden';
+                                                                csrfField.name = '_token';
+                                                                csrfField.value = '{{ csrf_token() }}';
+                                                                form.appendChild(csrfField);
+                                                                
+                                                                const methodField = document.createElement('input');
+                                                                methodField.type = 'hidden';
+                                                                methodField.name = '_method';
+                                                                methodField.value = 'DELETE';
+                                                                form.appendChild(methodField);
+                                    
+                                                                document.body.appendChild(form);
+                                                                form.submit();
+                                                            }
+                                                        });
+                                                    });
+                                                });
 
+                                                document.querySelectorAll('.check-btn').forEach(button => {
+                                                    button.addEventListener('click', function() {
+                                                        const itemId = this.getAttribute('data-id');
+                                    
+                                                        Swal.fire({
+                                                            title: 'Not tamamlandı mı?',
+                                                            text: "Bu not tamamlandı olarak işaretlenecektir!",
+                                                            icon: 'warning',
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: '#3085d6',
+                                                            cancelButtonColor: '#d33',
+                                                            confirmButtonText: 'Evet, tamam!',
+                                                            cancelButtonText: 'Hayır, daha var'
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                // Tamamlandı formunu oluşturalım
+                                                                const form = document.createElement('form');
+                                                                form.method = 'POST';
+                                                                form.action = `XXXXXXX`;// NOTLARIN TUTULDUĞU TABLODAN tamamlandı ROUTESİ
+                                                                
+                                                                const csrfField = document.createElement('input');
+                                                                csrfField.type = 'hidden';
+                                                                csrfField.name = '_token';
+                                                                csrfField.value = '{{ csrf_token() }}';
+                                                                form.appendChild(csrfField);
+                                                                
+                                                                const methodField = document.createElement('input');
+                                                                methodField.type = 'hidden';
+                                                                methodField.name = '_method';
+                                                                methodField.value = 'DELETE';
+                                                                form.appendChild(methodField);
+                                    
+                                                                document.body.appendChild(form);
+                                                                form.submit();
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                            <style>
+                                                .my-div {
+                                                    position: relative; /* Bu, check-btn ve close-btn'nin bu div'e göre konumlanmasını sağlar */
+                                                    padding: 20px;
+                                                }
 
+                                                .check-btn, .close-btn {
+                                                    position: absolute; /* Ebeveyni olan my-div'e göre konumlanacak */
+                                                    top: 10px; /* Ebeveynin üst kısmından 10px aşağıda */
+                                                    font-size: 20px;
+                                                    cursor: pointer;
+                                                    color: #000;
+                                                    transition: color 0.3s;
+                                                }
 
+                                                .check-btn {
+                                                    right: 35px; /* Ebeveynin sağ kısmından 35px içeride */
+                                                }
 
-                                        <div class="profile-uoloaded-post border-bottom-1 pb-5">
+                                                .close-btn {
+                                                    right: 10px; /* Ebeveynin sağ kısmından 10px içeride */
+                                                }
+
+                                                .check-btn:hover {
+                                                    color: #00ff00; /* Yeşil renge dönüşüm */
+                                                }
+
+                                                .close-btn:hover {
+                                                    color: #ff0000; /* Kırmızıya dönüşüm */
+                                                }
+
+                                                .check-btn::after, .close-btn::after {
+                                                    content: '';
+                                                    position: absolute;
+                                                    top: -25px;
+                                                    right: 0;
+                                                    background: #333;
+                                                    color: #fff;
+                                                    padding: 5px;
+                                                    border-radius: 3px;
+                                                    opacity: 0;
+                                                    transition: opacity 0.3s;
+                                                    pointer-events: none;
+                                                    font-size: 12px;
+                                                }
+
+                                                .check-btn:hover::after {
+                                                    content: 'Tamamlandı';
+                                                    opacity: 1;
+                                                }
+
+                                                .close-btn:hover::after {
+                                                    content: 'Sil';
+                                                    opacity: 1;
+                                                }
+                                            </style>
+
                                             <h4>
                                                 Müşteri Notları <i class="fa fa-clock-o"></i>
                                             </h4>
                                             <p>Notlar benzeri bir tablo oluşturulup müşteri id'sine göre döngü yapılarak notlar burada gösterilecek.</p>
-                                            
-                                            
-                                            <button type="button" class="btn btn-success text-white">
-                                                <span><i class="fa fa-check"></i></span>
-                                            </button>
-                                            <button type="button" class="btn btn-danger">
-                                                <span><i class="fa fa-times"></i></span>
-                                            </button>
                                         </div>
                                         <div class="text-center mb-2"><a href="javascript:void()" class="btn btn-primary">Load More</a>
                                         </div>
@@ -390,7 +522,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="profile-settings" class="tab-pane fade">
+                                <div id="settings" class="tab-pane fade">
                                     <div class="pt-3">
                                         <div class="settings-form">
                                             <h4 class="text-primary">Account Setting</h4>
