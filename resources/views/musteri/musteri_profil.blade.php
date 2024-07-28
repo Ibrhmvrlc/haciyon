@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+@php use Carbon\Carbon; @endphp
 <div class="container-fluid">
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
@@ -17,6 +18,20 @@
             </a>
         </div>
     </div>
+     <!-- Herhangi bir hata bildirimi alanı -->
+     @if ($errors->any())
+     <div class="col-lg-12">
+         <div class="card alert alert-danger">
+             <div class="card-body">
+                 <ul>
+                     @foreach ($errors->all() as $error)
+                         <li>{{ $error }}</li>
+                     @endforeach
+                 </ul>
+             </div>
+         </div>
+     </div>
+    @endif
     <!-- row -->
     <div class="row">
         <div class="col-lg-12">
@@ -199,11 +214,11 @@
                     <div class="profile-tab">
                         <div class="custom-tab-1">
                             <ul class="nav nav-tabs">
-                                <li class="nav-item"><a href="#genel" data-toggle="tab" class="nav-link active show">Genel</a>
+                                <li class="nav-item"><a href="#genel" data-toggle="tab" class="nav-link active show">Notlar</a>
                                 </li>
                                 <li class="nav-item"><a href="#faturabilgi" data-toggle="tab" class="nav-link">Fatura Bilgileri</a>
                                 </li>
-                                <li class="nav-item"><a href="#fiyat" data-toggle="tab" class="nav-link">Fiyat</a> <!-- OLUSTUR -->
+                                <li class="nav-item"><a href="#fiyat" data-toggle="tab" class="nav-link">Fiyat</a>
                                 </li>
                                 <li class="nav-item"><a href="#settings" data-toggle="tab" class="nav-link">Düzenle</a>
                                 </li>
@@ -211,163 +226,245 @@
                             <div class="tab-content">
                                 <div id="genel" class="tab-pane fade active show">
                                     <div class="my-post-content pt-3">
-                                        <div class="post-input">
+
+
+
+
+                                        <div class="">
+                                            <form method="post" action="{{route('not.ekle', $musteri->id)}}" >
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class='form-control' placeholder='Not Başlığı' type='text' name='baslik' required/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <textarea name="not" id="textarea" cols="30" rows="5"
+                                                            class="form-control bg-transparent" placeholder="Müşteri ile ilgili not al...." required></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-check mb-3 ml-1">
+                                                            <input class="form-check-input" type="checkbox" name="hatirlaticiSecici" id="hs">
+                                                            <label for="hs" class="form-check-label">
+                                                                Hatırlatıcı ekle
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6 hatirlatici-fields" style="display: none;">
+                                                        <div class='form-group'>
+                                                            <label class='control-label'>Saat</label>
+                                                            <input class='form-control' type='time' name='hatirlaticiSaat' step="3600"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-6 hatirlatici-fields" style="display: none;">
+                                                        <div class='form-group'>
+                                                            <label class='control-label'>Tarih</label>
+                                                            <input class='form-control' type='date' name='hatirlaticiGun'/>
+                                                        </div>
+                                                    </div>  
+                                                    <script>
+                                                        document.getElementById('hs').addEventListener('change', function() {
+                                                            var fields = document.querySelectorAll('.hatirlatici-fields');
+                                                            if (this.checked) {
+                                                                fields.forEach(function(field) {
+                                                                    field.style.display = 'block';
+                                                                    field.querySelectorAll('input').forEach(function(input) {
+                                                                        input.required = true;
+                                                                        input.disabled = false;
+                                                                    });
+                                                                });
+                                                            } else {
+                                                                fields.forEach(function(field) {
+                                                                    field.style.display = 'none';
+                                                                    field.querySelectorAll('input').forEach(function(input) {
+                                                                        input.required = false;
+                                                                        input.disabled = true;
+                                                                    });
+                                                                });
+                                                            }
+                                                        });
+
+                                                    </script>                                                  
+                                                    <div class="col-md-12">
+                                                        <input type="submit" class="btn btn-dark" value="Kaydet"> 
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        @if ($notes->count() > 0)
+                                            @foreach ($notes as $note)
+                                                @php
+                                                    $tarihKismi = Carbon::parse($note->hatirlatici)->format('d-m-Y');
+                                                    $saatKismi = Carbon::parse($note->hatirlatici)->format('H:i');
+                                                @endphp
+                                                <div class="profile-uoloaded-post border-bottom-1 my-div mt-4">
+                                                    <span class="check-btn" data-id="{{ $note->id }}">
+                                                        <a href="#" title="Tamamlandı">&#10003;</a>
+                                                    </span>
+                                                    <span class="close-btn">
+                                                        <a href="#" title="Sil">&times;</a> 
+                                                    </span>
+                                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+                                                    <script>
+                                                        document.querySelectorAll('.close-btn').forEach(button => {
+                                                            button.addEventListener('click', function() {
+                                                                const itemId = this.getAttribute('data-id');
                                             
-                                            <textarea name="textarea" id="textarea" cols="30" rows="5" class="form-control bg-transparent" placeholder="Müşteri ile ilgili not al...."></textarea>
-                                            <a href="xxxxxxxxxxxxxxxxx" class="btn btn-dark">Kaydet</a> 
-                                           
-                                        </div>
-                                        <div class="profile-uoloaded-post border-bottom-1 pb-5 my-div">
-                                            <span class="check-btn">
-                                                <a href="#">&#10003;</a> <!-- !!!!!!!!!!TOOLTİP EKLENECEK!!!!!!!!!!!! -->
-                                            </span>
-                                            <span class="close-btn">
-                                                <a href="#">&times;</a> <!-- !!!!!!!!!!TOOLTİP EKLENECEK!!!!!!!!!!!! -->
-                                            </span>
-                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-                                            <script>
-                                                document.querySelectorAll('.close-btn').forEach(button => {
-                                                    button.addEventListener('click', function() {
-                                                        const itemId = this.getAttribute('data-id');
-                                    
-                                                        Swal.fire({
-                                                            title: 'Emin misiniz?',
-                                                            text: "Bu işlemi geri alamazsınız!",
-                                                            icon: 'warning',
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: '#3085d6',
-                                                            cancelButtonColor: '#d33',
-                                                            confirmButtonText: 'Evet, sil!',
-                                                            cancelButtonText: 'Hayır, iptal et'
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                // Silme formunu oluşturalım
-                                                                const form = document.createElement('form');
-                                                                form.method = 'POST';
-                                                                form.action = `XXXXXXX`;// NOTLARIN TUTULDUĞU TABLODAN SİLME ROUTESİ
-                                                                
-                                                                const csrfField = document.createElement('input');
-                                                                csrfField.type = 'hidden';
-                                                                csrfField.name = '_token';
-                                                                csrfField.value = '{{ csrf_token() }}';
-                                                                form.appendChild(csrfField);
-                                                                
-                                                                const methodField = document.createElement('input');
-                                                                methodField.type = 'hidden';
-                                                                methodField.name = '_method';
-                                                                methodField.value = 'DELETE';
-                                                                form.appendChild(methodField);
-                                    
-                                                                document.body.appendChild(form);
-                                                                form.submit();
-                                                            }
+                                                                Swal.fire({
+                                                                    title: 'Emin misiniz?',
+                                                                    text: "Bu işlemi geri alamazsınız!",
+                                                                    icon: 'warning',
+                                                                    showCancelButton: true,
+                                                                    confirmButtonColor: '#3085d6',
+                                                                    cancelButtonColor: '#d33',
+                                                                    confirmButtonText: 'Evet, sil!',
+                                                                    cancelButtonText: 'Hayır, iptal et'
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        // Silme formunu oluşturalım
+                                                                        const form = document.createElement('form');
+                                                                        form.method = 'POST';
+                                                                        form.action = `/musteri/not-tamamlandi/${itemId}`;
+                                                                        
+                                                                        const csrfField = document.createElement('input');
+                                                                        csrfField.type = 'hidden';
+                                                                        csrfField.name = '_token';
+                                                                        csrfField.value = '{{ csrf_token() }}';
+                                                                        form.appendChild(csrfField);
+                                                                        
+                                                                        const methodField = document.createElement('input');
+                                                                        methodField.type = 'hidden';
+                                                                        methodField.name = '_method';
+                                                                        methodField.value = 'DELETE';
+                                                                        form.appendChild(methodField);
+                                            
+                                                                        document.body.appendChild(form);
+                                                                        form.submit();
+                                                                    }
+                                                                });
+                                                            });
                                                         });
-                                                    });
-                                                });
 
-                                                document.querySelectorAll('.check-btn').forEach(button => {
-                                                    button.addEventListener('click', function() {
-                                                        const itemId = this.getAttribute('data-id');
-                                    
-                                                        Swal.fire({
-                                                            title: 'Not tamamlandı mı?',
-                                                            text: "Bu not tamamlandı olarak işaretlenecektir!",
-                                                            icon: 'warning',
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: '#3085d6',
-                                                            cancelButtonColor: '#d33',
-                                                            confirmButtonText: 'Evet, tamam!',
-                                                            cancelButtonText: 'Hayır, daha var'
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                // Tamamlandı formunu oluşturalım
-                                                                const form = document.createElement('form');
-                                                                form.method = 'POST';
-                                                                form.action = `XXXXXXX`;// NOTLARIN TUTULDUĞU TABLODAN tamamlandı ROUTESİ
-                                                                
-                                                                const csrfField = document.createElement('input');
-                                                                csrfField.type = 'hidden';
-                                                                csrfField.name = '_token';
-                                                                csrfField.value = '{{ csrf_token() }}';
-                                                                form.appendChild(csrfField);
-                                                                
-                                                                const methodField = document.createElement('input');
-                                                                methodField.type = 'hidden';
-                                                                methodField.name = '_method';
-                                                                methodField.value = 'DELETE';
-                                                                form.appendChild(methodField);
-                                    
-                                                                document.body.appendChild(form);
-                                                                form.submit();
-                                                            }
-                                                        });
-                                                    });
-                                                });
-                                            </script>
-                                            <style>
-                                                .my-div {
-                                                    position: relative; /* Bu, check-btn ve close-btn'nin bu div'e göre konumlanmasını sağlar */
-                                                    padding: 20px;
-                                                }
+                                                        document.querySelectorAll('.check-btn').forEach(button => {
+                                                                button.addEventListener('click', function() {
+                                                                    const itemId = this.getAttribute('data-id');
 
-                                                .check-btn, .close-btn {
-                                                    position: absolute; /* Ebeveyni olan my-div'e göre konumlanacak */
-                                                    top: 10px; /* Ebeveynin üst kısmından 10px aşağıda */
-                                                    font-size: 20px;
-                                                    cursor: pointer;
-                                                    color: #000;
-                                                    transition: color 0.3s;
-                                                }
+                                                                    Swal.fire({
+                                                                        title: 'Not tamamlandı mı?',
+                                                                        text: "Bu not tamamlandı olarak işaretlenecektir!",
+                                                                        icon: 'success',
+                                                                        showCancelButton: true,
+                                                                        confirmButtonColor: '#3085d6',
+                                                                        cancelButtonColor: '#d33',
+                                                                        confirmButtonText: 'Evet, tamam!',
+                                                                        cancelButtonText: 'Hayır, daha var'
+                                                                    }).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            // Tamamlandı formunu oluşturalım
+                                                                            const form = document.createElement('form');
+                                                                            form.method = 'POST';
+                                                                            form.action = `/musteri/not-tamamlandi/${itemId}`;
 
-                                                .check-btn {
-                                                    right: 35px; /* Ebeveynin sağ kısmından 35px içeride */
-                                                }
+                                                                            const csrfField = document.createElement('input');
+                                                                            csrfField.type = 'hidden';
+                                                                            csrfField.name = '_token';
+                                                                            csrfField.value = '{{ csrf_token() }}';
+                                                                            form.appendChild(csrfField);
 
-                                                .close-btn {
-                                                    right: 10px; /* Ebeveynin sağ kısmından 10px içeride */
-                                                }
+                                                                            const methodField = document.createElement('input');
+                                                                            methodField.type = 'hidden';
+                                                                            methodField.name = '_method';
+                                                                            methodField.value = 'PUT'; // Güncelleme işlemi için PUT veya PATCH kullanılabilir
+                                                                            form.appendChild(methodField);
 
-                                                .check-btn:hover {
-                                                    color: #00ff00; /* Yeşil renge dönüşüm */
-                                                }
+                                                                            document.body.appendChild(form);
+                                                                            form.submit();
+                                                                        }
+                                                                    });
+                                                                });
+                                                            });
 
-                                                .close-btn:hover {
-                                                    color: #ff0000; /* Kırmızıya dönüşüm */
-                                                }
+                                                    </script>
+                                                    <h4> {{$note->baslik}}</h4>
+                                                    @if ($note->hatirlatici == '1111-11-11 11:11:11')
+                                                    @else
+                                                    <small>
+                                                        (<i class="fa fa-clock-o" aria-hidden="true"></i> {{$tarihKismi}} {{$saatKismi}}'de hatırlatılacak)
+                                                    </small>
+                                                    @endif
+                                                    <p>{{$note->not}}</p>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                        <div class="text-center mb-2">
+                                            <h5>Not alınmamıştır.</h5>
+                                       </div>
+                                        @endif
 
-                                                .check-btn::after, .close-btn::after {
-                                                    content: '';
-                                                    position: absolute;
-                                                    top: -25px;
-                                                    right: 0;
-                                                    background: #333;
-                                                    color: #fff;
-                                                    padding: 5px;
-                                                    border-radius: 3px;
-                                                    opacity: 0;
-                                                    transition: opacity 0.3s;
-                                                    pointer-events: none;
-                                                    font-size: 12px;
-                                                }
+                                         <!-- sil ve tamalandı biçimlendirmesi -->
+                                         <style>
+                                            .my-div {
+                                                position: relative; /* Bu, check-btn ve close-btn'nin bu div'e göre konumlanmasını sağlar */
+                                            }
 
-                                                .check-btn:hover::after {
-                                                    content: 'Tamamlandı';
-                                                    opacity: 1;
-                                                }
+                                            .check-btn, .close-btn {
+                                                position: absolute; /* Ebeveyni olan my-div'e göre konumlanacak */
+                                                top: 10px; /* Ebeveynin üst kısmından 10px aşağıda */
+                                                font-size: 20px;
+                                                cursor: pointer;
+                                                color: #000;
+                                                transition: color 0.3s;
+                                            }
 
-                                                .close-btn:hover::after {
-                                                    content: 'Sil';
-                                                    opacity: 1;
-                                                }
-                                            </style>
+                                            .check-btn {
+                                                right: 35px; /* Ebeveynin sağ kısmından 35px içeride */
+                                            }
 
-                                            <h4>
-                                                Müşteri Notları <i class="fa fa-clock-o"></i>
-                                            </h4>
-                                            <p>Notlar benzeri bir tablo oluşturulup müşteri id'sine göre döngü yapılarak notlar burada gösterilecek.</p>
+                                            .close-btn {
+                                                right: 10px; /* Ebeveynin sağ kısmından 10px içeride */
+                                            }
+
+                                            .check-btn:hover {
+                                                color: #00ff00; /* Yeşil renge dönüşüm */
+                                            }
+
+                                            .close-btn:hover {
+                                                color: #ff0000; /* Kırmızıya dönüşüm */
+                                            }
+
+                                            .check-btn::after, .close-btn::after {
+                                                content: '';
+                                                position: absolute;
+                                                top: -25px;
+                                                right: 0;
+                                                background: #333;
+                                                color: #fff;
+                                                padding: 5px;
+                                                border-radius: 3px;
+                                                opacity: 0;
+                                                transition: opacity 0.3s;
+                                                pointer-events: none;
+                                                font-size: 12px;
+                                            }
+                                        </style>
+                                        
+                                        @if ($notes->count() > 0)
+                                        <div class="text-center mb-2">
+                                             <!-- Not sayısı fazla olduğunda her basışta biraz daha fazla notun görünmesini sağlyacak -->
+                                            <a href="javascript:void()" class="btn btn-primary">Load More</a>
                                         </div>
-                                        <div class="text-center mb-2"><a href="javascript:void()" class="btn btn-primary">Load More</a>
-                                        </div>
+                                        <div class="text-right mb-2">
+                                            <!-- Eski Notlar -->
+                                            <a href="xxxxxxxxxx">
+                                                <i class="fa fa-history" aria-hidden="true"></i> Tamamlanmış notlar
+                                            </a>
+                                       </div>
+                                        @endif
+
                                     </div>
                                 </div>
                                 <div id="faturabilgi" class="tab-pane fade">

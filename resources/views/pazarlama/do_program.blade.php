@@ -455,7 +455,7 @@
                     <div class='col-md-12'>
                         <div class='form-group'>
                             <label class='control-label'>Saat</label>
-                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600"/>
+                            <input class='form-control' type='time' name='start' step="3600"/>
                         </div>
                     </div>
 
@@ -539,7 +539,7 @@
                     <div class='col-md-12'>
                         <div class='form-group'>
                             <label class='control-label'>Saat</label>
-                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600"/>
+                            <input class='form-control' type='time' name='start' step="3600"/>
                         </div>
                     </div>
 
@@ -623,7 +623,7 @@
                     <div class='col-md-12'>
                         <div class='form-group'>
                             <label class='control-label'>Saat</label>
-                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600"/>
+                            <input class='form-control' type='time' name='start' step="3600"/>
                         </div>
                     </div>
 
@@ -722,7 +722,7 @@
                     <div class='col-md-12'>
                         <div class='form-group'>
                             <label class='control-label'>Saat</label>
-                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
+                            <input class='form-control' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
                             <input type="hidden" name="tarihKismi" value="{{$tarihKismi}}">
                         </div>
                     </div>
@@ -880,7 +880,7 @@
                     <div class='col-md-12'>
                         <div class='form-group'>
                             <label class='control-label'>Saat</label>
-                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
+                            <input class='form-control' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
                             <input type="hidden" name="tarihKismi" value="{{$tarihKismi}}">
                         </div>
                     </div>
@@ -1037,7 +1037,7 @@
                     <div class='col-md-12'>
                         <div class='form-group'>
                             <label class='control-label'>Saat</label>
-                            <input class='form-control' placeholder='Ünvan Giriniz' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
+                            <input class='form-control' type='time' name='start' step="3600" value="{{$saatKismi}}"/>
                             <input type="hidden" name="tarihKismi" value="{{$tarihKismi}}">
                         </div>
                     </div>
