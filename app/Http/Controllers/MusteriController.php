@@ -19,10 +19,11 @@ class MusteriController extends Controller
         $musteri = Musteri::findOrFail($id);
         $title = 'Müşteri - ' . $musteri->unvani;
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
+        $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
 
         $musteriler = Musteri::all();
          
-        return view('musteri.musteri_profil', compact('title', 'musteri', 'notes'));
+        return view('musteri.musteri_profil', compact('title', 'musteri', 'notes', 'tamamlanan_notlar'));
     }
 
     public function addNote(Request $request, $id) {

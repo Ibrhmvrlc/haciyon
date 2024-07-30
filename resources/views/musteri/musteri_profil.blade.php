@@ -224,12 +224,9 @@
                                 </li>
                             </ul>
                             <div class="tab-content">
+
                                 <div id="genel" class="tab-pane fade active show">
                                     <div class="my-post-content pt-3">
-
-
-
-
                                         <div class="">
                                             <form method="post" action="{{route('not.ekle', $musteri->id)}}" >
                                                 @csrf
@@ -452,14 +449,17 @@
                                             }
                                         </style>
                                         
-                                        @if ($notes->count() > 0)
+                                        @if ($notes->count() > 4)
                                         <div class="text-center mb-2">
                                              <!-- Not sayısı fazla olduğunda her basışta biraz daha fazla notun görünmesini sağlyacak -->
-                                            <a href="javascript:void()" class="btn btn-primary">Load More</a>
+                                            <a href="javascript:void()" class="btn btn-primary">Daha Fazla</a>
                                         </div>
+                                        @endif
+
+                                        @if ($tamamlanan_notlar->count() > 0)
                                         <div class="text-right mb-2">
                                             <!-- Eski Notlar -->
-                                            <a href="xxxxxxxxxx">
+                                            <a href="#tamamlanmisNotlar" data-toggle="tab" class="nav-link">
                                                 <i class="fa fa-history" aria-hidden="true"></i> Tamamlanmış notlar
                                             </a>
                                        </div>
@@ -467,6 +467,38 @@
 
                                     </div>
                                 </div>
+
+                                <div id="tamamlanmisNotlar" class="tab-pane fade">
+                                    @if ($tamamlanan_notlar->count() > 0)
+                                        @foreach ($tamamlanan_notlar as $tamamlanan_not)
+                                            @php
+                                                $tarihKismi = Carbon::parse($tamamlanan_not->hatirlatici)->format('d-m-Y');
+                                                $saatKismi = Carbon::parse($tamamlanan_not->hatirlatici)->format('H:i');
+                                            @endphp
+                                            <div class="profile-uoloaded-post border-bottom-1 my-div mt-4">
+                                                <h4> {{$tamamlanan_not->baslik}}</h4>
+                                                @if ($tamamlanan_not->hatirlatici == '1111-11-11 11:11:11')
+                                                @else
+                                                <small>
+                                                    (<i class="fa fa-clock-o" aria-hidden="true"></i> {{$tarihKismi}} {{$saatKismi}}'de hatırlatıcı kurulmuştu)
+                                                </small>
+                                                @endif
+                                                <p>{{$tamamlanan_not->not}}</p>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                    <div class="text-center mb-2">
+                                        <h5>Not alınmamıştır.</h5>
+                                    </div>
+                                    @endif
+                                    <div class="text-right mb-2">
+                                        <!-- Notlar -->
+                                        <a href="#genel" data-toggle="tab" class="nav-link">
+                                            <i class="fa fa-reply-all" aria-hidden="true"></i> Notlar
+                                        </a>
+                                    </div>
+                                </div>
+
                                 <div id="faturabilgi" class="tab-pane fade">
                                     <div class="profile-about-me">
                                         <div class="pt-4 border-bottom-1 pb-4">
@@ -543,6 +575,7 @@
                                         </div>
                                     </div>
                                 </div>
+                              
                                 <div id="fiyat" class="tab-pane fade">
                                     <div class="profile-about-me">
                                         <div class="pt-4 border-bottom-1 pb-4">
@@ -619,6 +652,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div id="settings" class="tab-pane fade">
                                     <div class="pt-3">
                                         <div class="settings-form">
@@ -673,6 +707,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
