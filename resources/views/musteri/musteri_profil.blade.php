@@ -398,7 +398,7 @@
                                             @endforeach
                                         @else
                                         <div class="text-center mb-2">
-                                            <h5>Not alınmamıştır.</h5>
+                                            <h5>Güncel Not bulunmamaktadır.</h5>
                                        </div>
                                         @endif
 
@@ -459,7 +459,7 @@
                                         @if ($tamamlanan_notlar->count() > 0)
                                         <div class="text-right mb-2">
                                             <!-- Eski Notlar -->
-                                            <a href="#tamamlanmisNotlar" data-toggle="tab" class="nav-link">
+                                            <a href="#tamamlanmisNotlar" data-toggle="tab" class="nav-link" id="link1">
                                                 <i class="fa fa-history" aria-hidden="true"></i> Tamamlanmış notlar
                                             </a>
                                        </div>
@@ -488,90 +488,94 @@
                                         @endforeach
                                     @else
                                     <div class="text-center mb-2">
-                                        <h5>Not alınmamıştır.</h5>
+                                        <h5>Güncel tamamlanmış bulunmamaktadır.</h5>
                                     </div>
                                     @endif
                                     <div class="text-right mb-2">
                                         <!-- Notlar -->
-                                        <a href="#genel" data-toggle="tab" class="nav-link">
+                                        <a href="#genel" data-toggle="tab" class="nav-link" id="link2">
                                             <i class="fa fa-reply-all" aria-hidden="true"></i> Notlar
                                         </a>
                                     </div>
                                 </div>
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#link1').on('click', function(event) {
+                                            $(this).addClass('active'); // Tıklanan linke active sınıfını ekle
+
+                                            if ($('.nav-link').hasClass('active')) {
+                                                $('.nav-link').removeClass('active'); // Diğer linkten active sınıfını kaldır
+                                            }
+                                        });
+
+                                        $('#link2').on('click', function(event) {
+                                            $(this).addClass('active'); // Tıklanan linke active sınıfını ekle
+                                            if ($('.nav-link').hasClass('active')) {
+                                                $('.nav-link').removeClass('active'); // Diğer linkten active sınıfını kaldır
+                                            }
+                                        });
+                                    });
+                                </script>
 
                                 <div id="faturabilgi" class="tab-pane fade">
-                                    <div class="profile-about-me">
-                                        <div class="pt-4 border-bottom-1 pb-4">
-                                            <h4 class="text-primary">About Me</h4>
-                                            <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence was created for the
-                                                bliss of souls like mine.I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</p>
-                                            <p>A collection of textile samples lay spread out on the table - Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed
-                                                in a nice, gilded frame.</p>
-                                        </div>
-                                    </div>
-                                    <div class="profile-skills pt-2 border-bottom-1 pb-2">
-                                        <h4 class="text-primary mb-4">Skills</h4>
-                                        <a href="javascript:void()" class="btn btn-outline-dark btn-rounded pl-4 my-3 my-sm-0 pr-4 mr-3 m-b-10">Admin</a>
-                                        <a href="javascript:void()" class="btn btn-outline-dark btn-rounded pl-4 my-3 my-sm-0 pr-4 mr-3 m-b-10">Dashboard</a>
-                                        <a href="javascript:void()" class="btn btn-outline-dark btn-rounded pl-4 my-3 my-sm-0 pr-4 mr-3 m-b-10">Photoshop</a>
-                                        <a href="javascript:void()" class="btn btn-outline-dark btn-rounded pl-4 my-3 my-sm-0 pr-4 mr-3 m-b-10">Bootstrap</a>
-                                        <a href="javascript:void()" class="btn btn-outline-dark btn-rounded pl-4 my-3 my-sm-0 pr-4 mr-3 m-b-10">Responsive</a>
-                                        <a href="javascript:void()" class="btn btn-outline-dark btn-rounded pl-4 my-3 my-sm-0 pr-4 mr-3 m-b-10">Crypto</a>
-                                    </div>
-                                    <div class="profile-lang pt-5 border-bottom-1 pb-5">
-                                        <h4 class="text-primary mb-4">Language</h4><a href="javascript:void()" class="text-muted pr-3 f-s-16"><i
-                                                class="flag-icon flag-icon-us"></i> English</a> <a href="javascript:void()" class="text-muted pr-3 f-s-16"><i
-                                                class="flag-icon flag-icon-fr"></i> French</a>
-                                        <a href="javascript:void()" class="text-muted pr-3 f-s-16"><i
-                                                class="flag-icon flag-icon-bd"></i> Bangla</a>
-                                    </div>
-                                    <div class="profile-personal-info">
-                                        <h4 class="text-primary mb-4">Personal Information</h4>
+                                    <div class="profile-personal-info mt-4">
+                                        <h4 class="text-primary mb-4">Fatura Bilgileri</h4>
                                         <div class="row mb-4">
                                             <div class="col-3">
-                                                <h5 class="f-w-500">Name <span class="pull-right">:</span>
+                                                <h5 class="f-w-500">Ünvan <span class="pull-right">:</span>
                                                 </h5>
                                             </div>
-                                            <div class="col-9"><span>Mitchell C.Shay</span>
+                                            <div class="col-9"><span>{{$musteri->unvani}}</span>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-3">
-                                                <h5 class="f-w-500">Email <span class="pull-right">:</span>
+                                                <h5 class="f-w-500">Adresi <span class="pull-right">:</span>
                                                 </h5>
                                             </div>
-                                            <div class="col-9"><span>example@examplel.com</span>
+                                            <div class="col-9"><span>{{$musteri->fatura_adresi}} {{$musteri->sokak}} {{$musteri->semt}} {{$musteri->kent}}</span>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-3">
-                                                <h5 class="f-w-500">Availability <span class="pull-right">:</span></h5>
+                                                <h5 class="f-w-500">VD / VN <span class="pull-right">:</span></h5>
                                             </div>
-                                            <div class="col-9"><span>Full Time (Free Lancer)</span>
+                                            <div class="col-9"><span>{{$musteri->vergi_dairesi}} / {{$musteri->vergi_numarasi}}</span>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-3">
-                                                <h5 class="f-w-500">Age <span class="pull-right">:</span>
+                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
                                                 </h5>
                                             </div>
-                                            <div class="col-9"><span>27</span>
-                                            </div>
+                                            @if ($musteri->mail_ana)
+                                            <div class="col-9"><span>{{$musteri->mail_ana}}</span></div>
+                                            @elseif ($musteri->yetkili_bir_email)
+                                            <div class="col-9"><span>{{$musteri->yetkili_bir_email}}</span></div>
+                                            @elseif ($musteri->yetkili_iki_email)
+                                            <div class="col-9"><span>{{$musteri->yetkili_iki_email}}</span></div>
+                                            @elseif ($musteri->yetkili_uc_email)
+                                            <div class="col-9"><span>{{$musteri->yetkili_uc_email}}</span></div>
+                                            @else
+                                            <div class="col-9"><span>Mail adresi bulunamadı.</span></div>
+                                            @endif
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-3">
-                                                <h5 class="f-w-500">Location <span class="pull-right">:</span></h5>
+                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
                                             </div>
-                                            <div class="col-9"><span>Rosemont Avenue Melbourne,
-                                                    Florida</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h5 class="f-w-500">Year Experience <span class="pull-right">:</span></h5>
-                                            </div>
-                                            <div class="col-9"><span>07 Year Experiences</span>
-                                            </div>
+                                            @if ($musteri->tel_ana)
+                                            <div class="col-9"><span>{{$musteri->tel_ana}}</span></div>
+                                            @elseif ($musteri->yetkili_bir_tel)
+                                            <div class="col-9"><span>{{$musteri->yetkili_bir_tel}} {{$musteri->yetkili_bir}}</span></div>
+                                            @elseif ($musteri->yetkili_iki_tel)
+                                            <div class="col-9"><span>{{$musteri->yetkili_iki_tel}} {{$musteri->yetkili_iki}}</span></div>
+                                            @elseif ($musteri->yetkili_uc_tel)
+                                            <div class="col-9"><span>{{$musteri->yetkili_uc_tel}} {{$musteri->yetkili_uc}}</span></div>
+                                            @else
+                                            <div class="col-9"><span>Telefon numarası bulunamadı.</span></div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
