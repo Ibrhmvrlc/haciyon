@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AktifMusteriler;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use Illuminate\Http\Request;
@@ -15,13 +16,27 @@ class MusteriController extends Controller
         return view('musteri.tum_musteriler', compact('title', 'musteriler'));
     }
 
+    public function aktifIndex() {
+        $title = 'Aktif Müşteriler';
+        $aktif_musteriler = AktifMusteriler::all();
+         
+        return view('musteri.aktif_musteri', compact('title', 'aktif_musteriler'));
+    }
+
+    public function aktifProfile($id) {
+        $aktif_musteri = AktifMusteriler::findOrFail($id);
+        $title = 'Müşteri - ' . $aktif_musteri->unvani;
+        $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
+        $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
+         
+        return view('musteri.aktif_profil', compact('title', 'aktif_musteri', 'notes', 'tamamlanan_notlar'));
+    }
+
     public function profile($id) {
         $musteri = Musteri::findOrFail($id);
         $title = 'Müşteri - ' . $musteri->unvani;
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
-
-        $musteriler = Musteri::all();
          
         return view('musteri.musteri_profil', compact('title', 'musteri', 'notes', 'tamamlanan_notlar'));
     }

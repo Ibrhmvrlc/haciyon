@@ -204,6 +204,7 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-account"></i><span class="nav-text">Müşteri Yönetimi</span></a>
                         <ul aria-expanded="false">
+                            <li><a href="{{route('aktif.musteri.listesi')}}">Aktif Müşteriler</a></li>
                             <li><a href="{{route('tum.musteri.listesi')}}">Tüm Müşteriler</a></li>
                             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Fiyat Güncelleme</a>
                                 <ul aria-expanded="false">
