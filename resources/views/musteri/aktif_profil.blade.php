@@ -216,7 +216,7 @@
                             <ul class="nav nav-tabs">
                                 <li class="nav-item"><a href="#genel" data-toggle="tab" class="nav-link active show">Notlar</a>
                                 </li>
-                                <li class="nav-item"><a href="#faturabilgi" data-toggle="tab" class="nav-link">Fatura Bilgileri</a>
+                                <li class="nav-item"><a href="#genelbilgi" data-toggle="tab" class="nav-link">Genel Bilgiler</a>
                                 </li>
                                 <li class="nav-item"><a href="#fiyat" data-toggle="tab" class="nav-link">Fiyat</a>
                                 </li>
@@ -518,7 +518,7 @@
                                     });
                                 </script>
 
-                                <div id="faturabilgi" class="tab-pane fade">
+                                <div id="genelbilgi" class="tab-pane fade">
                                     <div class="profile-personal-info mt-4">
                                         <h4 class="text-primary mb-4">Fatura Bilgileri</h4>
                                         <div class="row mb-4">
@@ -576,6 +576,31 @@
                                             @else
                                             <div class="col-9"><span>Telefon numarası bulunamadı.</span></div>
                                             @endif
+                                        </div>
+                                        <h4 class="text-primary mb-4">Şantiye Bilgileri</h4>
+                                        <div class="row mb-4">
+                                            <div class="col-3">
+                                                <h6 class="f-w-500">KARAMÜRSEL (41500)<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-9"><span>2300 <small>+KDV</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-3">
+                                                <h6 class="f-w-500">ALTINOVA (77700)<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-9"><span>2300 <small>+KDV</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-3">
+                                                <h6 class="f-w-500">TAVŞANLI (77770)<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-9"><span>2300 <small>+KDV</small></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

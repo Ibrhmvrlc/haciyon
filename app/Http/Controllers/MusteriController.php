@@ -25,7 +25,7 @@ class MusteriController extends Controller
 
     public function aktifProfile($id) {
         $aktif_musteri = AktifMusteriler::findOrFail($id);
-        $title = 'Müşteri - ' . $aktif_musteri->unvani;
+        $title = $aktif_musteri->unvan;
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
          
