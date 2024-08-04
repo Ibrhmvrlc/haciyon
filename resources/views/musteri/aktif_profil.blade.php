@@ -527,63 +527,6 @@ use App\Models\AktifSantiyeMetraj;
 
                                 <div id="genelbilgi" class="tab-pane fade">
                                     <div class="profile-personal-info mt-4">
-                                        <h4 class="text-primary mb-4">Fatura Bilgileri</h4>
-                                        <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h5 class="f-w-500">Ünvan <span class="pull-right">:</span>
-                                                </h5>
-                                            </div>
-                                            <div class="col-9"><span>{{$aktif_musteri->unvan}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h5 class="f-w-500">Adresi <span class="pull-right">:</span>
-                                                </h5>
-                                            </div>
-                                            <div class="col-9"><span>{{$aktif_musteri->fatura_adresi}} {{$aktif_musteri->sokak}} {{$aktif_musteri->semt}} {{$aktif_musteri->kent}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h5 class="f-w-500">VD / VN <span class="pull-right">:</span></h5>
-                                            </div>
-                                            <div class="col-9"><span>{{$aktif_musteri->vergi_dairesi}} / {{$aktif_musteri->vergi_numarasi}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
-                                                </h5>
-                                            </div>
-                                            @if ($aktif_musteri->mail)
-                                            <div class="col-9"><span>{{$aktif_musteri->mail}}</span></div>
-                                            @elseif ($aktif_musteri->yetkili_bir_email)
-                                            <div class="col-9"><span>{{$aktif_musteri->yetkili_bir_email}}</span></div>
-                                            @elseif ($aktif_musteri->yetkili_iki_email)
-                                            <div class="col-9"><span>{{$aktif_musteri->yetkili_iki_email}}</span></div>
-                                            @elseif ($aktif_musteri->yetkili_uc_email)
-                                            <div class="col-9"><span>{{$aktif_musteri->yetkili_uc_email}}</span></div>
-                                            @else
-                                            <div class="col-9"><span>Mail adresi bulunamadı.</span></div>
-                                            @endif
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
-                                            </div>
-                                            @if ($aktif_musteri->tel)
-                                            <div class="col-9"><span>{{$aktif_musteri->tel}}</span></div>
-                                            @elseif ($aktif_musteri->yetkili_bir_tel)
-                                            <div class="col-9"><span>{{$aktif_musteri->yetkili_bir_tel}} {{$aktif_musteri->yetkili_bir}}</span></div>
-                                            @elseif ($aktif_musteri->yetkili_iki_tel)
-                                            <div class="col-9"><span>{{$aktif_musteri->yetkili_iki_tel}} {{$aktif_musteri->yetkili_iki}}</span></div>
-                                            @elseif ($aktif_musteri->yetkili_uc_tel)
-                                            <div class="col-9"><span>{{$aktif_musteri->yetkili_uc_tel}} {{$aktif_musteri->yetkili_uc}}</span></div>
-                                            @else
-                                            <div class="col-9"><span>Telefon numarası bulunamadı.</span></div>
-                                            @endif
-                                        </div>
                                         <h4 class="text-primary mb-4">Şantiye Fiyat Bilgileri</h4>
                                         @foreach ($aktif_santiye as $santiye)
                                         <div class="row mb-4">
@@ -942,6 +885,130 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @endforeach
+
+                                        <h4 class="text-primary mb-4">Fatura Bilgileri</h4>
+                                        <div class="row mb-4">
+                                            <div class="col-4 col-md-3">
+                                                <h5 class="f-w-500">Ünvan <span class="pull-right">:</span>
+                                                </h5>
+                                            </div>
+                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->unvan}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-4 col-md-3">
+                                                <h5 class="f-w-500">Adresi <span class="pull-right">:</span>
+                                                </h5>
+                                            </div>
+                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->fatura_adresi}} {{$aktif_musteri->sokak}} {{$aktif_musteri->semt}} {{$aktif_musteri->kent}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-4 col-md-3">
+                                                <h5 class="f-w-500">VD / VN <span class="pull-right">:</span></h5>
+                                            </div>
+                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->vergi_dairesi}} / {{$aktif_musteri->vergi_numarasi}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-4 col-md-3">
+                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                </h5>
+                                            </div>
+                                            @if ($aktif_musteri->mail)
+                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->mail}}</span></div>
+                                            @else
+                                            <div class="col-8 col-md-9"><span>Mail adresi bulunamadı.</span></div>
+                                            @endif
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-4 col-md-3">
+                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
+                                            </div>
+                                            @if ($aktif_musteri->tel)
+                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->tel}}</span></div>
+                                            @else
+                                            <div class="col-8 col-md-9"><span>Telefon numarası bulunamadı.</span></div>
+                                            @endif
+                                        </div>
+
+                                        <h4 class="text-primary mb-4">İletişim Bilgileri</h4>
+                                        <div class="row">
+                                            @if ($aktif_musteri->yetkili_bir)
+                                            <div class="col-xl-6 col-lg-6">
+                                                <h5 title="Genel Müdür, Mal sahibi, Mühendis vs."><b><u>Yetkili - 1</u></b></h5>
+                                                <div class="row mb-4">
+                                                    <div class="col-4 col-md-5">
+                                                        <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
+                                                        </h5>
+                                                    </div>
+                                                    @if ($aktif_musteri->yetkili_bir)
+                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir}}</span></div>
+                                                    @else
+                                                    <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
+                                                    @endif
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col-4 col-md-5">
+                                                        <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                        </h5>
+                                                    </div>
+                                                    @if ($aktif_musteri->yetkili_bir_mail)
+                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir_mail}}</span></div>
+                                                    @else
+                                                    <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
+                                                    @endif
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col-4 col-md-5">
+                                                        <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
+                                                    </div>
+                                                    @if ($aktif_musteri->yetkili_bir_tel)
+                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir_tel}}</span></div>
+                                                    @else
+                                                    <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @endif
+                                            @if ($aktif_musteri->yetkili_iki)
+                                            <div class="col-xl-6 col-lg-6">
+                                                <h5 title="Muhasebe, Şef, Kalfa vs."><b><u>Yetkili - 2</u></b></h5>
+                                                <div class="row mb-4">
+                                                    <div class="col-4 col-md-5">
+                                                        <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
+                                                        </h5>
+                                                    </div>
+                                                    @if ($aktif_musteri->yetkili_iki)
+                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki}}</span></div>
+                                                    @else
+                                                    <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
+                                                    @endif
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col-4 col-md-5">
+                                                        <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                        </h5>
+                                                    </div>
+                                                    @if ($aktif_musteri->yetkili_iki_mail)
+                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki_mail}}</span></div>
+                                                    @else
+                                                    <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
+                                                    @endif
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col-4 col-md-5">
+                                                        <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
+                                                    </div>
+                                                    @if ($aktif_musteri->yetkili_iki_tel)
+                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki_tel}}</span></div>
+                                                    @else
+                                                    <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                               
@@ -1025,8 +1092,317 @@ use App\Models\AktifSantiyeMetraj;
                                 <div id="settings" class="tab-pane fade">
                                     <div class="pt-3">
                                         <div class="settings-form">
-                                            <h4 class="text-primary">Fatura Bilgileri Düzenle</h4>
-                                            <form>
+
+                                            <h4 class="text-primary">Şantiye Fiyat Bilgileri Düzenle</h4>
+                                            <form> <!-- SANTIYE FIYAT BILGILERI DUZENLE FORMU -->
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>Birinci Şantiye</label>
+                                                        <input type="text" class="form-control" value="{{$santiye->santiye_bir}}" name="santiye_bir">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Birinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                        @if (isset($bir_fiyat->first()->santiye_bir_fiyat))
+                                                        <input type="number" class="form-control" value="{{$bir_fiyat->first()->santiye_bir_fiyat}}" name="santiye_bir_fiyat" min="0" step="100">
+                                                        @else
+                                                        <input type="number" class="form-control" value="0" name="santiye_bir_fiyat" min="0" step="100">
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                
+                                                @if ($santiye->santiye_iki)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>İkinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_iki}}" name="santiye_iki">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>İkinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($iki_fiyat->first()->santiye_iki_fiyat))
+                                                                <input type="number" class="form-control" value="{{$iki_fiyat->first()->santiye_iki_fiyat}}" name="santiye_iki_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_iki_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_uc)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Üçüncü Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_uc}}" name="santiye_uc">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Üçüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($uc_fiyat->first()->santiye_uc_fiyat))
+                                                                <input type="number" class="form-control" value="{{$uc_fiyat->first()->santiye_uc_fiyat}}" name="santiye_uc_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_uc_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_dort)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Dördüncü Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_dort}}" name="santiye_dort">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Dördüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($dort_fiyat->first()->santiye_dort_fiyat))
+                                                                <input type="number" class="form-control" value="{{$dort_fiyat->first()->santiye_dort_fiyat}}" name="santiye_dort_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_dort_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_bes)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Beşinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_bes}}" name="santiye_bes">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Beşinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($bes_fiyat->first()->santiye_bes_fiyat))
+                                                                <input type="number" class="form-control" value="{{$bes_fiyat->first()->santiye_bes_fiyat}}" name="santiye_bes_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_bes_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_alti)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Altıncı Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_alti}}" name="santiye_alti">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Altıncı Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($alti_fiyat->first()->santiye_alti_fiyat))
+                                                                <input type="number" class="form-control" value="{{$alti_fiyat->first()->santiye_alti_fiyat}}" name="santiye_alti_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_alti_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_yedi)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Yedinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_yedi}}" name="santiye_yedi">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Yedinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($yedi_fiyat->first()->santiye_yedi_fiyat))
+                                                                <input type="number" class="form-control" value="{{$yedi_fiyat->first()->santiye_yedi_fiyat}}" name="santiye_yedi_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_yedi_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_sekiz)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Sekizinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_sekiz}}" name="santiye_sekiz">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Sekizinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($sekiz_fiyat->first()->santiye_sekiz_fiyat))
+                                                                <input type="number" class="form-control" value="{{$sekiz_fiyat->first()->santiye_sekiz_fiyat}}" name="santiye_sekiz_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_sekiz_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_dokuz)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Dokuzuncu Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_dokuz}}" name="santiye_dokuz">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Dokuzuncu Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($dokuz_fiyat->first()->santiye_dokuz_fiyat))
+                                                                <input type="number" class="form-control" value="{{$dokuz_fiyat->first()->santiye_dokuz_fiyat}}" name="santiye_dokuz_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_dokuz_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_on)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onuncu Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_on}}" name="santiye_on">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onuncu Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($on_fiyat->first()->santiye_on_fiyat))
+                                                                <input type="number" class="form-control" value="{{$on_fiyat->first()->santiye_on_fiyat}}" name="santiye_on_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_on_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_onbir)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onbirinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_onbir}}" name="santiye_onbir">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onbirinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($onbir_fiyat->first()->santiye_onbir_fiyat))
+                                                                <input type="number" class="form-control" value="{{$onbir_fiyat->first()->santiye_onbir_fiyat}}" name="santiye_onbir_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_onbir_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_oniki)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onikinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_oniki}}" name="santiye_oniki">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onikinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($oniki_fiyat->first()->santiye_oniki_fiyat))
+                                                                <input type="number" class="form-control" value="{{$oniki_fiyat->first()->santiye_oniki_fiyat}}" name="santiye_oniki_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_oniki_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_onuc)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onüçüncü Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_onuc}}" name="santiye_onuc">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onüçüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($onuc_fiyat->first()->santiye_onuc_fiyat))
+                                                                <input type="number" class="form-control" value="{{$onuc_fiyat->first()->santiye_onuc_fiyat}}" name="santiye_onuc_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_onuc_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_ondort)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Ondördüncü Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_ondort}}" name="santiye_ondort">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Ondördüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($ondort_fiyat->first()->santiye_ondort_fiyat))
+                                                                <input type="number" class="form-control" value="{{$ondort_fiyat->first()->santiye_ondort_fiyat}}" name="santiye_ondort_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_ondort_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_onbes)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onbeşinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_onbes}}" name="santiye_onbes">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onbeşinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($onbes_fiyat->first()->santiye_onbes_fiyat))
+                                                                <input type="number" class="form-control" value="{{$onbes_fiyat->first()->santiye_onbes_fiyat}}" name="santiye_onbes_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_onbes_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_onalti)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onaltıncı Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_onalti}}" name="santiye_onalti">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onaltıncı Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($onalti_fiyat->first()->santiye_onalti_fiyat))
+                                                                <input type="number" class="form-control" value="{{$onalti_fiyat->first()->santiye_onalti_fiyat}}" name="santiye_onalti_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_onalti_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                
+                                                @if ($santiye->santiye_onyedi)
+                                                <hr />
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onyedinci Şantiye</label>
+                                                            <input type="text" class="form-control" value="{{$santiye->santiye_onyedi}}" name="santiye_onyedi">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Onyedinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @if (isset($onyedi_fiyat->first()->santiye_onyedi_fiyat))
+                                                                <input type="number" class="form-control" value="{{$onyedi_fiyat->first()->santiye_onyedi_fiyat}}" name="santiye_onyedi_fiyat" min="0" step="100">
+                                                            @else
+                                                                <input type="number" class="form-control" value="0" name="santiye_onyedi_fiyat" min="0" step="100">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            
+                                                <button class="btn btn-primary" type="submit">Güncelle</button>
+                                            </form>
+
+                                            <h4 class="text-primary mt-4">Fatura Bilgileri Düzenle</h4>
+                                            <form> <!-- FATURA BILGILERI DUZENLE FORMU -->
                                                 <div class="form-row">
                                                     <div class="form-group col-md-12">
                                                         <label>Unvan</label>
@@ -1065,7 +1441,7 @@ use App\Models\AktifSantiyeMetraj;
                                             </form>
 
                                             <h4 class="text-primary mt-4">İletişim Bilgileri Düzenle</h4>
-                                            <form>
+                                            <form> <!-- ILETISIM BILGILERI DUZENLE FORMU -->
                                                 <h5 title="Genel Müdür, Mal sahibi, Mühendis vs.">Yetkili - 1</h5>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-4">
