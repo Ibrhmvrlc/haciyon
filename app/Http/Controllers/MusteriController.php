@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AktifMusteriler;
+use App\Models\AktifMusteriSantiye;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use Illuminate\Http\Request;
@@ -28,8 +29,11 @@ class MusteriController extends Controller
         $title = $aktif_musteri->unvan;
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
+        $aktif_santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->get();
          
-        return view('musteri.aktif_profil', compact('title', 'aktif_musteri', 'notes', 'tamamlanan_notlar'));
+        return view('musteri.aktif_profil', compact(
+            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye'
+        ));
     }
 
     public function profile($id) {

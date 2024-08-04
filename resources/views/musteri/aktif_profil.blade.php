@@ -1,7 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-@php use Carbon\Carbon; @endphp
+@php
+
+ use Carbon\Carbon;
+ use App\Models\AktifSantiyeFiyat;
+use App\Models\AktifSantiyeMetraj;
+
+@endphp
 <div class="container-fluid">
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
@@ -218,7 +224,7 @@
                                 </li>
                                 <li class="nav-item"><a href="#genelbilgi" data-toggle="tab" class="nav-link">Genel Bilgiler</a>
                                 </li>
-                                <li class="nav-item"><a href="#fiyat" data-toggle="tab" class="nav-link">Fiyat</a>
+                                <li class="nav-item"><a href="#analiz" data-toggle="tab" class="nav-link">Analiz</a>
                                 </li>
                                 <li class="nav-item"><a href="#settings" data-toggle="tab" class="nav-link">Düzenle</a>
                                 </li>
@@ -397,7 +403,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                        <div class="text-center mb-2">
+                                        <div class="text-center mb-2 mt-2">
                                             <h5>Güncel Not bulunmamaktadır.</h5>
                                        </div>
                                         @endif
@@ -457,7 +463,7 @@
                                         @endif
 
                                         @if ($tamamlanan_notlar->count() > 0)
-                                        <div class="text-right mb-2">
+                                        <div class="text-right mb-2 mt-2">
                                             <!-- Eski Notlar -->
                                             <a href="#tamamlanmisNotlar" data-toggle="tab" class="nav-link" id="link1">
                                                 <i class="fa fa-history" aria-hidden="true"></i> Tamamlanmış notlar
@@ -487,7 +493,7 @@
                                             </div>
                                         @endforeach
                                     @else
-                                    <div class="text-center mb-2">
+                                    <div class="text-center mb-2 mt-2">
                                         <h5>Güncel tamamlanmış bulunmamaktadır.</h5>
                                     </div>
                                     @endif
@@ -498,6 +504,7 @@
                                         </a>
                                     </div>
                                 </div>
+
                                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                 <script>
                                     $(document).ready(function() {
@@ -577,35 +584,368 @@
                                             <div class="col-9"><span>Telefon numarası bulunamadı.</span></div>
                                             @endif
                                         </div>
-                                        <h4 class="text-primary mb-4">Şantiye Bilgileri</h4>
+                                        <h4 class="text-primary mb-4">Şantiye Fiyat Bilgileri</h4>
+                                        @foreach ($aktif_santiye as $santiye)
                                         <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h6 class="f-w-500">KARAMÜRSEL (41500)<span class="pull-right">:</span>
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_bir}}<span class="pull-right">:</span>
                                                 </h6>
                                             </div>
-                                            <div class="col-9"><span>2300 <small>+KDV</small></span>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $bir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($bir_fiyat->first()->santiye_bir_fiyat))
+                                                {{$bir_fiyat->first()->santiye_bir_fiyat}}
+                                                <small>+KDV</small>
+                                                @else
+                                                Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
                                             </div>
                                         </div>
+                                        @if ($santiye->santiye_iki)
                                         <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h6 class="f-w-500">ALTINOVA (77700)<span class="pull-right">:</span>
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_iki}}<span class="pull-right">:</span>
                                                 </h6>
                                             </div>
-                                            <div class="col-9"><span>2300 <small>+KDV</small></span>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $iki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($iki_fiyat->first()->santiye_iki_fiyat))
+                                                {{$iki_fiyat->first()->santiye_iki_fiyat}}
+                                                <small>+KDV</small>
+                                                @else
+                                                Fiyat belirtilmemiş.
+                                                @endif
+                                                </span> 
                                             </div>
                                         </div>
+                                        @endif
+                                        @if ($santiye->santiye_uc)
                                         <div class="row mb-4">
-                                            <div class="col-3">
-                                                <h6 class="f-w-500">TAVŞANLI (77770)<span class="pull-right">:</span>
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_uc}}<span class="pull-right">:</span>
                                                 </h6>
                                             </div>
-                                            <div class="col-9"><span>2300 <small>+KDV</small></span>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $uc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($uc_fiyat->first()->santiye_uc_fiyat))
+                                                {{$uc_fiyat->first()->santiye_uc_fiyat}}
+                                                <small>+KDV</small>
+                                                @else
+                                                Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
                                             </div>
                                         </div>
+                                        @endif
+                                        @if ($santiye->santiye_dort)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_dort}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $dort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($dort_fiyat->first()->santiye_dort_fiyat))
+                                                {{$dort_fiyat->first()->santiye_dort_fiyat}}
+                                                <small>+KDV</small>
+                                                @else
+                                                Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_bes)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_bes}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $bes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($bes_fiyat->first()->santiye_bes_fiyat))
+                                                    {{$bes_fiyat->first()->santiye_bes_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_alti)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_alti}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $alti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($alti_fiyat->first()->santiye_alti_fiyat))
+                                                    {{$alti_fiyat->first()->santiye_alti_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_yedi)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_yedi}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $yedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($yedi_fiyat->first()->santiye_yedi_fiyat))
+                                                    {{$yedi_fiyat->first()->santiye_yedi_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_sekiz)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_sekiz}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $sekiz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($sekiz_fiyat->first()->santiye_sekiz_fiyat))
+                                                    {{$sekiz_fiyat->first()->santiye_sekiz_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_dokuz)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_dokuz}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $dokuz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($dokuz_fiyat->first()->santiye_dokuz_fiyat))
+                                                    {{$dokuz_fiyat->first()->santiye_dokuz_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_on)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_on}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $on_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($on_fiyat->first()->santiye_on_fiyat))
+                                                    {{$on_fiyat->first()->santiye_on_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_onbir)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_onbir}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $onbir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($onbir_fiyat->first()->santiye_onbir_fiyat))
+                                                    {{$onbir_fiyat->first()->santiye_onbir_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_oniki)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_oniki}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $oniki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($oniki_fiyat->first()->santiye_oniki_fiyat))
+                                                    {{$oniki_fiyat->first()->santiye_oniki_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_onuc)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_onuc}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $onuc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($onuc_fiyat->first()->santiye_onuc_fiyat))
+                                                    {{$onuc_fiyat->first()->santiye_onuc_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_ondort)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_ondort}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $ondort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($ondort_fiyat->first()->santiye_ondort_fiyat))
+                                                    {{$ondort_fiyat->first()->santiye_ondort_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_onbes)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_onbes}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $onbes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($onbes_fiyat->first()->santiye_onbes_fiyat))
+                                                    {{$onbes_fiyat->first()->santiye_onbes_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_onalti)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_onalti}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $onalti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($onalti_fiyat->first()->santiye_onalti_fiyat))
+                                                    {{$onalti_fiyat->first()->santiye_onalti_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @if ($santiye->santiye_onyedi)
+                                        <div class="row mb-4">
+                                            <div class="col-md-5 col-7">
+                                                <h6 class="f-w-500">{{$santiye->santiye_onyedi}}<span class="pull-right">:</span>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-7 col-5">
+                                                <span>
+                                                @php
+                                                    $onyedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                @endphp
+                                                @if (isset($onyedi_fiyat->first()->santiye_onyedi_fiyat))
+                                                    {{$onyedi_fiyat->first()->santiye_onyedi_fiyat}}
+                                                    <small>+KDV</small>
+                                                @else
+                                                    Fiyat belirtilmemiş.
+                                                @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        @endforeach
                                     </div>
                                 </div>
                               
-                                <div id="fiyat" class="tab-pane fade">
+                                <div id="analiz" class="tab-pane fade">
                                     <div class="profile-about-me">
                                         <div class="pt-4 border-bottom-1 pb-4">
                                             <h4 class="text-primary">Fiyat</h4>
@@ -685,54 +1025,84 @@
                                 <div id="settings" class="tab-pane fade">
                                     <div class="pt-3">
                                         <div class="settings-form">
-                                            <h4 class="text-primary">Account Setting</h4>
+                                            <h4 class="text-primary">Fatura Bilgileri Düzenle</h4>
                                             <form>
                                                 <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label>Email</label>
-                                                        <input type="email" placeholder="Email" class="form-control">
+                                                    <div class="form-group col-md-12">
+                                                        <label>Unvan</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->unvan}}" name="unvani">
                                                     </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label>Password</label>
-                                                        <input type="password" placeholder="Password" class="form-control">
+                                                    <div class="form-group col-md-12">
+                                                        <label>Fatura Adresi</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->fatura_adresi}}" name="fAdresi">
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Address</label>
-                                                    <input type="text" placeholder="1234 Main St" class="form-control">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Address 2</label>
-                                                    <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
-                                                        <label>City</label>
-                                                        <input type="text" class="form-control">
+                                                        <label>Semt</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->semt}}" name="semt">
                                                     </div>
                                                     <div class="form-group col-md-4">
-                                                        <label>State</label>
-                                                        <select class="form-control" id="inputState">
-                                                            <option selected="">Choose...</option>
-                                                            <option>Option 1</option>
-                                                            <option>Option 2</option>
-                                                            <option>Option 3</option>
-                                                        </select>
+                                                        <label>Kent</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->kent}}" name="kent">
                                                     </div>
                                                     <div class="form-group col-md-2">
-                                                        <label>Zip</label>
-                                                        <input type="text" class="form-control">
+                                                        <label>Posta Kodu</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->posta_kodu}}" name="postaKodu">
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="gridCheck">
-                                                        <label for="gridCheck" class="form-check-label">Check me out</label>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>Vergi Dairesi</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->vergi_dairesi}}" name="unvani">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>V.N. / T.C. </label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->vergi_numarasi}}" name="fAdresi">
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-primary" type="submit">Sign
-                                                    in</button>
+                                                <button class="btn btn-primary" type="submit">Güncelle</button>
                                             </form>
+
+                                            <h4 class="text-primary mt-4">İletişim Bilgileri Düzenle</h4>
+                                            <form>
+                                                <h5 title="Genel Müdür, Mal sahibi, Mühendis vs.">Yetkili - 1</h5>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4">
+                                                        <label>Ad Soyad</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir}}" name="unvani">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label>Telefon Numarası</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_tel}}" name="fAdresi">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label>E-Posta Adresi</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_mail}}" name="fAdresi">
+                                                    </div>
+                                                </div>
+
+                                                @if ($aktif_musteri->yetkili_iki)
+                                                <h5 title="Muhasebe, Şef, Kalfa vs.">Yetkili - 2</h5>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4">
+                                                        <label>Ad Soyad</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki}}" name="unvani">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label>Telefon Numarası</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_tel}}" name="fAdresi">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label>E-Posta Adresi</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_mail}}" name="fAdresi">
+                                                    </div>
+                                                </div>
+                                                @endif
+
+                                                <button class="btn btn-primary" type="submit">Güncelle</button>
+                                            </form>
+
                                         </div>
                                     </div>
                                 </div>
