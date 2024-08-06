@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AktifMusteriler;
 use App\Models\AktifMusteriSantiye;
 use App\Models\AktifSantiyeFiyat;
+use App\Models\AktifSantiyeMetraj;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use Illuminate\Http\Request;
@@ -31,9 +32,10 @@ class MusteriController extends Controller
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
         $aktif_santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->get();
+        $metraj = AktifSantiyeMetraj::where('aktif_santiye_id', $id)->get();
          
         return view('musteri.aktif_profil', compact(
-            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye'
+            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'metraj'
         ));
     }
 
@@ -154,7 +156,7 @@ class MusteriController extends Controller
              $fiyat->santiye_onalti_fiyat = 0;
              $fiyat->santiye_onyedi_fiyat = 0;
              $fiyat->save(); // Yeni kaydı veritabanına kaydet
-        }else{
+        }
             $fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $id)->first();
             $fiyat->santiye_bir_fiyat = $request->input('santiye_bir_fiyat');
             $fiyat->santiye_iki_fiyat = $request->input('santiye_iki_fiyat');
@@ -174,8 +176,10 @@ class MusteriController extends Controller
             $fiyat->santiye_onalti_fiyat = $request->input('santiye_onalti_fiyat');
             $fiyat->santiye_onyedi_fiyat = $request->input('santiye_onyedi_fiyat');
             $fiyat->save();
-        }
+        
 
         return redirect()->back();
     }
+
+
 }

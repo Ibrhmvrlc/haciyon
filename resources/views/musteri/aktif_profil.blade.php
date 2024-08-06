@@ -526,10 +526,10 @@ use App\Models\AktifSantiyeMetraj;
                                 </script>
 
                                 <div id="genelbilgi" class="tab-pane fade">
-                                    <div class="profile-personal-info mt-4">
-                                        <h4 class="text-primary mb-4">Şantiye Fiyat Bilgileri</h4>
+                                    <h4 class="text-primary mb-4 mt-4">Şantiye Fiyat Bilgileri</h4>
+                                    <div class="profile-personal-info mt-4" id="container">
                                         @foreach ($aktif_santiye as $santiye)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_bir_metraj)){{$metraj->first()->santiye_bir_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_bir}}<span class="pull-right">:</span>
                                                 </h6>
@@ -537,9 +537,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $bir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $bir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($bir_fiyat->first()->santiye_bir_fiyat))
+                                                @if (isset($bir_fiyat->first()->santiye_bir_fiyat) AND $bir_fiyat->first()->santiye_bir_fiyat != 0)
                                                 {{$bir_fiyat->first()->santiye_bir_fiyat}}
                                                 <small>+KDV</small>
                                                 @else
@@ -549,7 +549,7 @@ use App\Models\AktifSantiyeMetraj;
                                             </div>
                                         </div>
                                         @if ($santiye->santiye_iki)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_iki_metraj)){{$metraj->first()->santiye_iki_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_iki}}<span class="pull-right">:</span>
                                                 </h6>
@@ -557,9 +557,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $iki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $iki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($iki_fiyat->first()->santiye_iki_fiyat))
+                                                @if (isset($iki_fiyat->first()->santiye_iki_fiyat) AND $iki_fiyat->first()->santiye_iki_fiyat != 0)
                                                 {{$iki_fiyat->first()->santiye_iki_fiyat}}
                                                 <small>+KDV</small>
                                                 @else
@@ -570,7 +570,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_uc)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_uc_metraj)){{$metraj->first()->santiye_uc_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_uc}}<span class="pull-right">:</span>
                                                 </h6>
@@ -578,9 +578,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $uc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $uc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($uc_fiyat->first()->santiye_uc_fiyat))
+                                                @if (isset($uc_fiyat->first()->santiye_uc_fiyat) AND $uc_fiyat->first()->santiye_uc_fiyat != 0)
                                                 {{$uc_fiyat->first()->santiye_uc_fiyat}}
                                                 <small>+KDV</small>
                                                 @else
@@ -591,7 +591,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_dort)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_dort_metraj)){{$metraj->first()->santiye_dort_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_dort}}<span class="pull-right">:</span>
                                                 </h6>
@@ -599,9 +599,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $dort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $dort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($dort_fiyat->first()->santiye_dort_fiyat))
+                                                @if (isset($dort_fiyat->first()->santiye_dort_fiyat) AND $dort_fiyat->first()->santiye_dort_fiyat != 0)
                                                 {{$dort_fiyat->first()->santiye_dort_fiyat}}
                                                 <small>+KDV</small>
                                                 @else
@@ -612,7 +612,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_bes)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_bes_metraj)){{$metraj->first()->santiye_bes_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_bes}}<span class="pull-right">:</span>
                                                 </h6>
@@ -620,9 +620,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $bes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $bes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($bes_fiyat->first()->santiye_bes_fiyat))
+                                                @if (isset($bes_fiyat->first()->santiye_bes_fiyat) AND $bes_fiyat->first()->santiye_bes_fiyat != 0)
                                                     {{$bes_fiyat->first()->santiye_bes_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -633,7 +633,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_alti)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_alti_metraj)){{$metraj->first()->santiye_alti_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_alti}}<span class="pull-right">:</span>
                                                 </h6>
@@ -641,9 +641,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $alti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $alti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($alti_fiyat->first()->santiye_alti_fiyat))
+                                                @if (isset($alti_fiyat->first()->santiye_alti_fiyat) AND $alti_fiyat->first()->santiye_alti_fiyat != 0)
                                                     {{$alti_fiyat->first()->santiye_alti_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -654,7 +654,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_yedi)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_yedi_metraj)){{$metraj->first()->santiye_yedi_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_yedi}}<span class="pull-right">:</span>
                                                 </h6>
@@ -662,9 +662,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $yedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $yedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($yedi_fiyat->first()->santiye_yedi_fiyat))
+                                                @if (isset($yedi_fiyat->first()->santiye_yedi_fiyat) AND $yedi_fiyat->first()->santiye_yedi_fiyat != 0)
                                                     {{$yedi_fiyat->first()->santiye_yedi_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -675,7 +675,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_sekiz)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_sekiz_metraj)){{$metraj->first()->santiye_sekiz_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_sekiz}}<span class="pull-right">:</span>
                                                 </h6>
@@ -683,9 +683,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $sekiz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $sekiz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($sekiz_fiyat->first()->santiye_sekiz_fiyat))
+                                                @if (isset($sekiz_fiyat->first()->santiye_sekiz_fiyat) AND $sekiz_fiyat->first()->santiye_sekiz_fiyat != 0)
                                                     {{$sekiz_fiyat->first()->santiye_sekiz_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -696,7 +696,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_dokuz)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_dokuz_metraj)){{$metraj->first()->santiye_dokuz_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_dokuz}}<span class="pull-right">:</span>
                                                 </h6>
@@ -704,9 +704,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $dokuz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $dokuz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($dokuz_fiyat->first()->santiye_dokuz_fiyat))
+                                                @if (isset($dokuz_fiyat->first()->santiye_dokuz_fiyat) AND $dokuz_fiyat->first()->santiye_dokuz_fiyat != 0)
                                                     {{$dokuz_fiyat->first()->santiye_dokuz_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -717,7 +717,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_on)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_on_metraj)){{$metraj->first()->santiye_on_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_on}}<span class="pull-right">:</span>
                                                 </h6>
@@ -725,9 +725,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $on_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $on_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($on_fiyat->first()->santiye_on_fiyat))
+                                                @if (isset($on_fiyat->first()->santiye_on_fiyat) AND $on_fiyat->first()->santiye_on_fiyat != 0)
                                                     {{$on_fiyat->first()->santiye_on_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -738,7 +738,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_onbir)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_onbir_metraj)){{$metraj->first()->santiye_onbir_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_onbir}}<span class="pull-right">:</span>
                                                 </h6>
@@ -746,9 +746,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $onbir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $onbir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($onbir_fiyat->first()->santiye_onbir_fiyat))
+                                                @if (isset($onbir_fiyat->first()->santiye_onbir_fiyat) AND $onbir_fiyat->first()->santiye_onbir_fiyat != 0)
                                                     {{$onbir_fiyat->first()->santiye_onbir_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -759,7 +759,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_oniki)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_oniki_metraj)){{$metraj->first()->santiye_oniki_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_oniki}}<span class="pull-right">:</span>
                                                 </h6>
@@ -767,9 +767,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $oniki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $oniki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($oniki_fiyat->first()->santiye_oniki_fiyat))
+                                                @if (isset($oniki_fiyat->first()->santiye_oniki_fiyat) AND $oniki_fiyat->first()->santiye_oniki_fiyat != 0)
                                                     {{$oniki_fiyat->first()->santiye_oniki_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -780,7 +780,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_onuc)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_onuc_metraj)){{$metraj->first()->santiye_onuc_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_onuc}}<span class="pull-right">:</span>
                                                 </h6>
@@ -788,9 +788,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $onuc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $onuc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($onuc_fiyat->first()->santiye_onuc_fiyat))
+                                                @if (isset($onuc_fiyat->first()->santiye_onuc_fiyat) AND $onuc_fiyat->first()->santiye_onuc_fiyat != 0)
                                                     {{$onuc_fiyat->first()->santiye_onuc_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -801,7 +801,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_ondort)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_ondort_metraj)){{$metraj->first()->santiye_ondort_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_ondort}}<span class="pull-right">:</span>
                                                 </h6>
@@ -809,9 +809,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $ondort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $ondort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($ondort_fiyat->first()->santiye_ondort_fiyat))
+                                                @if (isset($ondort_fiyat->first()->santiye_ondort_fiyat) AND $ondort_fiyat->first()->santiye_ondort_fiyat != 0)
                                                     {{$ondort_fiyat->first()->santiye_ondort_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -822,7 +822,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_onbes)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_onbes_metraj)){{$metraj->first()->santiye_onbes_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_onbes}}<span class="pull-right">:</span>
                                                 </h6>
@@ -830,9 +830,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $onbes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $onbes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($onbes_fiyat->first()->santiye_onbes_fiyat))
+                                                @if (isset($onbes_fiyat->first()->santiye_onbes_fiyat) AND $onbes_fiyat->first()->santiye_onbes_fiyat != 0)
                                                     {{$onbes_fiyat->first()->santiye_onbes_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -843,7 +843,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_onalti)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_onalti_metraj)){{$metraj->first()->santiye_onalti_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_onalti}}<span class="pull-right">:</span>
                                                 </h6>
@@ -851,9 +851,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $onalti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $onalti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($onalti_fiyat->first()->santiye_onalti_fiyat))
+                                                @if (isset($onalti_fiyat->first()->santiye_onalti_fiyat) AND $onalti_fiyat->first()->santiye_onalti_fiyat != 0)
                                                     {{$onalti_fiyat->first()->santiye_onalti_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -864,7 +864,7 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @if ($santiye->santiye_onyedi)
-                                        <div class="row mb-4">
+                                        <div class="row mb-4" data-metraj="@if (isset($metraj->first()->santiye_onyedi_metraj)){{$metraj->first()->santiye_onyedi_metraj}} @endif">
                                             <div class="col-md-5 col-7">
                                                 <h6 class="f-w-500">{{$santiye->santiye_onyedi}}<span class="pull-right">:</span>
                                                 </h6>
@@ -872,9 +872,9 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="col-md-7 col-5">
                                                 <span>
                                                 @php
-                                                    $onyedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                    $onyedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                 @endphp
-                                                @if (isset($onyedi_fiyat->first()->santiye_onyedi_fiyat))
+                                                @if (isset($onyedi_fiyat->first()->santiye_onyedi_fiyat) AND $onyedi_fiyat->first()->santiye_onyedi_fiyat != 0)
                                                     {{$onyedi_fiyat->first()->santiye_onyedi_fiyat}}
                                                     <small>+KDV</small>
                                                 @else
@@ -885,6 +885,27 @@ use App\Models\AktifSantiyeMetraj;
                                         </div>
                                         @endif
                                         @endforeach
+
+                                        <script>
+                                            // Function to sort divs based on data-metraj attribute
+                                            function sortDivsByMetraj() {
+                                                const container = document.getElementById('container');
+                                                const divs = Array.from(container.children);
+                                    
+                                                divs.sort((a, b) => {
+                                                    return b.getAttribute('data-metraj') - a.getAttribute('data-metraj');
+                                                });
+                                    
+                                                // Clear the container and append sorted divs
+                                                container.innerHTML = '';
+                                                divs.forEach(div => {
+                                                    container.appendChild(div);
+                                                });
+                                            }
+                                    
+                                            // Call the function to sort divs
+                                            sortDivsByMetraj();
+                                        </script>
 
                                         <h4 class="text-primary mb-4">Fatura Bilgileri</h4>
                                         <div class="row mb-4">
@@ -1104,12 +1125,12 @@ use App\Models\AktifSantiyeMetraj;
                                                     <div class="form-group col-md-6">
                                                         <label>Birinci Şantiye Fiyatı (<small>+KDV</small>)</label>
                                                         @php
-                                                        $bir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                        $bir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
                                                         @endphp
                                                         @if (isset($bir_fiyat->first()->santiye_bir_fiyat))
-                                                        <input type="number" class="form-control" value="{{$bir_fiyat->first()->santiye_bir_fiyat}}" name="santiye_bir_fiyat" min="0" step="100">
+                                                        <input type="number" class="form-control" value="{{$bir_fiyat->first()->santiye_bir_fiyat}}" name="santiye_bir_fiyat" min="0" >
                                                         @else
-                                                        <input type="number" class="form-control" value="0" name="santiye_bir_fiyat" min="0" step="100">
+                                                        <input type="number" class="form-control" value="0" name="santiye_bir_fiyat" min="0" >
                                                         @endif
                                                     </div>
                                                 </div>
@@ -1123,10 +1144,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>İkinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $iki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($iki_fiyat->first()->santiye_iki_fiyat))
-                                                                <input type="number" class="form-control" value="{{$iki_fiyat->first()->santiye_iki_fiyat}}" name="santiye_iki_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$iki_fiyat->first()->santiye_iki_fiyat}}" name="santiye_iki_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_iki_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_iki_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1141,10 +1165,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Üçüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $uc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($uc_fiyat->first()->santiye_uc_fiyat))
-                                                                <input type="number" class="form-control" value="{{$uc_fiyat->first()->santiye_uc_fiyat}}" name="santiye_uc_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$uc_fiyat->first()->santiye_uc_fiyat}}" name="santiye_uc_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_uc_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_uc_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1159,10 +1186,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Dördüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $dort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($dort_fiyat->first()->santiye_dort_fiyat))
-                                                                <input type="number" class="form-control" value="{{$dort_fiyat->first()->santiye_dort_fiyat}}" name="santiye_dort_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$dort_fiyat->first()->santiye_dort_fiyat}}" name="santiye_dort_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_dort_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_dort_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1177,10 +1207,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Beşinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $bes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($bes_fiyat->first()->santiye_bes_fiyat))
-                                                                <input type="number" class="form-control" value="{{$bes_fiyat->first()->santiye_bes_fiyat}}" name="santiye_bes_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$bes_fiyat->first()->santiye_bes_fiyat}}" name="santiye_bes_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_bes_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_bes_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1195,10 +1228,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Altıncı Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $alti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($alti_fiyat->first()->santiye_alti_fiyat))
-                                                                <input type="number" class="form-control" value="{{$alti_fiyat->first()->santiye_alti_fiyat}}" name="santiye_alti_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$alti_fiyat->first()->santiye_alti_fiyat}}" name="santiye_alti_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_alti_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_alti_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1213,10 +1249,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Yedinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $yedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($yedi_fiyat->first()->santiye_yedi_fiyat))
-                                                                <input type="number" class="form-control" value="{{$yedi_fiyat->first()->santiye_yedi_fiyat}}" name="santiye_yedi_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$yedi_fiyat->first()->santiye_yedi_fiyat}}" name="santiye_yedi_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_yedi_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_yedi_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1231,10 +1270,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Sekizinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $sekiz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($sekiz_fiyat->first()->santiye_sekiz_fiyat))
-                                                                <input type="number" class="form-control" value="{{$sekiz_fiyat->first()->santiye_sekiz_fiyat}}" name="santiye_sekiz_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$sekiz_fiyat->first()->santiye_sekiz_fiyat}}" name="santiye_sekiz_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_sekiz_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_sekiz_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1249,10 +1291,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Dokuzuncu Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $dokuz_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($dokuz_fiyat->first()->santiye_dokuz_fiyat))
-                                                                <input type="number" class="form-control" value="{{$dokuz_fiyat->first()->santiye_dokuz_fiyat}}" name="santiye_dokuz_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$dokuz_fiyat->first()->santiye_dokuz_fiyat}}" name="santiye_dokuz_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_dokuz_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_dokuz_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1267,10 +1312,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onuncu Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $on_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($on_fiyat->first()->santiye_on_fiyat))
-                                                                <input type="number" class="form-control" value="{{$on_fiyat->first()->santiye_on_fiyat}}" name="santiye_on_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$on_fiyat->first()->santiye_on_fiyat}}" name="santiye_on_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_on_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_on_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1285,10 +1333,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onbirinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $onbir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($onbir_fiyat->first()->santiye_onbir_fiyat))
-                                                                <input type="number" class="form-control" value="{{$onbir_fiyat->first()->santiye_onbir_fiyat}}" name="santiye_onbir_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$onbir_fiyat->first()->santiye_onbir_fiyat}}" name="santiye_onbir_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_onbir_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_onbir_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1303,10 +1354,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onikinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $oniki_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($oniki_fiyat->first()->santiye_oniki_fiyat))
-                                                                <input type="number" class="form-control" value="{{$oniki_fiyat->first()->santiye_oniki_fiyat}}" name="santiye_oniki_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$oniki_fiyat->first()->santiye_oniki_fiyat}}" name="santiye_oniki_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_oniki_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_oniki_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1321,10 +1375,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onüçüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $onuc_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($onuc_fiyat->first()->santiye_onuc_fiyat))
-                                                                <input type="number" class="form-control" value="{{$onuc_fiyat->first()->santiye_onuc_fiyat}}" name="santiye_onuc_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$onuc_fiyat->first()->santiye_onuc_fiyat}}" name="santiye_onuc_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_onuc_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_onuc_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1339,10 +1396,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Ondördüncü Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $ondort_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($ondort_fiyat->first()->santiye_ondort_fiyat))
-                                                                <input type="number" class="form-control" value="{{$ondort_fiyat->first()->santiye_ondort_fiyat}}" name="santiye_ondort_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$ondort_fiyat->first()->santiye_ondort_fiyat}}" name="santiye_ondort_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_ondort_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_ondort_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1357,10 +1417,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onbeşinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $onbes_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($onbes_fiyat->first()->santiye_onbes_fiyat))
-                                                                <input type="number" class="form-control" value="{{$onbes_fiyat->first()->santiye_onbes_fiyat}}" name="santiye_onbes_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$onbes_fiyat->first()->santiye_onbes_fiyat}}" name="santiye_onbes_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_onbes_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_onbes_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1375,10 +1438,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onaltıncı Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $onalti_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($onalti_fiyat->first()->santiye_onalti_fiyat))
-                                                                <input type="number" class="form-control" value="{{$onalti_fiyat->first()->santiye_onalti_fiyat}}" name="santiye_onalti_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$onalti_fiyat->first()->santiye_onalti_fiyat}}" name="santiye_onalti_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_onalti_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_onalti_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
@@ -1393,10 +1459,13 @@ use App\Models\AktifSantiyeMetraj;
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label>Onyedinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                            @php
+                                                            $onyedi_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->aktif_musteri_id)->get();
+                                                            @endphp
                                                             @if (isset($onyedi_fiyat->first()->santiye_onyedi_fiyat))
-                                                                <input type="number" class="form-control" value="{{$onyedi_fiyat->first()->santiye_onyedi_fiyat}}" name="santiye_onyedi_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="{{$onyedi_fiyat->first()->santiye_onyedi_fiyat}}" name="santiye_onyedi_fiyat" min="0" >
                                                             @else
-                                                                <input type="number" class="form-control" value="0" name="santiye_onyedi_fiyat" min="0" step="100">
+                                                                <input type="number" class="form-control" value="0" name="santiye_onyedi_fiyat" min="0" >
                                                             @endif
                                                         </div>
                                                     </div>
