@@ -34,4 +34,6 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::get('/aktif-musteri-profil/{id}', [MusteriController::class, 'aktifProfile'])->name('aktif.musteri.profil');
     Route::post('/not-ekle/{id}', [MusteriController::class, 'addNote'])->name('not.ekle');
     Route::put('/not-tamamlandi/{id}', [MusteriController::class, 'update'])->name('not.tamamalandi');
+    Route::post('/santiye-fiyat-guncelle/{id}', [MusteriController::class, 'santiyeFiyatGuncelle'])->name('santiye.fiyat.guncelle');
+
 });

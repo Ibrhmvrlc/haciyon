@@ -1094,7 +1094,8 @@ use App\Models\AktifSantiyeMetraj;
                                         <div class="settings-form">
 
                                             <h4 class="text-primary">Şantiye Fiyat Bilgileri Düzenle</h4>
-                                            <form> <!-- SANTIYE FIYAT BILGILERI DUZENLE FORMU -->
+                                            <form method="post" action="{{route('santiye.fiyat.guncelle', $aktif_musteri->id)}}" > <!-- SANTIYE FIYAT BILGILERI DUZENLE FORMU -->
+                                                @csrf
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
                                                         <label>Birinci Şantiye</label>
@@ -1102,6 +1103,9 @@ use App\Models\AktifSantiyeMetraj;
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label>Birinci Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                        @php
+                                                        $bir_fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $santiye->id)->get();
+                                                        @endphp
                                                         @if (isset($bir_fiyat->first()->santiye_bir_fiyat))
                                                         <input type="number" class="form-control" value="{{$bir_fiyat->first()->santiye_bir_fiyat}}" name="santiye_bir_fiyat" min="0" step="100">
                                                         @else

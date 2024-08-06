@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AktifMusteriler;
 use App\Models\AktifMusteriSantiye;
+use App\Models\AktifSantiyeFiyat;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use Illuminate\Http\Request;
@@ -71,6 +72,109 @@ class MusteriController extends Controller
         $completedNote = MusteriNotlari::findOrFail($id);
         $completedNote->tamamlandi = true;
         $completedNote->save();
+
+        return redirect()->back();
+    }
+
+    public function santiyeFiyatGuncelle(Request $request, $id){
+        $santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->firstOrFail();
+        $santiye->santiye_bir = $request->input('santiye_bir');
+        if($request->input('santiye_iki')){
+            $santiye->santiye_iki = $request->input('santiye_iki');
+        }
+
+        if($request->input('santiye_uc')){
+            $santiye->santiye_uc = $request->input('santiye_uc');
+        }
+        if($request->input('santiye_dort')){
+            $santiye->santiye_dort = $request->input('santiye_dort');
+        }
+        if($request->input('santiye_bes')){
+            $santiye->santiye_bes = $request->input('santiye_bes');
+        }
+        if($request->input('santiye_alti')){
+            $santiye->santiye_alti = $request->input('santiye_alti');
+        }
+        if($request->input('santiye_yedi')){
+            $santiye->santiye_yedi = $request->input('santiye_yedi');
+        }
+        if($request->input('santiye_sekiz')){
+            $santiye->santiye_sekiz = $request->input('santiye_sekiz');
+        }
+        if($request->input('santiye_dokuz')){
+            $santiye->santiye_dokuz = $request->input('santiye_dokuz');
+        }
+        if($request->input('santiye_on')){
+            $santiye->santiye_on = $request->input('santiye_on');
+        }
+        if($request->input('santiye_onbir')){
+            $santiye->santiye_onbir = $request->input('santiye_onbir');
+        }
+        if($request->input('santiye_oniki')){
+            $santiye->santiye_oniki = $request->input('santiye_oniki');
+        }
+        if($request->input('santiye_onuc')){
+            $santiye->santiye_onuc = $request->input('santiye_onuc');
+        }
+        if($request->input('santiye_ondort')){
+            $santiye->santiye_ondort = $request->input('santiye_ondort');
+        }
+        if($request->input('santiye_onbes')){
+            $santiye->santiye_onbes = $request->input('santiye_onbes');
+        }
+        if($request->input('santiye_onalti')){
+            $santiye->santiye_onalti = $request->input('santiye_onalti');
+        }
+        if($request->input('santiye_onyedi')){
+            $santiye->santiye_onyedi = $request->input('santiye_onyedi');
+        }
+        $santiye->save();
+
+        $fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $id)->first();
+       
+        if ($fiyat === null) {
+             // Varsayılan değerler
+             $fiyat = new AktifSantiyeFiyat();
+             $fiyat->aktif_santiye_id = $id;
+             $fiyat->santiye_bir_fiyat = 0;
+             $fiyat->santiye_iki_fiyat = 0; 
+             $fiyat->santiye_uc_fiyat = 0;
+             $fiyat->santiye_dort_fiyat = 0;
+             $fiyat->santiye_bes_fiyat = 0;
+             $fiyat->santiye_alti_fiyat = 0;
+             $fiyat->santiye_yedi_fiyat = 0;
+             $fiyat->santiye_sekiz_fiyat = 0;
+             $fiyat->santiye_dokuz_fiyat = 0;
+             $fiyat->santiye_on_fiyat = 0;
+             $fiyat->santiye_onbir_fiyat = 0;
+             $fiyat->santiye_oniki_fiyat = 0;
+             $fiyat->santiye_onuc_fiyat = 0;
+             $fiyat->santiye_ondort_fiyat = 0;
+             $fiyat->santiye_onbes_fiyat = 0;
+             $fiyat->santiye_onalti_fiyat = 0;
+             $fiyat->santiye_onyedi_fiyat = 0;
+             $fiyat->save(); // Yeni kaydı veritabanına kaydet
+        }else{
+            $fiyat = AktifSantiyeFiyat::where('aktif_santiye_id', $id)->first();
+            $fiyat->santiye_bir_fiyat = $request->input('santiye_bir_fiyat');
+            $fiyat->santiye_iki_fiyat = $request->input('santiye_iki_fiyat');
+            $fiyat->santiye_uc_fiyat = $request->input('santiye_uc_fiyat');
+            $fiyat->santiye_dort_fiyat = $request->input('santiye_dort_fiyat');
+            $fiyat->santiye_bes_fiyat = $request->input('santiye_bes_fiyat');
+            $fiyat->santiye_alti_fiyat = $request->input('santiye_alti_fiyat');
+            $fiyat->santiye_yedi_fiyat = $request->input('santiye_yedi_fiyat');
+            $fiyat->santiye_sekiz_fiyat = $request->input('santiye_sekiz_fiyat');
+            $fiyat->santiye_dokuz_fiyat = $request->input('santiye_dokuz_fiyat');
+            $fiyat->santiye_on_fiyat = $request->input('santiye_on_fiyat');
+            $fiyat->santiye_onbir_fiyat = $request->input('santiye_onbir_fiyat');
+            $fiyat->santiye_oniki_fiyat = $request->input('santiye_oniki_fiyat');
+            $fiyat->santiye_onuc_fiyat = $request->input('santiye_onuc_fiyat');
+            $fiyat->santiye_ondort_fiyat = $request->input('santiye_ondort_fiyat');
+            $fiyat->santiye_onbes_fiyat = $request->input('santiye_onbes_fiyat');
+            $fiyat->santiye_onalti_fiyat = $request->input('santiye_onalti_fiyat');
+            $fiyat->santiye_onyedi_fiyat = $request->input('santiye_onyedi_fiyat');
+            $fiyat->save();
+        }
 
         return redirect()->back();
     }
