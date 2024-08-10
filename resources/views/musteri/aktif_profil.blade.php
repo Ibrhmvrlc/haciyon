@@ -23,21 +23,22 @@ use App\Models\AktifSantiyeMetraj;
                 <span class="ti-angle-left"></span> Listeye dön
             </a>
         </div>
+        <!-- Herhangi bir hata bildirimi alanı -->
+        @if ($errors->any())
+        <div class="col-lg-12">
+            <div class="card alert alert-danger">
+                <div class="card-body">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
-     <!-- Herhangi bir hata bildirimi alanı -->
-     @if ($errors->any())
-     <div class="col-lg-12">
-         <div class="card alert alert-danger">
-             <div class="card-body">
-                 <ul>
-                     @foreach ($errors->all() as $error)
-                         <li>{{ $error }}</li>
-                     @endforeach
-                 </ul>
-             </div>
-         </div>
-     </div>
-    @endif
+  
     <!-- row -->
     <div class="row">
         <div class="col-lg-12">
@@ -1113,7 +1114,6 @@ use App\Models\AktifSantiyeMetraj;
                                 <div id="settings" class="tab-pane fade">
                                     <div class="pt-3">
                                         <div class="settings-form">
-
                                             <h4 class="text-primary">Şantiye Fiyat Bilgileri Düzenle</h4>
                                             <form method="post" action="{{route('santiye.fiyat.guncelle', $aktif_musteri->id)}}" > <!-- SANTIYE FIYAT BILGILERI DUZENLE FORMU -->
                                                 @csrf
@@ -1542,7 +1542,7 @@ use App\Models\AktifSantiyeMetraj;
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->vergi_numarasi}}" name="VNTCN">
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                <button class="btn btn-success" type="submit">Güncelle</button>
                                             </form>
 
                                             <h4 class="text-primary mt-4">İletişim Bilgileri Düzenle</h4>
@@ -1590,7 +1590,8 @@ use App\Models\AktifSantiyeMetraj;
                                             <div class="modal fade" id="yetkiliEkle">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form method="post" action="">
+                                                        <form method="post" action="{{route('yetkili.ekle', $aktif_musteri->id)}}">
+                                                            @csrf
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Yeni Yetkili Ekle</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
@@ -1614,7 +1615,7 @@ use App\Models\AktifSantiyeMetraj;
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                                                                <button type="button" class="btn btn-success">Kaydet</button>
+                                                                <button type="submit" class="btn btn-success">Kaydet</button>
                                                             </div>
                                                         </form>
                                                     </div>
