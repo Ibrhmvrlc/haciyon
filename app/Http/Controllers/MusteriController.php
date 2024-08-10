@@ -207,5 +207,46 @@ class MusteriController extends Controller
         return redirect()->back();
     }
 
+    public function yeniSantiyeEkle(Request $request, $id) {
+        $santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->first();
 
+        if(($santiye->santiye_bir === null) OR ($santiye->santiye_bir == '')){
+            $santiye->santiye_bir = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_iki == null) OR ($santiye->santiye_iki == '')){
+            $santiye->santiye_iki = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_uc == null) OR ($santiye->santiye_uc == '')){
+            $santiye->santiye_uc = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_dort == null) OR ($santiye->santiye_dort == '')){
+            $santiye->santiye_dort = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_bes == null) OR ($santiye->santiye_bes == '')){
+            $santiye->santiye_bes = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_alti == null) OR ($santiye->santiye_alti == '')){
+            $santiye->santiye_alti = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_yedi == null) OR ($santiye->santiye_yedi == '')){
+            $santiye->santiye_yedi = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_sekiz == null) OR ($santiye->santiye_sekiz == '')){
+            $santiye->santiye_sekiz = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_dokuz == null) OR ($santiye->santiye_dokuz == '')){
+            $santiye->santiye_dokuz = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_on == null) OR ($santiye->santiye_on == '')){
+            $santiye->santiye_on = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_onbir == null) OR ($santiye->santiye_onbir == '')){
+            $santiye->santiye_onbir = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_oniki == null) OR ($santiye->santiye_oniki == '')){
+            $santiye->santiye_oniki = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_onuc == null) OR ($santiye->santiye_onuc == '')){
+            $santiye->santiye_onuc = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_ondort == null) OR ($santiye->santiye_ondort == '')){
+            $santiye->santiye_ondort = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_onbes == null) OR ($santiye->santiye_onbes == '')){
+            $santiye->santiye_onbes = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_onalti == null) OR ($santiye->santiye_onalti == '')){
+            $santiye->santiye_onalti = $request->input('yeni_santiye');
+        } elseif(($santiye->santiye_onyedi == null) OR ($santiye->santiye_onyedi == '')){
+            $santiye->santiye_onyedi = $request->input('yeni_santiye');
+        }
+        $santiye->save();
+
+        return redirect()->back();
+    }
 }

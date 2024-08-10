@@ -1471,15 +1471,15 @@ use App\Models\AktifSantiyeMetraj;
                                                     </div>
                                                 @endif
                                             
-                                                <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                <button class="btn btn-success" type="submit">Güncelle</button>
                                                 <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#santiyeEkle"  title="Müşterinin max 17 şantiyesi bulunabilir.">Yeni Ekle</button>
+                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#santiyeEkle"  title="Müşterinin max 17 şantiyesi bulunabilir.">Yeni Ekle</button>
                                             </form>
                                             <!-- Modal -->
                                             <div class="modal fade" id="santiyeEkle">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form method="POST" action="">
+                                                        <form method="POST" action="{{route('santiye.ekle', $aktif_musteri->id)}}">
                                                             @csrf
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Yeni Şantiye Ekle</h5>
@@ -1497,8 +1497,8 @@ use App\Models\AktifSantiyeMetraj;
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Çık</button>
+                                                                <button type="submit" class="btn btn-success">Kaydet</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -1582,9 +1582,9 @@ use App\Models\AktifSantiyeMetraj;
                                                 </div>
                                                 @endif
 
-                                                <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                <button class="btn btn-success" type="submit">Güncelle</button>
                                                 <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#yetkiliEkle" title="Müşteriyi max 2 yetkili temsil edebilir.">Yeni Ekle</button>
+                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#yetkiliEkle" title="Müşteriyi max 2 yetkili temsil edebilir.">Yeni Ekle</button>
                                             </form>
                                             <!-- Modal -->
                                             <div class="modal fade" id="yetkiliEkle">
@@ -1613,8 +1613,8 @@ use App\Models\AktifSantiyeMetraj;
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                                                                <button type="button" class="btn btn-success">Ekle</button>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                                                                <button type="button" class="btn btn-success">Kaydet</button>
                                                             </div>
                                                         </form>
                                                     </div>
