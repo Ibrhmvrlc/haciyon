@@ -176,7 +176,33 @@ class MusteriController extends Controller
             $fiyat->santiye_onalti_fiyat = $request->input('santiye_onalti_fiyat');
             $fiyat->santiye_onyedi_fiyat = $request->input('santiye_onyedi_fiyat');
             $fiyat->save();
-        
+
+        return redirect()->back();
+    }
+
+    public function faturaBilgileriGuncelle(Request $request, $id){
+        $fatura_bilgileri = AktifMusteriler::findOrFail($id);
+        $fatura_bilgileri->unvan = $request->input('unvani');
+        $fatura_bilgileri->fatura_adresi = $request->input('fAdresi');
+        $fatura_bilgileri->semt = $request->input('semt');
+        $fatura_bilgileri->kent = $request->input('kent');
+        $fatura_bilgileri->posta_kodu = $request->input('postaKodu');
+        $fatura_bilgileri->vergi_dairesi = $request->input('VD');
+        $fatura_bilgileri->vergi_numarasi = $request->input('VNTCN');
+        $fatura_bilgileri->save();
+
+        return redirect()->back();
+    }
+
+    public function iletisimBilgileriGuncelle(Request $request, $id){
+        $iletisim_bilgileri = AktifMusteriler::findOrFail($id);
+        $iletisim_bilgileri->yetkili_bir = $request->input('birAdSoyad');
+        $iletisim_bilgileri->yetkili_bir_tel = $request->input('birTel');
+        $iletisim_bilgileri->yetkili_bir_mail = $request->input('birMail');
+        $iletisim_bilgileri->yetkili_iki = $request->input('ikiAdSoyad');
+        $iletisim_bilgileri->yetkili_iki_tel = $request->input('ikiTel');
+        $iletisim_bilgileri->yetkili_iki_mail = $request->input('ikiMail');
+        $iletisim_bilgileri->save();
 
         return redirect()->back();
     }

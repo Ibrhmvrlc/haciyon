@@ -1472,10 +1472,12 @@ use App\Models\AktifSantiyeMetraj;
                                                 @endif
                                             
                                                 <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                <button class="btn btn-success" type="button" title="Bir Müşterinin max 17 şantiyesi bulunabilir.">Yeni Ekle</button>
                                             </form>
 
                                             <h4 class="text-primary mt-4">Fatura Bilgileri Düzenle</h4>
-                                            <form> <!-- FATURA BILGILERI DUZENLE FORMU -->
+                                            <form method="POST" action="{{route('fatura.bilgileri.guncelle', $aktif_musteri->id)}}"> <!-- FATURA BILGILERI DUZENLE FORMU -->
+                                                @csrf
                                                 <div class="form-row">
                                                     <div class="form-group col-md-12">
                                                         <label>Unvan</label>
@@ -1503,31 +1505,32 @@ use App\Models\AktifSantiyeMetraj;
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
                                                         <label>Vergi Dairesi</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->vergi_dairesi}}" name="unvani">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->vergi_dairesi}}" name="VD">
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label>V.N. / T.C. </label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->vergi_numarasi}}" name="fAdresi">
+                                                        <label>V.N. / T.C.</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->vergi_numarasi}}" name="VNTCN">
                                                     </div>
                                                 </div>
                                                 <button class="btn btn-primary" type="submit">Güncelle</button>
                                             </form>
 
                                             <h4 class="text-primary mt-4">İletişim Bilgileri Düzenle</h4>
-                                            <form> <!-- ILETISIM BILGILERI DUZENLE FORMU -->
+                                            <form method="POST" action="{{route('iletisim.bilgileri.guncelle', $aktif_musteri->id)}}"> <!-- ILETISIM BILGILERI DUZENLE FORMU -->
+                                                @csrf
                                                 <h5 title="Genel Müdür, Mal sahibi, Mühendis vs.">Yetkili - 1</h5>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-4">
                                                         <label>Ad Soyad</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir}}" name="unvani">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir}}" name="birAdSoyad">
                                                     </div>
                                                     <div class="form-group col-md-4">
                                                         <label>Telefon Numarası</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_tel}}" name="fAdresi">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_tel}}" name="birTel">
                                                     </div>
                                                     <div class="form-group col-md-4">
                                                         <label>E-Posta Adresi</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_mail}}" name="fAdresi">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_mail}}" name="birMail">
                                                     </div>
                                                 </div>
 
@@ -1536,20 +1539,21 @@ use App\Models\AktifSantiyeMetraj;
                                                 <div class="form-row">
                                                     <div class="form-group col-md-4">
                                                         <label>Ad Soyad</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki}}" name="unvani">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki}}" name="ikiAdSoyad">
                                                     </div>
                                                     <div class="form-group col-md-4">
                                                         <label>Telefon Numarası</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_tel}}" name="fAdresi">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_tel}}" name="ikiTel">
                                                     </div>
                                                     <div class="form-group col-md-4">
                                                         <label>E-Posta Adresi</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_mail}}" name="fAdresi">
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_mail}}" name="ikiMail">
                                                     </div>
                                                 </div>
                                                 @endif
 
                                                 <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                <button class="btn btn-success" type="button" title="Bir Müşteriyi max 2 yetkili temsil edebilir.">Yeni Ekle</button>
                                             </form>
 
                                         </div>
