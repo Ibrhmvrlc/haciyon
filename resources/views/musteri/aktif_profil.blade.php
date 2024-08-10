@@ -1472,8 +1472,38 @@ use App\Models\AktifSantiyeMetraj;
                                                 @endif
                                             
                                                 <button class="btn btn-primary" type="submit">Güncelle</button>
-                                                <button class="btn btn-success" type="button" title="Bir Müşterinin max 17 şantiyesi bulunabilir.">Yeni Ekle</button>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#santiyeEkle"  title="Müşterinin max 17 şantiyesi bulunabilir.">Yeni Ekle</button>
                                             </form>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="santiyeEkle">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <form method="POST" action="">
+                                                            @csrf
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Yeni Şantiye Ekle</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Şantiye/Bölge Adı</label>
+                                                                    <input type="text" class="form-control" name="yeni_santiye">
+                                                                </div>
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Şantiye Fiyatı (<small>+KDV</small>)</label>
+                                                                    <input type="number" class="form-control" name="yeni_santiye_fiyat" min="0" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <h4 class="text-primary mt-4">Fatura Bilgileri Düzenle</h4>
                                             <form method="POST" action="{{route('fatura.bilgileri.guncelle', $aktif_musteri->id)}}"> <!-- FATURA BILGILERI DUZENLE FORMU -->
@@ -1553,9 +1583,43 @@ use App\Models\AktifSantiyeMetraj;
                                                 @endif
 
                                                 <button class="btn btn-primary" type="submit">Güncelle</button>
-                                                <button class="btn btn-success" type="button" title="Bir Müşteriyi max 2 yetkili temsil edebilir.">Yeni Ekle</button>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#yetkiliEkle" title="Müşteriyi max 2 yetkili temsil edebilir.">Yeni Ekle</button>
                                             </form>
-
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="yetkiliEkle">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <form method="post" action="">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Yeni Yetkili Ekle</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>Ad Soyad</label>
+                                                                        <input type="text" class="form-control" name="yeni_adSoyad">
+                                                                    </div>
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>Telefon Numarası</label>
+                                                                        <input type="text" class="form-control" name="yeni_tel">
+                                                                    </div>
+                                                                    <div class="form-group col-md-12">
+                                                                        <label>E-Posta Adresi</label>
+                                                                        <input type="text" class="form-control" name="yeni_mail">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                                                                <button type="button" class="btn btn-success">Ekle</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
