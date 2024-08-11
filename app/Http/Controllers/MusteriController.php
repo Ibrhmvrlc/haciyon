@@ -32,10 +32,33 @@ class MusteriController extends Controller
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
         $aktif_santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->get();
+        
+        
+        $aktif_santiye_sayisi = AktifMusteriSantiye::where('aktif_musteri_id', $id)->first(); // İlk kaydı al
+
+        $dolu_santiye_sayisi = 0;
+        
+        if ($aktif_santiye_sayisi) {
+            $santiye_sutunlari = [
+                'santiye_bir', 'santiye_iki', 'santiye_uc', 'santiye_dort', 'santiye_bes', 
+                'santiye_alti', 'santiye_yedi', 'santiye_sekiz', 'santiye_dokuz', 'santiye_on', 
+                'santiye_onbir', 'santiye_oniki', 'santiye_onuc', 'santiye_ondort', 
+                'santiye_onbes', 'santiye_onalti', 'santiye_onyedi'
+            ];
+        
+            foreach ($santiye_sutunlari as $sutun) {
+                if (!empty($aktif_santiye_sayisi->$sutun)) {
+                    $dolu_santiye_sayisi++;
+                    if($dolu_santiye_sayisi == 16)
+                    $dolu_santiye_sayisi++;
+                }
+            }
+        }   
+
         $metraj = AktifSantiyeMetraj::where('aktif_santiye_id', $id)->get();
          
         return view('musteri.aktif_profil', compact(
-            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'metraj'
+            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'dolu_santiye_sayisi', 'metraj'
         ));
     }
 
@@ -187,6 +210,7 @@ class MusteriController extends Controller
         $fatura_bilgileri->semt = $request->input('semt');
         $fatura_bilgileri->kent = $request->input('kent');
         $fatura_bilgileri->posta_kodu = $request->input('postaKodu');
+        $fatura_bilgileri->mail = $request->input('email');
         $fatura_bilgileri->vergi_dairesi = $request->input('VD');
         $fatura_bilgileri->vergi_numarasi = $request->input('VNTCN');
         $fatura_bilgileri->save();
