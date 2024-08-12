@@ -157,11 +157,11 @@ use App\Models\AktifSantiyeMetraj;
                                         label: 'm³ ',
                                         data: [12, 19, 3, 5, 2],
                                         backgroundColor: [
-                                            'rgba(200, 200, 200, 1)',
-                                            'rgba(150, 150, 150, 1)',
-                                            'rgba(100, 100, 100, 1)',
-                                            'rgba(50, 50, 50, 1)',
-                                            'rgba(25, 25, 25, 1)'
+                                            'rgba(225, 225, 225, 1)',
+                                            'rgba(185, 185, 185, 1)',
+                                            'rgba(165, 165, 165, 1)',
+                                            'rgba(125, 125, 125, 1)',
+                                            'rgba(100, 100, 100, 1)'
                                         ]
                                     }]
                                 },
@@ -169,7 +169,7 @@ use App\Models\AktifSantiyeMetraj;
                                     responsive: true,
                                     plugins: {
                                         legend: {
-                                            position: 'top',
+                                            position: 'bottom',
                                         },
                                         tooltip: {
                                             enabled: true
