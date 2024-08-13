@@ -205,15 +205,15 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-account"></i><span class="nav-text">Müşteri Yönetimi</span></a>
                         <ul aria-expanded="false">
+                            <li><a href="{{route('tum.musteri.listesi')}}">Tüm Müşteriler <br>(Düzensiz)</a></li>
                             <li><a href="{{route('aktif.musteri.listesi')}}">Aktif Müşteriler</a></li>
-                            <li><a href="{{route('tum.musteri.listesi')}}">Tüm Müşteriler</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Fiyat Güncelleme</a>
+                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Fiyat Listesi</a>
                                 <ul aria-expanded="false">
+                                    <li><a href="./email-read.html">Hepsi</a></li>
                                     <li><a href="./email-compose.html">Tersaneler</a></li>
                                     <li><a href="./email-compose.html">Organize Sanayi</a></li>
                                     <li><a href="./email-inbox.html">Piyasa</a></li>
                                     <li><a href="./email-read.html">Özel Firmalar</a></li>
-                                    <li><a href="./email-read.html">Hepsi</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -398,9 +398,6 @@
 
     <!-- SweetAlert JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-
-    
-       
 </body>
 
 </html>

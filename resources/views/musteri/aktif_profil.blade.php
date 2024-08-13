@@ -194,13 +194,13 @@ use App\Models\AktifSantiyeMetraj;
                                 <div class="text-center text-white" style="background: gray;">20.07.2024</div>
                             </div>
                             <div class="col-lg-4 col-xl-4 col-sm-4 col-4 int-col p-1">
-                                <div class="text-center" style="background: gray;">1800 <small>+KDV</small></div>
+                                <div class="text-center text-white" style="background: gray;">1800 <small>+KDV</small></div>
                             </div>
                             <div class="col-lg-4 col-xl-4 col-sm-4 col-4 int-col p-1">
-                                <div class="text-center" style="background: gray;">2100 <small>+KDV</small></div>
+                                <div class="text-center text-white" style="background: gray;">2100 <small>+KDV</small></div>
                             </div>
                             <div class="col-lg-4 col-xl-4 col-sm-4 col-4 int-col p-1">
-                                <div class="text-center" style="background: gray;">2300 <small>+KDV</small></div>
+                                <div class="text-center text-white" style="background: gray;">2300 <small>+KDV</small></div>
                             </div>
                         </div>
                     </div>
@@ -1068,23 +1068,23 @@ use App\Models\AktifSantiyeMetraj;
                                                 datasets: [{
                                                     label: 'C16',
                                                     data: [12, 19, 3, 5, 2],
-                                                    backgroundColor: 'rgba(200, 200, 200, 1)'
+                                                    backgroundColor: 'rgba(225, 225, 225, 1)'
                                                 }, {
                                                     label: 'C20',
                                                     data: [2, 3, 20, 5, 1],
-                                                    backgroundColor: 'rgba(150, 150, 150, 1)'
+                                                    backgroundColor: 'rgba(185, 185, 185, 1)'
                                                 }, {
                                                     label: 'C25',
                                                     data: [3, 10, 13, 15, 22],
-                                                    backgroundColor: 'rgba(100, 100, 100, 1)'
+                                                    backgroundColor: 'rgba(165, 165, 165, 1)'
                                                 }, {
                                                     label: 'C30',
                                                     data: [3, 10, 13, 15, 22],
-                                                    backgroundColor: 'rgba(50, 50, 50, 1)'
+                                                    backgroundColor: 'rgba(125, 125, 125, 1)'
                                                 }, {
                                                     label: 'C35 ',
                                                     data: [3, 10, 13, 15, 22],
-                                                    backgroundColor: 'rgba(25, 25, 25, 1)'
+                                                    backgroundColor: 'rgba(100, 100, 100, 1)'
                                                 }]
                                             },
                                             options: {
@@ -1106,23 +1106,23 @@ use App\Models\AktifSantiyeMetraj;
                                                 datasets: [{
                                                     label: 'C16',
                                                     data: [12, 19, 3, 5, 2],
-                                                    backgroundColor: 'rgba(200, 200, 200, 1)'
+                                                    backgroundColor: 'rgba(225, 225, 225, 1)'
                                                 }, {
                                                     label: 'C20',
                                                     data: [2, 3, 20, 5, 1],
-                                                    backgroundColor: 'rgba(150, 150, 150, 1)'
+                                                    backgroundColor: 'rgba(185, 185, 185, 1)'
                                                 }, {
                                                     label: 'C25',
                                                     data: [3, 10, 13, 15, 22],
-                                                    backgroundColor: 'rgba(100, 100, 100, 1)'
+                                                    backgroundColor: 'rgba(165, 165, 165, 1)'
                                                 }, {
                                                     label: 'C30',
                                                     data: [3, 10, 13, 15, 22],
-                                                    backgroundColor: 'rgba(50, 50, 50, 1)'
+                                                    backgroundColor: 'rgba(125, 125, 125, 1)'
                                                 }, {
                                                     label: 'C35 ',
                                                     data: [3, 10, 13, 15, 22],
-                                                    backgroundColor: 'rgba(25, 25, 25, 1)'
+                                                    backgroundColor: 'rgba(100, 100, 100, 1)'
                                                 }]
                                             },
                                             options: {

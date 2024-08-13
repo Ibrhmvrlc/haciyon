@@ -337,4 +337,10 @@ class MusteriController extends Controller
 
         return redirect()->back();
     }
+
+    public function fiyatListesi(){
+        $title = 'Fiyat Listesi';
+
+        return view('musteri.fiyat_listesi', compact('title'));
+    }
 }
