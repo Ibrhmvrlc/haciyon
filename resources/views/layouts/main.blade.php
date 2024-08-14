@@ -23,6 +23,10 @@
     <!-- ajax icin -->
     <link href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css')}}" rel="stylesheet">
 
+   <!-- jsGrid CSS -->
+    <link href="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css')}}" rel="stylesheet" />
+
     
 </head>
 

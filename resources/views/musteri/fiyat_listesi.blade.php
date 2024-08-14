@@ -3,43 +3,64 @@
 @section('content')
 <div class="container-fluid">
     <div id="jsGrid"></div>
-    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js')}}" integrity="sha512-blBYtuTn9yEyWYuKLh8Faml5tT/5YPG0ir9XEABu5YCj7VGr2nb21WPFT9pnP4fcC3y0sSxJR1JqFTfTALGuPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.js')}}" integrity="sha512-nm8Za6M6Cl+T55KoR6WlrnESdOMO7iKTh6P9vbQiPiT+U8+FxpLVUs8Hxu8vh+LDasQBvrqP1SBs3R8wHkadxg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .jsgrid-grid-header {
+            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
+        }
+
+        .jsgrid-grid-body {
+            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
+        }
+    </style>
+    <!-- jQuery (jsGrid'in bağımlılığı) -->
+    <script src="{{asset('https://code.jquery.com/jquery-3.6.0.min.js')}}"></script>
+
+    <!-- jsGrid JS -->
+    <script src="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js')}}"></script>
 
     <script>
         var clients = [
-            { "Name": "Otto Clay", "Age": 25, "Country": 1, "Address": "Ap #897-1459 Quam Avenue", "Married": false },
-            { "Name": "Connor Johnston", "Age": 45, "Country": 2, "Address": "Ap #370-4647 Dis Av.", "Married": true },
-            { "Name": "Lacey Hess", "Age": 29, "Country": 3, "Address": "Ap #365-8835 Integer St.", "Married": false },
-            { "Name": "Timothy Henson", "Age": 56, "Country": 1, "Address": "911-5143 Luctus Ave", "Married": true },
-            { "Name": "Ramona Benton", "Age": 32, "Country": 3, "Address": "Ap #614-689 Vehicula Street", "Married": false }
+            { "Müşteri": "Otto Clay", "Şantiye": "Karamürsel", "Beton Sınıfı": 1, "Address": "Ap #897-1459 Quam Avenue", "Married": false },
+            { "Müşteri": "Connor Johnston", "Şantiye": "Altınova", "Beton Sınıfı": 2, "Address": "Ap #370-4647 Dis Av.", "Married": true },
+            { "Müşteri": "Lacey Hess", "Şantiye": "Tavşanlı", "Beton Sınıfı": 3, "Address": "Ap #365-8835 Integer St.", "Married": false },
+            { "Müşteri": "Timothy Henson", "Şantiye": "Çiftlikköy", "Beton Sınıfı": 1, "Address": "911-5143 Luctus Ave", "Married": true },
+            { "Müşteri": "Ramona Benton", "Şantiye": "Hersek", "Beton Sınıfı": 5, "Address": "Ap #614-689 Vehicula Street", "Married": false }
         ];
      
-        var countries = [
+        var betonSinifi = [
             { Name: "", Id: 0 },
-            { Name: "United States", Id: 1 },
-            { Name: "Canada", Id: 2 },
-            { Name: "United Kingdom", Id: 3 }
+            { Name: "C16", Id: 1 },
+            { Name: "C20", Id: 2 },
+            { Name: "C25", Id: 3 },
+            { Name: "C30", Id: 4 },
+            { Name: "C35", Id: 5 },
+            { Name: "C40", Id: 6 },
+            { Name: "C45", Id: 7 },
+            { Name: "C50", Id: 8 }
         ];
      
         $("#jsGrid").jsGrid({
             width: "100%",
-            height: "400px",
-     
+            height: "auto",
+
             inserting: true,
             editing: true,
             sorting: true,
             paging: true,
+            noDataContent: "Kayıt bulunamadı.", // Scrollbar olmadan boş veri gösterme
+            pageSize: 50, // Sayfa başına gösterilecek kayıt sayısı
+            pageButtonCount: 5, // Görüntülenecek sayfa düğmesi sayısı
      
             data: clients,
      
             fields: [
-                { name: "Name", type: "text", width: 150, validate: "required" },
-                { name: "Age", type: "number", width: 50 },
-                { name: "Address", type: "text", width: 200 },
-                { name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name" },
-                { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
-                { type: "control" }
+                { name: "Müşteri", type: "text", width: 75, validate: "required", css: "wrap-text" },
+                { name: "Şantiye", type: "text", width: 75, css: "wrap-text" },
+                { name: "Beton Sınıfı", type: "select",  width: 40, items: betonSinifi, valueField: "Id", textField: "Name" },
+                { name: "Fiyat", type: "number", width: 40 },
+                { name: "Brüt, Katkısız, Özel", type: "text", width: 40 },
+                { name: "Pompa Fiyatı", type: "text", width: 40 },
+                { type: "control", width: 40  }
             ]
         });
     </script>
