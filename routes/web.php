@@ -28,7 +28,7 @@ Route::middleware(['auth'])->prefix('/program')->group(function(){ // PAZARLAMAC
 });
 
 Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMACILAR, YONETICELER
-    Route::get('/tum-listesi', [MusteriController::class, 'index'])->name('tum.musteri.listesi');
+    Route::get('/tum-liste', [MusteriController::class, 'index'])->name('tum.musteri.listesi');
     Route::get('/aktif-liste', [MusteriController::class, 'aktifIndex'])->name('aktif.musteri.listesi');
     Route::get('/profil/{id}', [MusteriController::class, 'profile'])->name('musteri.profil');
     Route::get('/aktif-musteri-profil/{id}', [MusteriController::class, 'aktifProfile'])->name('aktif.musteri.profil');

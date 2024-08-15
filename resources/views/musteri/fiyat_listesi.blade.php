@@ -11,6 +11,10 @@
         .jsgrid-grid-body {
             overflow-y: hidden; /* Dikey scroll'u gizlemek için */
         }
+
+        .number-center {
+            text-align: center;
+        }
     </style>
     <!-- jQuery (jsGrid'in bağımlılığı) -->
     <script src="{{asset('https://code.jquery.com/jquery-3.6.0.min.js')}}"></script>
@@ -20,11 +24,16 @@
 
     <script>
         var clients = [
-            { "Müşteri": "Otto Clay", "Şantiye": "Karamürsel", "Beton Sınıfı": 1, "Address": "Ap #897-1459 Quam Avenue", "Married": false },
-            { "Müşteri": "Connor Johnston", "Şantiye": "Altınova", "Beton Sınıfı": 2, "Address": "Ap #370-4647 Dis Av.", "Married": true },
-            { "Müşteri": "Lacey Hess", "Şantiye": "Tavşanlı", "Beton Sınıfı": 3, "Address": "Ap #365-8835 Integer St.", "Married": false },
-            { "Müşteri": "Timothy Henson", "Şantiye": "Çiftlikköy", "Beton Sınıfı": 1, "Address": "911-5143 Luctus Ave", "Married": true },
-            { "Müşteri": "Ramona Benton", "Şantiye": "Hersek", "Beton Sınıfı": 5, "Address": "Ap #614-689 Vehicula Street", "Married": false }
+            { 
+                "Müşteri": "MUSTAFA ÇİMEN / ŞÜKÜR TİCARET", 
+                "Şantiye": "KARAMÜRSEL", 
+                "Beton Sınıfı": 4, 
+                "Fiyat": 2400, 
+                "Katkı (+)": 150, 
+                "Üst Sınıf (+)": 150, 
+                "Alt Sınıf (-)": 50, 
+                "Pompa Fiyatı": 4000
+            },
         ];
      
         var betonSinifi = [
@@ -57,9 +66,11 @@
                 { name: "Müşteri", type: "text", width: 75, validate: "required", css: "wrap-text" },
                 { name: "Şantiye", type: "text", width: 75, css: "wrap-text" },
                 { name: "Beton Sınıfı", type: "select",  width: 40, items: betonSinifi, valueField: "Id", textField: "Name" },
-                { name: "Fiyat", type: "number", width: 40 },
-                { name: "Brüt, Katkısız, Özel", type: "text", width: 40 },
-                { name: "Pompa Fiyatı", type: "text", width: 40 },
+                { name: "Fiyat", type: "number", width: 40, css: "number-center" },
+                { name: "Katkı (+)", type: "number", width: 40, css: "number-center" },
+                { name: "Üst Sınıf (+)", type: "number", width: 40, css: "number-center" },
+                { name: "Alt Sınıf (-)", type: "number", width: 40, css: "number-center" },
+                { name: "Pompa Fiyatı", type: "number", width: 40, css: "number-center" },
                 { type: "control", width: 40  }
             ]
         });
