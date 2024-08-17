@@ -27,6 +27,8 @@
     <link href="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css')}}" rel="stylesheet" />
     <link href="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css')}}" rel="stylesheet" />
 
+    <!-- csrf-token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
 </head>
 

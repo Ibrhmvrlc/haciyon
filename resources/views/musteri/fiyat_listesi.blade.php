@@ -60,7 +60,45 @@
             pageSize: 50, // Sayfa başına gösterilecek kayıt sayısı
             pageButtonCount: 5, // Görüntülenecek sayfa düğmesi sayısı
      
-            data: clients,
+            autoload: true,
+                controller: {
+                    loadData: function() {
+                        return $.ajax({
+                            type: "GET",
+                            url: "{{ route('aktif_musteri.get') }}",
+                            dataType: "json"
+                        });
+                    },
+                    insertItem: function(item) {
+                        return $.ajax({
+                            type: "POST",
+                            url: "{{ route('aktif_musteri.store') }}",
+                            data: item,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                    },
+                    updateItem: function(item) {
+                        return $.ajax({
+                            type: "PUT",
+                            url: "{{ route('aktif_musteri.update', '') }}/" + item.id,
+                            data: item,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                    },
+                    deleteItem: function(item) {
+                        return $.ajax({
+                            type: "DELETE",
+                            url: "{{ route('aktif_musteri.destroy', '') }}/" + item.id,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                    }
+                },
      
             fields: [
                 { name: "Müşteri", type: "text", width: 75, validate: "required", css: "wrap-text" },

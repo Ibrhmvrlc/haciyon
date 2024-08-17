@@ -10,17 +10,12 @@ class AktifMusteriler extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'aktif_musterilers';
+
     protected $fillable = [
         'unvan',
-        'fiyat',
         'tel',
         'mail',
-        'yetkili_bir',
-        'yetkili_bir_tel',
-        'yetkili_bir_mail',
-        'yetkili_iki',
-        'yetkili_iki_tel',
-        'yetkili_iki_mail',
         'fatura_adresi',
         'semt',
         'kent',
@@ -28,4 +23,14 @@ class AktifMusteriler extends Model
         'vergi_dairesi',
         'vergi_numarasi'
     ];
+
+    public function santiye()
+    {
+        return $this->hasMany(AktifMusteriSantiye::class, 'aktif_musteri_id');
+    }
+
+    public function fiyat()
+    {
+        return $this->hasMany(AktifSantiyeFiyat::class, 'aktif_musteri_id');
+    }
 }

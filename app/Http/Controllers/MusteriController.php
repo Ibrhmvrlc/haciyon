@@ -55,10 +55,9 @@ class MusteriController extends Controller
             }
         }   
 
-        $metraj = AktifSantiyeMetraj::where('aktif_santiye_id', $id)->get();
          
         return view('musteri.aktif_profil', compact(
-            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'dolu_santiye_sayisi', 'metraj'
+            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'dolu_santiye_sayisi'
         ));
     }
 
@@ -338,9 +337,11 @@ class MusteriController extends Controller
         return redirect()->back();
     }
 
-    public function fiyatListesi(){
+    public function fiyatListesiIndex(){
         $title = 'Fiyat Listesi';
 
         return view('musteri.fiyat_listesi', compact('title'));
     }
+
+
 }
