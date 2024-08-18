@@ -6,20 +6,21 @@
  use Carbon\Carbon;
  use App\Models\AktifSantiyeFiyat;
  use App\Models\AktifSantiyeMetraj;
+ use App\Models\Urunler;
 
 @endphp
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="container-fluid">
-    <div class="row page-titles mx-0">
-        <div class="col-sm-6 p-md-0">
+    <div class="row page-titles mx-0 p-4">
+        <div class="col-sm-10 p-md-0">
             <div class="welcome-text">
-                <h4>
-                    {{$aktif_musteri->unvan}}
-                </h4>
+                <h3 style="word-wrap: break-word;">
+                    <b>{{$aktif_musteri->unvan}}</b>
+                </h3>
                 <p class="mb-0">Unvanı yazılı müşteri ile ilgili kısa bilgi verilecek.</p>
             </div>
         </div>
-        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <div class="col-sm-2 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
             <a href="{{route('aktif.musteri.listesi')}}" class="btn btn-light">
                 <span class="ti-angle-left"></span> Listeye dön
             </a>
@@ -29,98 +30,22 @@
     <div class="row">
         <div class="col-lg-12">
             @if ($errors->any())
-                <div class="col-lg-12">
-                    <div class="card alert alert-danger">
-                        <div class="card-body">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                <div class="alert alert-danger left-icon-big alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                    </button>
+                    <div class="media">
+                        <div class="alert-left-icon-big">
+                            <span><i class="mdi mdi-alert"></i></span>
                         </div>
+                        @foreach ($errors->all() as $error)
+                        <div class="media-body">
+                            <h5 class="mt-1 mb-1">HATA!</h5>
+                            <p>{{ $error }}</p>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             @endif
-        </div>
-    </div>
-    <!-- row -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="profile">
-                <div class="profile-head">
-                    <div class="profile-info">
-                        <div class="row justify-content-start">
-                            <div class="col-xl-8">
-                                <div class="row">
-                                    <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
-                                        @if ($aktif_musteri->yetkili_bir)
-                                        <div class="profile-name">
-                                            <h4 class="text-primary">{{$aktif_musteri->yetkili_bir}}</h4>
-                                            <p>Yetkili</p>
-                                        </div>
-                                        @elseif ($aktif_musteri->yetkili_iki)
-                                        <div class="profile-name">
-                                            <h4 class="text-primary">{{$aktif_musteri->yetkili_iki}}</h4>
-                                            <p>Yetkili</p>
-                                        </div>
-                                        @elseif ($aktif_musteri->yetkili_uc)
-                                        <div class="profile-name">
-                                            <h4 class="text-primary">{{$aktif_musteri->yetkili_uc}}</h4>
-                                            <p>Yetkili</p>
-                                        </div>
-                                        @else
-                                        <div class="profile-name">
-                                            <h4 class="text-primary">ATANMAMIŞ</h4>
-                                            <p>Yetkili</p>
-                                        </div>
-                                        @endif
-                                    </div>
-                                    <div class="col-xl-4 col-sm-4 prf-col">
-                                        @if ($aktif_musteri->tel)
-                                        <div class="profile-call">
-                                            <h4 class="text-muted">{{$aktif_musteri->tel}}</h4>
-                                            <p>Genel İletişim</p>
-                                        </div>
-                                        @elseif ($aktif_musteri->yetkili_bir_tel)
-                                        <div class="profile-call">
-                                            <h4 class="text-muted">{{$aktif_musteri->yetkili_bir_tel}}</h4>
-                                            @if ($aktif_musteri->yetkili_bir)
-                                            <p>{{$aktif_musteri->yetkili_bir}} İletişim</p>
-                                            @else
-                                            <p>Yetkili İletişim</p>
-                                            @endif
-                                        </div>
-                                        @elseif ($aktif_musteri->yetkili_iki_tel)
-                                        <div class="profile-call">
-                                            <h4 class="text-muted">{{$aktif_musteri->yetkili_iki_tel}}</h4>
-                                            @if ($aktif_musteri->yetkili_iki)
-                                            <p>{{$aktif_musteri->yetkili_iki}} İletişim</p>
-                                            @else
-                                            <p>Yetkili İletişim</p>
-                                            @endif
-                                        </div>
-                                        @elseif ($aktif_musteri->yetkili_uc_tel)
-                                        <div class="profile-call">
-                                            <h4 class="text-muted">{{$aktif_musteri->yetkili_uc_tel}}</h4>
-                                            @if ($aktif_musteri->yetkili_uc)
-                                            <p>{{$aktif_musteri->yetkili_uc}} İletişim</p>
-                                            @else
-                                            <p>Yetkili İletişim</p>
-                                            @endif
-                                        </div>
-                                        @else
-                                        <div class="profile-call">
-                                            <h4 class="text-muted">ATANMAMIŞ</h4>
-                                            <p>İletişim</p>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="row">
@@ -255,29 +180,91 @@
                             <div class="tab-content">
 
                                 <div id="genelbilgi" class="tab-pane fade active show">
-                                    <h4 class="text-primary mb-4 mt-4">Şantiye Fiyat Bilgileri</h4>
+                                    <h4 class="text-primary mb-3 mt-4"><b>Şantiye Fiyat Bilgileri</b></h4>
                                     <div class="profile-personal-info mt-4" id="container">
+                                        <div class="row">
                                         @foreach ($aktif_santiye as $santiye)
-                                        <div class="row mb-4" data-metraj="">
-                                            <div class="col-md-5 col-7">
-                                                <h6 class="f-w-500">{{$santiye->santiye}}<span class="pull-right">:</span>
-                                                </h6>
-                                            </div>
-                                            <div class="col-md-7 col-5">
-                                                <span>
-                                                @php
-                                                   $fiyat = AktifSantiyeFiyat::where('santiye_id', $santiye->id)->get(); 
-                                                @endphp
-                                                @if (isset($fiyat->first()->fiyat))
-                                                {{$fiyat->first()->fiyat}} <small> +KDV</small>
-                                                @else
-                                                Belirtilmemiş
-                                                @endif
-                                                </span>
+                                        @php
+                                            $fiyat = AktifSantiyeFiyat::where('santiye_id', $santiye->id)->get();
+                                            $bs = Urunler::where('id', $fiyat->first()->beton_sinifi)->get();
+                                        @endphp
+                                        <div class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6" data-metraj="">
+                                            <div class="card bg-light">
+                                                <div class="card-header" style="margin-bottom: -15px;">
+                                                    <h5 class="card-title">{{$santiye->santiye}}</h5>
+                                                </div>
+                                                <div class="card-body mb-0">
+                                                    <div>
+                                                        <span>{{$bs->first()->adi}} Fiyatı : </span>
+                                                        <span style="font-size: 16.5px;"> 
+                                                            <b>
+                                                            @if (isset($fiyat->first()->fiyat))
+                                                            {{$fiyat->first()->fiyat}} <small> +KDV</small>
+                                                            @else
+                                                            Belirtilmemiş
+                                                            @endif
+                                                            </b>
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <span>Pompa Bedeli : </span>
+                                                        <span style="font-size: 14.5px;"> 
+                                                            <b>
+                                                            xxxxx
+                                                            </b>
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <span>Katkı Farkı : </span>
+                                                        <span style="font-size: 14.5px;"> 
+                                                            <b>
+                                                            @if (isset($fiyat->first()->katki_farki))
+                                                             +{{$fiyat->first()->katki_farki}}
+                                                            @else
+                                                            Belirtilmemiş
+                                                            @endif
+                                                            </b>
+                                                        </span>
+                                                        &nbsp;
+                                                        @if (isset($fiyat->first()->ozel_farki))
+                                                        <span>Özel Farkı : </span>
+                                                        <span style="font-size: 14.5px;"> 
+                                                            <b>
+                                                             +{{$fiyat->first()->ozel_farki}}
+                                                            </b>
+                                                        </span>
+                                                        @else
+                                                        @endif
+                                                    </div>
+                                                    <div>
+                                                        <span title="C30'dan üst sınıfa çıktıkça">Artış : </span>
+                                                        <span title="C30'dan üst sınıfa çıktıkça" style="font-size: 14.5px;"> 
+                                                            <b>
+                                                            @if (isset($fiyat->first()->artis))
+                                                             +{{$fiyat->first()->artis}}
+                                                            @else
+                                                            Belirtilmemiş
+                                                            @endif
+                                                            </b>
+                                                        </span>
+                                                        &nbsp;
+                                                        <span title="C30'dan alt sınıfa indikçe">Azalış : </span>
+                                                        <span title="C30'dan alt sınıfa indikçe" style="font-size: 14.5px;"> 
+                                                            <b>
+                                                            @if (isset($fiyat->first()->azalis))
+                                                             -{{$fiyat->first()->azalis}}
+                                                            @else
+                                                            Belirtilmemiş
+                                                            @endif
+                                                            </b>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="card-footer bg-transparent border-0">Açıklama yazılabilir</div> -->
                                             </div>
                                         </div>
                                         @endforeach
-
+                                        </div>
                                         <script>
                                             // Function to sort divs based on data-metraj attribute
                                             function sortDivsByMetraj() {
@@ -299,128 +286,146 @@
                                             sortDivsByMetraj();
                                         </script>
 
-                                        <h4 class="text-primary mb-4">Fatura Bilgileri</h4>
-                                        <div class="row mb-4">
-                                            <div class="col-4 col-md-3">
-                                                <h5 class="f-w-500">Ünvan <span class="pull-right">:</span>
-                                                </h5>
-                                            </div>
-                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->unvan}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-4 col-md-3">
-                                                <h5 class="f-w-500">Adresi <span class="pull-right">:</span>
-                                                </h5>
-                                            </div>
-                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->fatura_adresi}} {{$aktif_musteri->sokak}} {{$aktif_musteri->semt}} {{$aktif_musteri->kent}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-4 col-md-3">
-                                                <h5 class="f-w-500">VD / VN <span class="pull-right">:</span></h5>
-                                            </div>
-                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->vergi_dairesi}} / {{$aktif_musteri->vergi_numarasi}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-4 col-md-3">
-                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
-                                                </h5>
-                                            </div>
-                                            @if ($aktif_musteri->mail)
-                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->mail}}</span></div>
-                                            @else
-                                            <div class="col-8 col-md-9"><span>Mail adresi bulunamadı.</span></div>
-                                            @endif
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-4 col-md-3">
-                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
-                                            </div>
-                                            @if ($aktif_musteri->tel)
-                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->tel}}</span></div>
-                                            @else
-                                            <div class="col-8 col-md-9"><span>Telefon numarası bulunamadı.</span></div>
-                                            @endif
-                                        </div>
 
-                                        <h4 class="text-primary mb-4">İletişim Bilgileri</h4>
+                                        <h4 class="text-primary mb-3"><b>Fatura Bilgileri</b></h4>
                                         <div class="row">
-                                            @if ($aktif_musteri->yetkili_bir)
-                                            <div class="col-xl-6 col-lg-6">
-                                                <h5 title="Genel Müdür, Mal sahibi, Mühendis vs."><b><u>Yetkili - 1</u></b></h5>
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-md-5">
-                                                        <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
-                                                        </h5>
+                                            <div class="col-xl-12 col-xxl-12 col-lg-12 col-sm-12">
+                                                <div class="card bg-light">
+                                                    <div class="card-body mb-0">
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-3">
+                                                                <h5 class="f-w-500">Ünvan <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->unvan}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-3">
+                                                                <h5 class="f-w-500">Adresi <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->fatura_adresi}} {{$aktif_musteri->sokak}} {{$aktif_musteri->semt}} {{$aktif_musteri->kent}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-3">
+                                                                <h5 class="f-w-500">VD / VN <span class="pull-right">:</span></h5>
+                                                            </div>
+                                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->vergi_dairesi}} / {{$aktif_musteri->vergi_numarasi}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-3">
+                                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->mail)
+                                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->mail}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-9"><span>Mail adresi bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-3">
+                                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->tel)
+                                                            <div class="col-8 col-md-9"><span>{{$aktif_musteri->tel}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-9"><span>Telefon numarası bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+
+
+                                       
+                                       
+
+                                        <h4 class="text-primary mb-3"><b>İletişim Bilgileri</b></h4>
+                                        <div class="row">
+                                            <div class="col-xl-12 col-xxl-12 col-lg-12 col-sm-12">
+                                                <div class="card bg-light">
                                                     @if ($aktif_musteri->yetkili_bir)
-                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir}}</span></div>
-                                                    @else
-                                                    <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
-                                                    @endif
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-md-5">
-                                                        <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
-                                                        </h5>
+                                                    <div class="col-xl-6 col-lg-6">
+                                                        <h5 title="Genel Müdür, Mal sahibi, Mühendis vs."><b><u>Yetkili - 1</u></b></h5>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-5">
+                                                                <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->yetkili_bir)
+                                                            <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-5">
+                                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->yetkili_bir_mail)
+                                                            <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir_mail}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-5">
+                                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->yetkili_bir_tel)
+                                                            <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir_tel}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                    @if ($aktif_musteri->yetkili_bir_mail)
-                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir_mail}}</span></div>
-                                                    @else
-                                                    <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
                                                     @endif
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-md-5">
-                                                        <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
-                                                    </div>
-                                                    @if ($aktif_musteri->yetkili_bir_tel)
-                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_bir_tel}}</span></div>
-                                                    @else
-                                                    <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            @endif
-                                            @if ($aktif_musteri->yetkili_iki)
-                                            <div class="col-xl-6 col-lg-6">
-                                                <h5 title="Muhasebe, Şef, Kalfa vs."><b><u>Yetkili - 2</u></b></h5>
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-md-5">
-                                                        <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
-                                                        </h5>
-                                                    </div>
                                                     @if ($aktif_musteri->yetkili_iki)
-                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki}}</span></div>
-                                                    @else
-                                                    <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
-                                                    @endif
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-md-5">
-                                                        <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
-                                                        </h5>
+                                                    <div class="col-xl-6 col-lg-6">
+                                                        <h5 title="Muhasebe, Şef, Kalfa vs."><b><u>Yetkili - 2</u></b></h5>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-5">
+                                                                <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->yetkili_iki)
+                                                            <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-5">
+                                                                <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                                </h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->yetkili_iki_mail)
+                                                            <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki_mail}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col-4 col-md-5">
+                                                                <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
+                                                            </div>
+                                                            @if ($aktif_musteri->yetkili_iki_tel)
+                                                            <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki_tel}}</span></div>
+                                                            @else
+                                                            <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                    @if ($aktif_musteri->yetkili_iki_mail)
-                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki_mail}}</span></div>
-                                                    @else
-                                                    <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
-                                                    @endif
-                                                </div>
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-md-5">
-                                                        <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
-                                                    </div>
-                                                    @if ($aktif_musteri->yetkili_iki_tel)
-                                                    <div class="col-8 col-md-7"><span>{{$aktif_musteri->yetkili_iki_tel}}</span></div>
-                                                    @else
-                                                    <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
                                                     @endif
                                                 </div>
                                             </div>
-                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -809,20 +814,54 @@
                                                     $sayac_bir = 1;
                                                 @endphp
                                                 @foreach ($aktif_santiye as $santiye)
+                                                @php
+                                                    $fiyat = AktifSantiyeFiyat::where('santiye_id', $santiye->id)->get();
+                                                    $bs = Urunler::where('id', $fiyat->first()->beton_sinifi)->get();
+                                                @endphp
+                                                <div class="form-header">
+                                                    <h5>{{$sayac_bir}}. Şantiye</h5>
+                                                </div>
                                                 <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label>{{$sayac_bir}}. Şantiye</label>
+                                                    <div class="form-group col-md-4">
+                                                        <label>Bölge/Şantiye Adı</label>
                                                         <input type="text" class="form-control" value="{{$santiye->santiye}}" name="santiye_{{$santiye->id}}">
                                                     </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label>{{$sayac_bir}}. Şantiye Fiyatı (<small>+KDV</small>)</label>
-                                                        @php
-                                                        $fiyat = AktifSantiyeFiyat::where('santiye_id', $santiye->id)->get();
-                                                        @endphp
+                                                    <div class="form-group col-md-2">
+                                                        <label>Beton Sınıfı</label>
+                                                        <select name="santiye_{{$santiye->id}}_bs" class="form-control" required>
+                                                            <option value="1" @if ($bs->first()->id == 1) selected @endif >C16/20</option>
+                                                            <option value="2" @if ($bs->first()->id == 2) selected @endif  >C20/25</option>
+                                                            <option value="3" @if ($bs->first()->id == 3) selected @endif >C25/30</option>
+                                                            <option value="4" @if ($bs->first()->id == 4) selected @endif  >C30/37</option>
+                                                            <option value="5" @if ($bs->first()->id == 5) selected @endif  >C35/45</option>
+                                                            <option value="6" @if ($bs->first()->id == 6) selected @endif  >C40/50</option>
+                                                            <option value="7" @if ($bs->first()->id == 7) selected @endif  >C45/55</option>
+                                                            <option value="8" @if ($bs->first()->id == 8) selected @endif  >C50/60</option>
+                                                            <option value="9" @if ($bs->first()->id == 9) selected @endif  >C55/67</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label>Fiyatı (<small>+KDV</small>)</label>
                                                         @if (isset($fiyat->first()->fiyat))
                                                         <input type="number" class="form-control" value="{{$fiyat->first()->fiyat}}" name="santiye_{{$santiye->id}}_fiyat" min="0" >
                                                         @else
                                                         <input type="number" class="form-control" value="0" name="santiye_{{$santiye->id}}_fiyat" min="0" >
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group col-md-2" >
+                                                        <label>Pompa Bedeli (<small>+KDV</small>)</label>
+                                                        @if (isset($fiyat->first()->pb))
+                                                        <input type="number" class="form-control" value="{{$fiyat->first()->pb}}" name="santiye_{{$santiye->id}}_pb" min="0" >
+                                                        @else
+                                                        <input type="number" class="form-control" value="" name="santiye_{{$santiye->id}}_pb" min="0" >
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group col-md-2" >
+                                                        <label>Pompa Sınırı (m³)</label>
+                                                        @if (isset($fiyat->first()->pb_siniri))
+                                                        <input type="number" class="form-control" value="{{$fiyat->first()->pb_siniri}}" name="santiye_{{$santiye->id}}_pbsiniri" min="0" >
+                                                        @else
+                                                        <input type="number" class="form-control" value="" name="santiye_{{$santiye->id}}_pbsiniri" min="0" >
                                                         @endif
                                                     </div>
                                                 </div>
@@ -830,7 +869,6 @@
                                                     $sayac_bir++;
                                                 @endphp
                                                 @endforeach
-                                            
                                                 <button class="btn btn-success" type="submit">Güncelle</button>
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#santiyeEkle"  title="Müşterinin max 17 şantiyesi bulunabilir.">Yeni Ekle</button>
@@ -849,12 +887,12 @@
                                                             <div class="modal-body">
                                                                 <div class="form-group col-md-12">
                                                                     <label>Şantiye/Bölge Adı</label>
-                                                                    <input type="text" class="form-control" name="yeni_santiye">
+                                                                    <input type="text" class="form-control" name="yeni_santiye" required>
                                                                 </div>
                                                                 <div class="form-row col-md-12">
                                                                     <div class="form-group col-md-4">
                                                                         <label>Beton Sınıfı</label>
-                                                                        <select name="yeni_santiye_bs" class="form-control">
+                                                                        <select name="yeni_santiye_bs" class="form-control" required>
                                                                             <option value="" selected disabled></option>
                                                                             <option value="1" >C16/20</option>
                                                                             <option value="2" >C20/25</option>
@@ -869,7 +907,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label>Fiyatı (<small>+KDV</small>)</label>
-                                                                        <input type="number" class="form-control" name="yeni_santiye_fiyat" min="0" >
+                                                                        <input type="number" class="form-control" name="yeni_santiye_fiyat" min="0" required >
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label>Pompa Bedeli</label>
@@ -879,19 +917,19 @@
                                                                 <div class="form-row col-md-12">
                                                                     <div class="form-group col-md-3">
                                                                         <label>Katkı +</label>
-                                                                        <input type="number" class="form-control" name="yeni_santiye_katki" min="0" >
+                                                                        <input type="number" class="form-control" name="yeni_santiye_katki" min="0" required >
                                                                     </div>
                                                                     <div class="form-group col-md-3">
                                                                         <label>Özel Farkı +</label>
-                                                                        <input type="number" class="form-control" name="yeni_santiye_ozel" min="0" >
+                                                                        <input type="number" class="form-control" name="yeni_santiye_ozel" min="0" required >
                                                                     </div>
                                                                     <div class="form-group col-md-3">
                                                                         <label>Artış +</label>
-                                                                        <input type="number" class="form-control" name="yeni_santiye_artis" min="0" >
+                                                                        <input type="number" class="form-control" name="yeni_santiye_artis" min="0" required >
                                                                     </div>
                                                                     <div class="form-group col-md-3">
                                                                         <label>Azalış -</label>
-                                                                        <input type="number" class="form-control" name="yeni_santiye_azalis" min="0" >
+                                                                        <input type="number" class="form-control" name="yeni_santiye_azalis" min="0" required >
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -933,7 +971,7 @@
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-4">
-                                                        <label>e-Posta Adresi</label>
+                                                        <label>E-mail Adresi</label>
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->mail}}" name="email">
                                                     </div>
                                                     <div class="form-group col-md-4">

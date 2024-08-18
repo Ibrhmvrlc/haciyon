@@ -33,9 +33,10 @@ class MusteriController extends Controller
         $notes = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', false)->get();
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
         $aktif_santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->get();
-         
+        $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $id)->get();
+
         return view('musteri.aktif_profil', compact(
-            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye'
+            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'fiyatlar'
         ));
     }
 
