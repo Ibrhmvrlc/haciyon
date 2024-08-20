@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AktifMusteriler;
 use App\Models\AktifMusteriSantiye;
+use App\Models\AktifMusteriYetkililer;
 use App\Models\AktifSantiyeFiyat;
 use App\Models\AktifSantiyeMetraj;
 use App\Models\Musteri;
@@ -34,9 +35,10 @@ class MusteriController extends Controller
         $tamamlanan_notlar = MusteriNotlari::where('musteri_id', $id)->where('tamamlandi', true)->get();
         $aktif_santiye = AktifMusteriSantiye::where('aktif_musteri_id', $id)->get();
         $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $id)->get();
+        $yetkililer = AktifMusteriYetkililer::where('aktif_musteri_id', $id)->get();
 
         return view('musteri.aktif_profil', compact(
-            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'fiyatlar'
+            'title', 'aktif_musteri', 'notes', 'tamamlanan_notlar', 'aktif_santiye', 'fiyatlar', 'yetkililer'
         ));
     }
 
@@ -83,8 +85,24 @@ class MusteriController extends Controller
         $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $id)->get();
 
         foreach($fiyatlar as $fiyat) {
-            if($fiyat->fiyat != $request->input('santiye_' . $fiyat->id . '_fiyat')){
+            if(
+                $fiyat->beton_sinifi != $request->input('santiye_' . $fiyat->id . '_bs') OR
+                $fiyat->fiyat != $request->input('santiye_' . $fiyat->id . '_fiyat') OR
+                $fiyat->pb != $request->input('santiye_' . $fiyat->id . '_pb') OR
+                $fiyat->pb_siniri != $request->input('santiye_' . $fiyat->id . '_pbsiniri') OR
+                $fiyat->katki_farki != $request->input('santiye_' . $fiyat->id . '_katki') OR
+                $fiyat->ozel_farki != $request->input('santiye_' . $fiyat->id . '_ozel') OR
+                $fiyat->artis != $request->input('santiye_' . $fiyat->id . '_artis') OR
+                $fiyat->azalis != $request->input('santiye_' . $fiyat->id . '_azalis')
+                ){
+                $fiyat->beton_sinifi = $request->input('santiye_' . $fiyat->id . '_bs');
                 $fiyat->fiyat = $request->input('santiye_' . $fiyat->id . '_fiyat');
+                $fiyat->pb = $request->input('santiye_' . $fiyat->id . '_pb');
+                $fiyat->pb_siniri = $request->input('santiye_' . $fiyat->id . '_pbsiniri');
+                $fiyat->katki_farki = $request->input('santiye_' . $fiyat->id . '_katki');
+                $fiyat->ozel_farki = $request->input('santiye_' . $fiyat->id . '_ozel');
+                $fiyat->artis = $request->input('santiye_' . $fiyat->id . '_artis');
+                $fiyat->azalis = $request->input('santiye_' . $fiyat->id . '_azalis');
                 $fiyat->save();
             }
         }
