@@ -361,7 +361,7 @@
                                                 @foreach ($yetkililer as $yetkili)
                                                 @if (isset($yetkili->adi_soyadi) OR isset($yetkili->adi_soyadi) OR isset($yetkili->tel))
                                                 <div class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6">
-                                                    <div class="card bg-light">
+                                                    <div class="yok">
                                                         <div class="card-header">
                                                             <h5 class="card-title">Yetkili - {{$sayac_uc}}</h5>
                                                         </div>
@@ -400,7 +400,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> 
                                                 @php
                                                 $sayac_uc++;
                                                 @endphp
