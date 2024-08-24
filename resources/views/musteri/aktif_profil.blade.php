@@ -357,41 +357,48 @@
                                                 @php
                                                 $sayac_uc = 1;
                                                 @endphp
+                                                <div class="row">
                                                 @foreach ($yetkililer as $yetkili)
                                                 @if (isset($yetkili->adi_soyadi) OR isset($yetkili->adi_soyadi) OR isset($yetkili->tel))
-                                                <div class="col-xl-6 col-lg-6">
-                                                    <h5 title="Genel Müdür, Mal sahibi, Mühendis vs."><b><u>Yetkili - {{$sayac_uc}}</u></b></h5>
-                                                    <div class="row mb-4">
-                                                        <div class="col-4 col-md-5">
-                                                            <h5 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
-                                                            </h5>
+                                                <div class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6">
+                                                    <div class="card bg-light">
+                                                        <div class="card-header">
+                                                            <h5 class="card-title">Yetkili - {{$sayac_uc}}</h5>
                                                         </div>
-                                                        @if (isset($yetkili->adi_soyadi))
-                                                        <div class="col-8 col-md-7"><span>{{$yetkili->adi_soyadi}}</span></div>
-                                                        @else
-                                                        <div class="col-8 col-md-7"><span>Yetkili bilgisi bulunamadı.</span></div>
-                                                        @endif
-                                                    </div>
-                                                    <div class="row mb-4">
-                                                        <div class="col-4 col-md-5">
-                                                            <h5 class="f-w-500">E-posta <span class="pull-right">:</span>
-                                                            </h5>
+                                                        <div class="card-body mb-0">
+                                                            <div class="row mb-4">
+                                                                <div class="col-4 col-md-4">
+                                                                    <h6 class="f-w-500">Ad Soyad <span class="pull-right">:</span>
+                                                                    </h6>
+                                                                </div>
+                                                                @if (isset($yetkili->adi_soyadi) AND $yetkili->adi_soyadi != NULL)
+                                                                <div class="col-8 col-md-8"><span>{{$yetkili->adi_soyadi}}</span></div>
+                                                                @else
+                                                                <div class="col-8 col-md-8"><span>- Bulunamadı -</span></div>
+                                                                @endif
+                                                            </div>
+                                                            <div class="row mb-4">
+                                                                <div class="col-4 col-md-4">
+                                                                    <h6 class="f-w-500">E-posta <span class="pull-right">:</span>
+                                                                    </h6>
+                                                                </div>
+                                                                @if (isset($yetkili->mail) AND $yetkili->mail != NULL)
+                                                                <div class="col-8 col-md-8"><span>{{$yetkili->mail}}</span></div>
+                                                                @else
+                                                                <div class="col-8 col-md-8"><span>- Bulunamadı -</span></div>
+                                                                @endif
+                                                            </div>
+                                                            <div class="row mb-4">
+                                                                <div class="col-4 col-md-4">
+                                                                    <h6 class="f-w-500">Telefon <span class="pull-right">:</span></h6>
+                                                                </div>
+                                                                @if (isset($yetkili->tel) AND $yetkili->tel != NULL)
+                                                                <div class="col-8 col-md-8"><span>{{$yetkili->tel}}</span></div>
+                                                                @else
+                                                                <div class="col-8 col-md-8"><span>- Bulunamadı -</span></div>
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                        @if (isset($yetkili->mail))
-                                                        <div class="col-8 col-md-7"><span>{{$yetkili->mail}}</span></div>
-                                                        @else
-                                                        <div class="col-8 col-md-7"><span>Mail adresi bulunamadı.</span></div>
-                                                        @endif
-                                                    </div>
-                                                    <div class="row mb-4">
-                                                        <div class="col-4 col-md-5">
-                                                            <h5 class="f-w-500">Telefon <span class="pull-right">:</span></h5>
-                                                        </div>
-                                                        @if (isset($yetkili->tel))
-                                                        <div class="col-8 col-md-7"><span>{{$yetkili->tel}}</span></div>
-                                                        @else
-                                                        <div class="col-8 col-md-7"><span>Telefon numarası bulunamadı.</span></div>
-                                                        @endif
                                                     </div>
                                                 </div>
                                                 @php
@@ -404,9 +411,9 @@
                                                 @break
                                                 @endif
                                                 @endforeach
+                                                </div>
                                             </div>
                                         </div>
-                                        
                                     </div>
                                 </div>
 
@@ -1002,43 +1009,39 @@
                                             <h4 class="text-primary mt-4">İletişim Bilgileri Düzenle</h4>
                                             <form method="POST" action="{{route('iletisim.bilgileri.guncelle', $aktif_musteri->id)}}"> <!-- ILETISIM BILGILERI DUZENLE FORMU -->
                                                 @csrf
-                                                <h5 title="Genel Müdür, Mal sahibi, Mühendis vs.">Yetkili - 1</h5>
+                                                @php
+                                                    $sayac_dort = 1;
+                                                @endphp
+                                                @foreach ($yetkililer as $yetkili)
+                                                <h5>
+                                                    Yetkili - {{$sayac_dort}}
+                                                </h5>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-4">
                                                         <label>Ad Soyad</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir}}" name="birAdSoyad">
+                                                        <input type="text" class="form-control" value="{{$yetkili->adi_soyadi}}" name="yet{{$yetkili->id}}AdSoyad">
                                                     </div>
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label>Telefon Numarası</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_tel}}" name="birTel">
+                                                        <input type="text" class="form-control" value="{{$yetkili->tel}}" name="yet{{$yetkili->id}}Tel">
                                                     </div>
                                                     <div class="form-group col-md-4">
                                                         <label>E-Posta Adresi</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_bir_mail}}" name="birMail">
+                                                        <input type="text" class="form-control" value="{{$yetkili->mail}}" name="yet{{$yetkili->id}}Mail">
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label>&nbsp;</label>
+                                                        <div><a href="{{route('yetkili.sil', $yetkili->id)}}" class="btn btn-danger"><span class="ti-trash"></span></a></div>
                                                     </div>
                                                 </div>
-
-                                                @if ($aktif_musteri->yetkili_iki)
-                                                <h5 title="Muhasebe, Şef, Kalfa vs.">Yetkili - 2</h5>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-4">
-                                                        <label>Ad Soyad</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki}}" name="ikiAdSoyad">
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label>Telefon Numarası</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_tel}}" name="ikiTel">
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label>E-Posta Adresi</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->yetkili_iki_mail}}" name="ikiMail">
-                                                    </div>
-                                                </div>
-                                                @endif
+                                                @php
+                                                    $sayac_dort++;
+                                                @endphp
+                                                @endforeach
 
                                                 <button class="btn btn-success" type="submit">Güncelle</button>
                                                 <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#yetkiliEkle" title="Müşteriyi max 2 yetkili temsil edebilir.">Yeni Ekle</button>
+                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#yetkiliEkle">Yeni Ekle</button>
                                             </form>
                                             <!-- Modal -->
                                             <div class="modal fade" id="yetkiliEkle">

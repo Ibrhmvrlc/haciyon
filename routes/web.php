@@ -37,6 +37,7 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::post('/santiye-fiyat-guncelle/{id}', [MusteriController::class, 'santiyeFiyatGuncelle'])->name('santiye.fiyat.guncelle');
     Route::post('/yeni-santiye-ekle/{id}', [MusteriController::class, 'yeniSantiyeEkle'])->name('santiye.ekle');
     Route::post('/yeni-yetkili-ekle/{id}', [MusteriController::class, 'yetkiliEkle'])->name('yetkili.ekle');
+    Route::get('/yetkili-sil/{id}', [MusteriController::class, 'yetkiliSil'])->name('yetkili.sil');
     Route::post('/fatura-bilgileri-guncelle/{id}', [MusteriController::class, 'faturaBilgileriGuncelle'])->name('fatura.bilgileri.guncelle');
     Route::post('/iletisim-bilgileri-guncelle/{id}', [MusteriController::class, 'iletisimBilgileriGuncelle'])->name('iletisim.bilgileri.guncelle');
     Route::get('/fiyat-listesi', [MusteriController::class, 'fiyatListesiIndex'])->name('fiyat.listesi');

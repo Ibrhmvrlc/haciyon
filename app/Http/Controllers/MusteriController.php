@@ -11,6 +11,8 @@ use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class MusteriController extends Controller
 {
     public function index() {
@@ -126,14 +128,18 @@ class MusteriController extends Controller
     }
 
     public function iletisimBilgileriGuncelle(Request $request, $id){
-        $iletisim_bilgileri = AktifMusteriler::findOrFail($id);
-        $iletisim_bilgileri->yetkili_bir = $request->input('birAdSoyad');
-        $iletisim_bilgileri->yetkili_bir_tel = $request->input('birTel');
-        $iletisim_bilgileri->yetkili_bir_mail = $request->input('birMail');
-        $iletisim_bilgileri->yetkili_iki = $request->input('ikiAdSoyad');
-        $iletisim_bilgileri->yetkili_iki_tel = $request->input('ikiTel');
-        $iletisim_bilgileri->yetkili_iki_mail = $request->input('ikiMail');
-        $iletisim_bilgileri->save();
+        $iletisim_bilgileri = AktifMusteriYetkililer::where('aktif_musteri_id', $id)->get();
+
+        foreach($iletisim_bilgileri as $bilgiler){
+            if( $bilgiler->adi_soyadi != $request->input('yet' . $bilgiler->id . 'AdSoyad') or
+            $bilgiler->tel != $request->input('yet' . $bilgiler->id . 'Tel') or
+            $bilgiler->mail != $request->input('yet' . $bilgiler->id . 'Mail')){
+                $bilgiler->adi_soyadi = $request->input('yet' . $bilgiler->id . 'AdSoyad');
+                $bilgiler->tel = $request->input('yet' . $bilgiler->id . 'Tel');
+                $bilgiler->mail = $request->input('yet' . $bilgiler->id . 'Mail');
+                $bilgiler->save();
+            }
+        }
 
         return redirect()->back();
     }
@@ -169,21 +175,29 @@ class MusteriController extends Controller
     }
 
     public function yetkiliEkle(Request $request, $id){
-        $iletisim_bilgileri = AktifMusteriler::findOrFail($id);
+        $kontrol = AktifMusteriYetkililer::where('aktif_musteri_id', $id)->
+        where('adi_soyadi', $request->input('yeni_adSoyad'))->
+        where('tel', $request->input('yeni_tel'))->
+        where('mail', $request->input('yeni_mail'))->get();
 
-        if($iletisim_bilgileri->yetkili_bir == null OR $iletisim_bilgileri->yetkili_bir == ''){
-            $iletisim_bilgileri->yetkili_bir = $request->input('yeni_adSoyad');
-            $iletisim_bilgileri->yetkili_bir_tel = $request->input('yeni_tel');
-            $iletisim_bilgileri->yetkili_bir_mail = $request->input('yeni_mail');
-        }elseif($iletisim_bilgileri->yetkili_iki == null OR $iletisim_bilgileri->yetkili_iki == ''){
-            $iletisim_bilgileri->yetkili_iki = $request->input('yeni_adSoyad');
-            $iletisim_bilgileri->yetkili_iki_tel = $request->input('yeni_tel');
-            $iletisim_bilgileri->yetkili_iki_mail = $request->input('yeni_mail');
+        if(isEmpty($kontrol)){
+            $yetkili = new AktifMusteriYetkililer();
+            $yetkili->aktif_musteri_id = $id;
+            $yetkili->adi_soyadi = mb_strtoupper($request->input('yeni_adSoyad'), 'UTF-8');
+            $yetkili->tel = $request->input('yeni_tel');
+            $yetkili->mail =$request->input('yeni_mail');
+            $yetkili->save();   
         }else{
-            return redirect()->back()->with('error', 'Yetkili limiti dolmuştur.');
+            return redirect()->back()->withErrors('Bu yetkili daha önce eklenmiş.');
         }
-        $iletisim_bilgileri->save();
+       
+        return redirect()->back();
+    }
 
+    public function yetkiliSil($id){
+        $sil = AktifMusteriYetkililer::findOrFail($id);
+        $sil->delete();
+        
         return redirect()->back();
     }
 
@@ -192,6 +206,4 @@ class MusteriController extends Controller
 
         return view('musteri.fiyat_listesi', compact('title'));
     }
-
-
 }
