@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MusteriController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\ZamAPIController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,5 +41,16 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::get('/yetkili-sil/{id}', [MusteriController::class, 'yetkiliSil'])->name('yetkili.sil');
     Route::post('/fatura-bilgileri-guncelle/{id}', [MusteriController::class, 'faturaBilgileriGuncelle'])->name('fatura.bilgileri.guncelle');
     Route::post('/iletisim-bilgileri-guncelle/{id}', [MusteriController::class, 'iletisimBilgileriGuncelle'])->name('iletisim.bilgileri.guncelle');
+
     Route::get('/fiyat-listesi', [MusteriController::class, 'fiyatListesiIndex'])->name('fiyat.listesi');
+
+    Route::get('/aktif-musteri/get', [MusteriController::class, 'getClients'])->name('aktif_musteri.get');
+    Route::post('/aktif-musteri/store', [MusteriController::class, 'store'])->name('aktif_musteri.store');
+    Route::put('/aktif-musteri/update/{id}', [MusteriController::class, 'update'])->name('aktif_musteri.update');
+    Route::delete('/aktif-musteri/destroy/{id}', [MusteriController::class, 'destroy'])->name('aktif_musteri.destroy');
+});
+
+
+Route::prefix('api')->group(function () {
+    Route::put('/data/{id}', [ZamAPIController::class, 'update'])->name('api.update');
 });

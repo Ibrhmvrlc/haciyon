@@ -204,6 +204,38 @@ class MusteriController extends Controller
     public function fiyatListesiIndex(){
         $title = 'Fiyat Listesi';
 
-        return view('musteri.fiyat_listesi', compact('title'));
+        // Müşteri, şantiye ve fiyat ilişkilerini çekiyoruz
+        $musteriler = AktifMusteriler::with(['santiyeler.fiyatlar'])->get();
+
+        $veriler = [];
+
+        foreach ($musteriler as $musteri) {
+            foreach ($musteri->santiyeler as $santiye) {
+                $fiyatlar = [];
+                foreach ($musteri->fiyatlar as $fiyat) {
+                    $fiyatlar[] = [
+                        'Beton Sınıfı' => $fiyat->beton_sinifi ?? 0,
+                        'Fiyat' => $fiyat->fiyat ?? 0,
+                        'Katkı (+)' => $fiyat->katki_farki ?? 0,
+                        'Üst Sınıf (+)' => $fiyat->artis ?? 0,
+                        'Alt Sınıf (-)' => $fiyat->azalis ?? 0,
+                        'Pompa Fiyatı' => $fiyat->pb ?? 0,
+                    ];
+                }
+                $veriler[] = [
+                    'id' => $santiye->id ?? '',
+                    'Müşteri' => $musteri->unvan,
+                    'Şantiye' => $santiye->santiye,
+                    'Beton Sınıfı' => $fiyat->beton_sinifi,
+                    'Fiyat' => $fiyat->fiyat,
+                    'Katkı (+)' => $fiyat->katki_farki,
+                    'Üst Sınıf (+)' => $fiyat->artis,
+                    'Alt Sınıf (-)' => $fiyat->azalis,
+                    'Pompa Fiyatı' => $fiyat->pb,
+                ];
+            }
+        }
+
+        return view('musteri.fiyat_listesi', compact('veriler', 'title'));
     }
 }

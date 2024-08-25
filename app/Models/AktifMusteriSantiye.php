@@ -16,12 +16,12 @@ class AktifMusteriSantiye extends Model
         'santiye'
     ];
 
-    public function musteri()
+    public function musteriler()
     {
         return $this->hasOne(AktifMusteriler::class, 'id');
     }
 
-    public function fiyat()
+    public function fiyatlar()
     {
         return $this->hasOne(AktifSantiyeFiyat::class, 'id');
     }

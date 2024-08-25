@@ -41,8 +41,8 @@
                                             @foreach($aktif_musteriler as $musteri)
                                             <tr>
                                                 <td>{{$musteri->unvan}}</td>
-                                                @if ($musteri->fiyat()->value('fiyat'))
-                                                <td title="C30 fiyatı">{{$musteri->fiyat()->value('fiyat')}}<small> +KDV</small></td>
+                                                @if ($musteri->fiyatlar()->value('fiyat'))
+                                                <td title="C30 fiyatı">{{$musteri->fiyatlar()->value('fiyat')}}<small> +KDV</small></td>
                                                 @else
                                                 <td>Belirtilmemiş</td>
                                                 @endif

@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
+
     <div id="jsGrid"></div>
     <style>
         .jsgrid-grid-header {
@@ -15,6 +16,15 @@
         .number-center {
             text-align: center;
         }
+
+        .jsgrid-cell {
+            white-space: normal; /* Metinlerin hücre sınırlarına göre sarılmasını sağlar */
+            word-wrap: break-word; /* Uzun kelimelerin hücre sınırlarına göre kırılmasını sağlar */
+            overflow: hidden; /* Taşmayı gizler */
+        }
+        .jsgrid-delete-button{
+            display: none;
+        }
     </style>
     <!-- jQuery (jsGrid'in bağımlılığı) -->
     <script src="{{asset('https://code.jquery.com/jquery-3.6.0.min.js')}}"></script>
@@ -23,19 +33,8 @@
     <script src="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js')}}"></script>
 
     <script>
-        var clients = [
-            { 
-                "Müşteri": "MUSTAFA ÇİMEN / ŞÜKÜR TİCARET", 
-                "Şantiye": "KARAMÜRSEL", 
-                "Beton Sınıfı": 4, 
-                "Fiyat": 2400, 
-                "Katkı (+)": 150, 
-                "Üst Sınıf (+)": 150, 
-                "Alt Sınıf (-)": 50, 
-                "Pompa Fiyatı": 4000
-            },
-        ];
-     
+        var clients = @json($veriler);
+
         var betonSinifi = [
             { Name: "", Id: 0 },
             { Name: "C16", Id: 1 },
@@ -47,62 +46,27 @@
             { Name: "C45", Id: 7 },
             { Name: "C50", Id: 8 }
         ];
-     
+
         $("#jsGrid").jsGrid({
             width: "100%",
             height: "auto",
 
-            inserting: true,
+            inserting: false,
+            deleting: false,
             editing: true,
             sorting: true,
             paging: true,
+            deleteButton: false,
             noDataContent: "Kayıt bulunamadı.", // Scrollbar olmadan boş veri gösterme
             pageSize: 50, // Sayfa başına gösterilecek kayıt sayısı
             pageButtonCount: 5, // Görüntülenecek sayfa düğmesi sayısı
-     
-            autoload: true,
-                controller: {
-                    loadData: function() {
-                        return $.ajax({
-                            type: "GET",
-                            url: "{{ route('aktif_musteri.get') }}",
-                            dataType: "json"
-                        });
-                    },
-                    insertItem: function(item) {
-                        return $.ajax({
-                            type: "POST",
-                            url: "{{ route('aktif_musteri.store') }}",
-                            data: item,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                    },
-                    updateItem: function(item) {
-                        return $.ajax({
-                            type: "PUT",
-                            url: "{{ route('aktif_musteri.update', '') }}/" + item.id,
-                            data: item,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                    },
-                    deleteItem: function(item) {
-                        return $.ajax({
-                            type: "DELETE",
-                            url: "{{ route('aktif_musteri.destroy', '') }}/" + item.id,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                    }
-                },
-     
+
+            data: clients,
+
             fields: [
-                { name: "Müşteri", type: "text", width: 75, validate: "required", css: "wrap-text" },
-                { name: "Şantiye", type: "text", width: 75, css: "wrap-text" },
+                { name: "id", type: "number", width: 40, validate: "required", css: "wrap-text", editing: false },
+                { name: "Müşteri", type: "text", width: 75, validate: "required", css: "wrap-text", editing: false },
+                { name: "Şantiye", type: "text", width: 75, css: "wrap-text text-center", editing: false  },
                 { name: "Beton Sınıfı", type: "select",  width: 40, items: betonSinifi, valueField: "Id", textField: "Name" },
                 { name: "Fiyat", type: "number", width: 40, css: "number-center" },
                 { name: "Katkı (+)", type: "number", width: 40, css: "number-center" },
@@ -110,7 +74,34 @@
                 { name: "Alt Sınıf (-)", type: "number", width: 40, css: "number-center" },
                 { name: "Pompa Fiyatı", type: "number", width: 40, css: "number-center" },
                 { type: "control", width: 40  }
-            ]
+            ],
+
+            controller: {
+                updateItem: function(item) {
+                    return $.ajax({
+                        url: '/api/data/' + item.id,
+                        type: 'PUT',
+                        data: item,
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            // Güncelleme başarılı olduğunda yapılacak işlemler
+                            console.log("Update successful:", response);
+                            var clients = response; // Veriyi yeniden yükle
+                            $("#jsGrid").jsGrid("loadData", clients);
+                        },
+                        error: function(xhr, status, error) {
+                            // Hata durumunda yapılacak işlemler
+                            console.error("Update failed:", error);
+                            var errorMessage = xhr.status + ': ' + xhr.statusText; // Örneğin: 500: Internal Server Error
+                            alert("Güncelleme başarısız! Hata: " + errorMessage);
+                        }
+                    });
+                }
+            }
+
         });
     </script>
 </div>

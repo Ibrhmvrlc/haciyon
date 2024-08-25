@@ -685,7 +685,7 @@
                                     @endif
                                     <div class="text-right mb-2">
                                         <!-- Notlar -->
-                                        <a href="#genel" data-toggle="tab" class="nav-link" id="link2">
+                                        <a href="#genelbilgi" data-toggle="tab" class="nav-link" id="link2">
                                             <i class="fa fa-reply-all" aria-hidden="true"></i> Notlar
                                         </a>
                                     </div>

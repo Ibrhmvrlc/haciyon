@@ -24,12 +24,12 @@ class AktifMusteriler extends Model
         'vergi_numarasi'
     ];
 
-    public function santiye()
+    public function santiyeler()
     {
         return $this->hasMany(AktifMusteriSantiye::class, 'aktif_musteri_id');
     }
 
-    public function fiyat()
+    public function fiyatlar()
     {
         return $this->hasMany(AktifSantiyeFiyat::class, 'aktif_musteri_id');
     }
