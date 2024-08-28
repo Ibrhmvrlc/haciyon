@@ -214,24 +214,24 @@ class MusteriController extends Controller
                 $fiyatlar = [];
                 foreach ($musteri->fiyatlar as $fiyat) {
                     $fiyatlar[] = [
-                        'Beton Sınıfı' => $fiyat->beton_sinifi ?? 0,
-                        'Fiyat' => $fiyat->fiyat ?? 0,
-                        'Katkı (+)' => $fiyat->katki_farki ?? 0,
-                        'Üst Sınıf (+)' => $fiyat->artis ?? 0,
-                        'Alt Sınıf (-)' => $fiyat->azalis ?? 0,
-                        'Pompa Fiyatı' => $fiyat->pb ?? 0,
+                        'beton_sinifi' => $fiyat->beton_sinifi ?? 0,
+                        'fiyat' => $fiyat->fiyat ?? 0,
+                        'katki_farki' => $fiyat->katki_farki ?? 0,
+                        'artis' => $fiyat->artis ?? 0,
+                        'azalis' => $fiyat->azalis ?? 0,
+                        'pb' => $fiyat->pb ?? 0,
                     ];
                 }
                 $veriler[] = [
                     'id' => $santiye->id ?? '',
-                    'Müşteri' => $musteri->unvan,
-                    'Şantiye' => $santiye->santiye,
-                    'Beton Sınıfı' => $fiyat->beton_sinifi,
-                    'Fiyat' => $fiyat->fiyat,
-                    'Katkı (+)' => $fiyat->katki_farki,
-                    'Üst Sınıf (+)' => $fiyat->artis,
-                    'Alt Sınıf (-)' => $fiyat->azalis,
-                    'Pompa Fiyatı' => $fiyat->pb,
+                    'musteri' => $musteri->unvan,
+                    'santiye' => $santiye->santiye,
+                    'beton_sinifi' => $fiyat->beton_sinifi,
+                    'fiyat' => $fiyat->fiyat,
+                    'katki_farki' => $fiyat->katki_farki,
+                    'artis' => $fiyat->artis,
+                    'azalis' => $fiyat->azalis,
+                    'pb' => $fiyat->pb,
                 ];
             }
         }

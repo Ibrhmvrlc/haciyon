@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-
+    
     <div id="jsGrid"></div>
     <style>
         .jsgrid-grid-header {
@@ -64,15 +64,15 @@
             data: clients,
 
             fields: [
-                { name: "id", type: "number", width: 40, validate: "required", css: "wrap-text", editing: false },
-                { name: "Müşteri", type: "text", width: 75, validate: "required", css: "wrap-text", editing: false },
-                { name: "Şantiye", type: "text", width: 75, css: "wrap-text text-center", editing: false  },
-                { name: "Beton Sınıfı", type: "select",  width: 40, items: betonSinifi, valueField: "Id", textField: "Name" },
-                { name: "Fiyat", type: "number", width: 40, css: "number-center" },
-                { name: "Katkı (+)", type: "number", width: 40, css: "number-center" },
-                { name: "Üst Sınıf (+)", type: "number", width: 40, css: "number-center" },
-                { name: "Alt Sınıf (-)", type: "number", width: 40, css: "number-center" },
-                { name: "Pompa Fiyatı", type: "number", width: 40, css: "number-center" },
+                { name: "id", type: "number", width: 40, validate: "required", css: "wrap-text text-center", editing: false, readOnly: true, insertable: false },
+                { name: "musteri", title: "Müşteri", type: "text", width: 100, validate: "required", css: "wrap-text", editing: false, readOnly: true, insertable: false  },
+                { name: "santiye", title: "Şantiye" , type: "text", width: 60, css: "wrap-text text-center", editing: false, readOnly: true, insertable: false   },
+                { name: "beton_sinifi", title: "Beton Sınıfı" , type: "select",  width: 40, items: betonSinifi, valueField: "Id", textField: "Name" },
+                { name: "fiyat", title: "Fiyat" , type: "number", width: 40, css: "number-center" },
+                { name: "katki_farki", title: "Katkı (+)" , type: "number", width: 40, css: "number-center" },
+                { name: "artis", title: "Üst Sınıf (+)" , type: "number", width: 40, css: "number-center" },
+                { name: "azalis", title: "Alt Sınıf (-)" , type: "number", width: 40, css: "number-center" },
+                { name: "pb", title: "Pompa Fiyatı" , type: "number", width: 40, css: "number-center" },
                 { type: "control", width: 40  }
             ],
 
