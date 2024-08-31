@@ -47,33 +47,4 @@ class ZamAPIController extends Controller
         return response()->json(['success' => false, 'message' => 'Data not found!'], 404);
 
     }
-
-    // Veriyi çek
-    public function getData()
-    {
-        // Müşteri, şantiye ve fiyat ilişkilerini çekiyoruz
-        $musteriler = AktifMusteriler::with(['santiyeler.fiyatlar'])->get();
-
-        $veriler = []; // Verileri dışarıda başlat 
-
-        foreach ($musteriler as $musteri) {
-            foreach ($musteri->santiyeler as $santiye) {
-            $fiyat = AktifSantiyeFiyat::where('id', $santiye->id)->get();     
-                    $veriler[] = [
-                        'id' => $santiye->id,
-                        'musteri' => $musteri->unvan,
-                        'santiye' => $santiye->santiye,
-                        'beton_sinifi' => $fiyat->first()->beton_sinifi ?? 0,
-                        'fiyat' => $fiyat->first()->fiyat ?? 0,
-                        'katki_farki' => $fiyat->first()->katki_farki ?? 0,
-                        'artis' => $fiyat->first()->artis ?? 0,
-                        'azalis' => $fiyat->first()->azalis ?? 0,
-                        'pb' => $fiyat->first()->pb ?? 0,
-                    ];  
-            }
-        }
-
-        // Güncellenen veriyi yanıt olarak döndür
-        return response()->json($veriler);
-    }
 }
