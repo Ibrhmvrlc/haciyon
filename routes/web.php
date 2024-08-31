@@ -53,4 +53,5 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
 
 Route::prefix('api')->group(function () {
     Route::put('/data/{id}', [ZamAPIController::class, 'update'])->name('api.update');
+    Route::get('/api/get-data', [ZamAPIController::class, 'getData'])->name('api.show');
 });

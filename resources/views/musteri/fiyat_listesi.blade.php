@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container-fluid">
-    
     <div id="jsGrid"></div>
     <style>
         .jsgrid-grid-header {
@@ -76,32 +75,23 @@
                 { type: "control", width: 40  }
             ],
 
-            controller: {
-                updateItem: function(item) {
-                    return $.ajax({
-                        url: '/api/data/' + item.id,
-                        type: 'PUT',
-                        data: item,
-                        dataType: 'json',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            // Güncelleme başarılı olduğunda yapılacak işlemler
-                            console.log("Update successful:", response);
-                            var clients = response; // Veriyi yeniden yükle
-                            $("#jsGrid").jsGrid("loadData", clients);
-                        },
-                        error: function(xhr, status, error) {
-                            // Hata durumunda yapılacak işlemler
-                            console.error("Update failed:", error);
-                            var errorMessage = xhr.status + ': ' + xhr.statusText; // Örneğin: 500: Internal Server Error
-                            alert("Güncelleme başarısız! Hata: " + errorMessage);
-                        }
-                    });
-                }
-            }
-
+            onItemUpdated: function(args) {
+                $.ajax({
+                    url: '/api/data/' + args.item.id,
+                    type: 'PUT',
+                    data: args.item,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        $("#jsGrid").jsGrid("loadData");
+                    },
+                    error: function(xhr) {
+                        alert("Hata: " + xhr.responseJSON.message);
+                    }
+                });
+            },
         });
     </script>
 </div>
