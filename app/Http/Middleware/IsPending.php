@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-
-class CheckPermission
+class IsPending
 {
     /**
      * Handle an incoming request.
@@ -18,19 +17,10 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $permission = PermissionRequest::where('user_id', Auth::id())
-        ->where('status', 'onaylandi')
-        ->where('expires_at', '>', now())
-        ->first();
-
         $permission_pending =  PermissionRequest::where('user_id', Auth::id())
         ->where('status', 'bekliyor')
         ->where('expires_at', '>', now())
         ->first();
-
-        if (!$permission and !$permission_pending) {
-            return redirect()->route('showInfo')->with('error', 'Geçerli izniniz yok.');
-        }
 
         if ($permission_pending) {
             return redirect()->route('permission.pending');

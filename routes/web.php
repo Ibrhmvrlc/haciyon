@@ -34,9 +34,10 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::get('/tum-liste', [MusteriController::class, 'index'])->name('tum.musteri.listesi');
     Route::get('/aktif-liste', [MusteriController::class, 'aktifIndex'])->name('aktif.musteri.listesi');
     Route::prefix('/fiyat-listesi')->group(function(){ 
-        Route::get('/bilgilendirme', [PermissionController::class, 'showInfo'])->name('showInfo');
+        Route::get('/bilgilendirme', [PermissionController::class, 'showInfo'])->middleware(\App\Http\Middleware\IsPending::class)->name('showInfo');
         Route::post('/bilgilendirme', [PermissionController::class, 'confirmRead'])->name('confirmRead');
-        Route::get('/guncelle', [MusteriController::class, 'updatePage'])->middleware('CheckPermission')->name('updatePage');
+        Route::get('/onay-bekleniyor', [PermissionController::class, 'permissionPending'])->middleware(\App\Http\Middleware\IsTherePermission::class)->name('permission.pending');
+        Route::get('/guncelle', [MusteriController::class, 'updatePage'])->middleware(\App\Http\Middleware\CheckPermission::class)->name('updatePage');
     });
     Route::get('/profil/{id}', [MusteriController::class, 'profile'])->name('musteri.profil');
     Route::get('/aktif-musteri-profil/{id}', [MusteriController::class, 'aktifProfile'])->name('aktif.musteri.profil');

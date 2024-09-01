@@ -25,5 +25,4 @@ class AktifMusteriSantiye extends Model
     {
         return $this->hasOne(AktifSantiyeFiyat::class, 'id');
     }
-
 }
