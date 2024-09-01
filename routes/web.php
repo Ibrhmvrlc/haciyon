@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\MusteriController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ZamAPIController;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +33,11 @@ Route::middleware(['auth'])->prefix('/program')->group(function(){ // PAZARLAMAC
 Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMACILAR, YONETICELER
     Route::get('/tum-liste', [MusteriController::class, 'index'])->name('tum.musteri.listesi');
     Route::get('/aktif-liste', [MusteriController::class, 'aktifIndex'])->name('aktif.musteri.listesi');
+    Route::prefix('/fiyat-listesi')->group(function(){ 
+        Route::get('/bilgilendirme', [PermissionController::class, 'showInfo'])->name('showInfo');
+        Route::post('/bilgilendirme', [PermissionController::class, 'confirmRead'])->name('confirmRead');
+        Route::get('/guncelle', [MusteriController::class, 'updatePage'])->middleware('CheckPermission')->name('updatePage');
+    });
     Route::get('/profil/{id}', [MusteriController::class, 'profile'])->name('musteri.profil');
     Route::get('/aktif-musteri-profil/{id}', [MusteriController::class, 'aktifProfile'])->name('aktif.musteri.profil');
     Route::post('/not-ekle/{id}', [MusteriController::class, 'addNote'])->name('not.ekle');
@@ -42,7 +49,6 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::post('/fatura-bilgileri-guncelle/{id}', [MusteriController::class, 'faturaBilgileriGuncelle'])->name('fatura.bilgileri.guncelle');
     Route::post('/iletisim-bilgileri-guncelle/{id}', [MusteriController::class, 'iletisimBilgileriGuncelle'])->name('iletisim.bilgileri.guncelle');
 
-    Route::get('/fiyat-listesi', [MusteriController::class, 'fiyatListesiIndex'])->name('fiyat.listesi');
 
     Route::get('/aktif-musteri/get', [MusteriController::class, 'getClients'])->name('aktif_musteri.get');
     Route::post('/aktif-musteri/store', [MusteriController::class, 'store'])->name('aktif_musteri.store');
@@ -50,7 +56,8 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::delete('/aktif-musteri/destroy/{id}', [MusteriController::class, 'destroy'])->name('aktif_musteri.destroy');
 });
 
-
 Route::prefix('api')->group(function () {
     Route::put('/data/{id}', [ZamAPIController::class, 'update'])->name('api.update');
 });
+
+

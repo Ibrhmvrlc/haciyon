@@ -211,17 +211,9 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-account"></i><span class="nav-text">Müşteri Yönetimi</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="{{route('tum.musteri.listesi')}}">Tüm Müşteriler <br>(Düzensiz)</a></li>
                             <li><a href="{{route('aktif.musteri.listesi')}}">Aktif Müşteriler</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Fiyat Listesi</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./email-read.html">Hepsi</a></li>
-                                    <li><a href="./email-compose.html">Tersaneler</a></li>
-                                    <li><a href="./email-compose.html">Organize Sanayi</a></li>
-                                    <li><a href="./email-inbox.html">Piyasa</a></li>
-                                    <li><a href="./email-read.html">Özel Firmalar</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="{{route('tum.musteri.listesi')}}">Diğer Müşteriler</a></li>
+                            <li><a href="{{route('updatePage')}}">Fiyat Güncelleme</a></li>
                         </ul>
                     </li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
@@ -395,7 +387,7 @@
 
     <script src="{{asset('./js/dashboard/dashboard-1.js')}}"></script>
 
-    <!-- AJAX ICIN -->
+        <!-- AJAX ICIN -->
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/tr.js')}}"></script>

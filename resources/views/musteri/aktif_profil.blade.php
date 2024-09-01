@@ -976,7 +976,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
-                                                    <div class="form-group col-md-6">
+                                                    <div class="form-group col-md-4">
                                                         <label>Semt</label>
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->semt}}" name="semt">
                                                     </div>
@@ -984,23 +984,27 @@
                                                         <label>Kent</label>
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->kent}}" name="kent">
                                                     </div>
-                                                    <div class="form-group col-md-2">
+                                                    <div class="form-group col-md-4">
                                                         <label>Posta Kodu</label>
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->posta_kodu}}" name="postaKodu">
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
-                                                    <div class="form-group col-md-4">
-                                                        <label>E-mail Adresi</label>
-                                                        <input type="text" class="form-control" value="{{$aktif_musteri->mail}}" name="email">
-                                                    </div>
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label>Vergi Dairesi</label>
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->vergi_dairesi}}" name="VD">
                                                     </div>
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label>V.N. / T.C.</label>
                                                         <input type="text" class="form-control" value="{{$aktif_musteri->vergi_numarasi}}" name="VNTCN">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label>Telefon</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->tel}}" name="tel">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label>E-mail Adresi</label>
+                                                        <input type="text" class="form-control" value="{{$aktif_musteri->mail}}" name="email">
                                                     </div>
                                                 </div>
                                                 <button class="btn btn-success" type="submit">Güncelle</button>

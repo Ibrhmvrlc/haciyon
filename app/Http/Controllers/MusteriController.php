@@ -6,10 +6,10 @@ use App\Models\AktifMusteriler;
 use App\Models\AktifMusteriSantiye;
 use App\Models\AktifMusteriYetkililer;
 use App\Models\AktifSantiyeFiyat;
-use App\Models\AktifSantiyeMetraj;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use Illuminate\Http\Request;
+
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -119,9 +119,10 @@ class MusteriController extends Controller
         $fatura_bilgileri->semt = $request->input('semt');
         $fatura_bilgileri->kent = $request->input('kent');
         $fatura_bilgileri->posta_kodu = $request->input('postaKodu');
-        $fatura_bilgileri->mail = $request->input('email');
         $fatura_bilgileri->vergi_dairesi = $request->input('VD');
         $fatura_bilgileri->vergi_numarasi = $request->input('VNTCN');
+        $fatura_bilgileri->mail = $request->input('email');
+        $fatura_bilgileri->tel = $request->input('tel');
         $fatura_bilgileri->save();
 
         return redirect()->back();
@@ -201,7 +202,7 @@ class MusteriController extends Controller
         return redirect()->back();
     }
 
-    public function fiyatListesiIndex(){
+    public function updatePage(){
         $title = 'Fiyat Listesi';
        
         // Müşteri, şantiye ve fiyat ilişkilerini çekiyoruz
@@ -226,6 +227,6 @@ class MusteriController extends Controller
             }
         }
 
-        return view('musteri.fiyat_listesi', compact('veriler', 'title'));
+        return view('musteri.fiyat.fiyat_listesi', compact('veriler', 'title'));
     }
 }

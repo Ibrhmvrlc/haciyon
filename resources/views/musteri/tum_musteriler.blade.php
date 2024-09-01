@@ -5,14 +5,14 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4 class="mb-2">Tüm Müşteriler</h4>
+                            <h4 class="mb-2">Diğer Müşteriler</h4>
                             <span class="ml-1 mt-2">Kayıtlı Bütün müşterilerin listesi aşağıda belirtilmiştir. İlgili müşteri satırına tıklayarak ayrıntılara gidebilirsiniz.</span>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Müşteri Yönetimi</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0)">Tüm Müşteriler</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0)">Diğer Müşteriler</a></li>
                         </ol>
                     </div>
                 </div>
