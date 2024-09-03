@@ -216,17 +216,19 @@
                             <li><a href="{{route('updatePage')}}">Fiyat Güncelleme</a></li>
                         </ul>
                     </li>
+
+                    @if(auth()->user() && auth()->user()->roles->contains('name', 'admin'))
+                    <li class="nav-label">YÖNETİCİ</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-chart-bar-33"></i><span class="nav-text">Charts</span></a>
+                                class="mdi mdi-inbox-arrow-down"></i><span class="nav-text">Talepler</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="./chart-flot.html">Flot</a></li>
-                            <li><a href="./chart-morris.html">Morris</a></li>
-                            <li><a href="./chart-chartjs.html">Chartjs</a></li>
-                            <li><a href="./chart-chartist.html">Chartist</a></li>
-                            <li><a href="./chart-sparkline.html">Sparkline</a></li>
-                            <li><a href="./chart-peity.html">Peity</a></li>
+                            <li><a href="xxxxxxxxxxx">Fiyatlandırma Onay Talepleri</a></li>
+                            <li><a href="xxxxxxxxxxx">Fiyat Güncelleme Talepleri</a></li>
                         </ul>
                     </li>
+                    @endif
+                   
+
                     <li class="nav-label">Components</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-world-2"></i><span class="nav-text">Bootstrap</span></a>
