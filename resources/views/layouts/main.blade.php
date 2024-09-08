@@ -217,17 +217,16 @@
                         </ul>
                     </li>
 
-                    @if(auth()->user() && auth()->user()->roles->contains('name', 'admin'))
+                    @if(auth()->user() && auth()->user()->roles->whereIn('name', ['admin', 'mudur', 'patron'])->isNotEmpty())
                     <li class="nav-label">YÖNETİCİ</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="mdi mdi-inbox-arrow-down"></i><span class="nav-text">Talepler</span></a>
                         <ul aria-expanded="false">
                             <li><a href="xxxxxxxxxxx">Fiyatlandırma Onay Talepleri</a></li>
-                            <li><a href="xxxxxxxxxxx">Fiyat Güncelleme Talepleri</a></li>
+                            <li><a href="{{route('fiyat.guncelleme.talepleri')}}">Fiyat Güncelleme Talepleri</a></li>
                         </ul>
                     </li>
                     @endif
-                   
 
                     <li class="nav-label">Components</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i

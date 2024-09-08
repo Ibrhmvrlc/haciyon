@@ -1,14 +1,54 @@
 @extends('layouts.main')
 
 @section('content')
+@php
+    use App\Models\PermissionRequest;
+@endphp
 <div class="container-fluid">
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
-                <h4 class="mb-1">Fiyat Güncelleme Listesi</h4>
-                <span><b>Dikkat!</b> yapılan değişiklikler kalıcıdır. Sistemdeki tüm fiyat bilgileri değişir.</span>
+                <h4 class="mb-1">Fiyat Güncelleme Listesi </h4>
+                <span>
+                    <b>Dikkat!</b> yapılan değişiklikler kalıcıdır. Sistemdeki tüm fiyat bilgileri değişir.
+                </span>
+                <br />
+                <span>
+                    Talebinizin bitimine <b><span id="countdown"></span></b> kaldı.
+                </span>
             </div>
         </div>
+        
+        @php
+            $permission = PermissionRequest::where('user_id', auth()->user()->id)->where('status', 'onaylandi')->get();
+        @endphp
+        <script>
+            // PHP'den alınan tarihleri JavaScript'e geçir
+            var endDate = new Date("{{ $permission->first()->expires_at }}").getTime();
+            
+            // Geri sayım işlevi
+            var countdown = setInterval(function() {
+                var now = new Date().getTime(); // Şu anki zaman
+                var distance = endDate - now; // Hedef tarihe kalan zaman
+
+                // Gün, saat, dakika, saniye hesaplama
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Geri sayımı HTML'e yazdırma
+                document.getElementById("countdown").innerHTML = days + "g " + hours + "s " 
+                + minutes + "dk " + seconds + "sn ";
+
+                // Geri sayım bittiğinde mesaj göster
+                if (distance < 0) {
+                    clearInterval(countdown);
+                    document.getElementById("countdown").innerHTML = "Süre doldu!";
+                }
+            }, 1000);
+        </script>
+
         <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="xxxxxxx">xxxxxxxx</a></li>

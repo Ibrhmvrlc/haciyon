@@ -4,6 +4,7 @@ use App\Http\Controllers\MusteriController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\YonetimController;
 use App\Http\Controllers\ZamAPIController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -61,4 +62,8 @@ Route::prefix('api')->group(function () {
     Route::put('/data/{id}', [ZamAPIController::class, 'update'])->name('api.update');
 });
 
-
+Route::middleware(['auth'])->prefix('/yonetim')->group(function(){ // YONETICELER
+    Route::get('/fiyat-guncelleme-talepleri', [YonetimController::class, 'fiyatGuncellemeTalepleri'])->name('fiyat.guncelleme.talepleri');
+    Route::get('/fiyat-guncelleme-talebi-onay/{id}', [YonetimController::class, 'fgtOnay'])->name('fgt.onay');
+    Route::get('/fiyat-guncelleme-talebi-red/{id}', [YonetimController::class, 'fgtRed'])->name('fgt.red');
+});
