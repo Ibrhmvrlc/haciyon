@@ -27,10 +27,13 @@ class IsTherePermission
         ->where('expires_at', '>', now())
         ->first();
 
+
         if (!$permission and !$permission_pending) {
             return redirect()->route('showInfo')->with('error', 'Geçerli izniniz yok.');
+        }elseif ($permission) {
+            return redirect()->route('updatePage');
+        }else{
+            return $next($request);
         }
-
-        return $next($request);
     }
 }

@@ -38,6 +38,7 @@
                     </thead>
                     <tbody>
                         @foreach($veriler as $veri)
+                            @if ($veri->subject == 'fiyat_guncelleme')
                             <tr>
                                 <td>{{ $veri->id }}</td>
                                 <td>{{ Carbon::parse($veri->created_at)->format('d/m/Y H:i'); }}</td>
@@ -84,6 +85,7 @@
                                     @endif
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

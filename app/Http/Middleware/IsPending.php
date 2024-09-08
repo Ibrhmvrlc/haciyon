@@ -22,10 +22,17 @@ class IsPending
         ->where('expires_at', '>', now())
         ->first();
 
+        $onayli_permission = PermissionRequest::where('user_id', Auth::id())
+        ->where('status', 'onaylandi')
+        ->where('expires_at', '>', now())
+        ->first();
+
         if ($permission_pending) {
             return redirect()->route('permission.pending');
+        }elseif($onayli_permission){
+            return redirect()->route('updatePage');
+        }else{
+            return $next($request);
         }
-
-        return $next($request);
     }
 }
