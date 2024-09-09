@@ -229,4 +229,10 @@ class MusteriController extends Controller
 
         return view('musteri.fiyat.fiyat_listesi', compact('veriler', 'title'));
     }
+
+    public function bildirimGit(){
+        $title = 'Bildirim Listesi';
+
+        return view('musteri.fiyat.bildirim_listesi', compact('title'));
+    }
 }

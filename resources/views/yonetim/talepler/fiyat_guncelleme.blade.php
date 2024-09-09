@@ -31,7 +31,7 @@
                             <th scope="col">Tarih</th>
                             <th scope="col">Ad Soyad</th>
                             <th scope="col">Görevi</th>
-                            <th scope="col">Talep Edilen Süre</th>
+                            <th scope="col">Talep Sonu</th>
                             <th scope="col">Durum</th>
                             <th scope="col">Onay/Red</th>
                         </tr>

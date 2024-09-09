@@ -54,6 +54,10 @@
                 <li class="breadcrumb-item"><a href="xxxxxxx">xxxxxxxx</a></li>
                 <li class="breadcrumb-item active"><a href="xxxxxx">xxxxxxxx</a></li>
             </ol>
+            
+        </div>
+        <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <a href="{{route('bildirim.yap')}}" class="btn btn-primary">Bildirim Yap</a>
         </div>
     </div>
     <div id="jsGrid"></div>
