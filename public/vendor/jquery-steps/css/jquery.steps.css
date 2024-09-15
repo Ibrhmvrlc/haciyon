@@ -68,7 +68,7 @@
 
 .wizard > .steps .number
 {
-    font-size: 1.429em;
+    font-size: 1em;
 }
 
 .wizard > .steps > ul > li
@@ -97,7 +97,7 @@
     margin: 0 0.5em 0.5em;
     padding: 1em 1em;
     text-decoration: none;
-
+    
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -108,7 +108,7 @@
 .wizard > .steps .disabled a:active
 {
     background: #eee;
-    color: #aaa;
+    color: #123;
     cursor: default;
 }
 
@@ -117,8 +117,9 @@
 .wizard > .steps .current a:active
 {
     background: #2184be;
-    color: #fff;
+    color: #000;
     cursor: default;
+    
 }
 
 .wizard > .steps .done a,
@@ -256,13 +257,9 @@
     background: #2184be;
     color: #fff;
     display: block;
-    padding: 0.5em 1em;
     text-decoration: none;
-
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
 }
+
 
 .wizard > .actions .disabled a,
 .wizard > .actions .disabled a:hover,
@@ -270,6 +267,15 @@
 {
     background: #eee;
     color: #aaa;
+    background: #2184be;
+    color: #fff;
+    display: block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .wizard > .loading

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{asset('vendor/owl-carousel/css/owl.theme.default.min.css')}}">
     <link href="{{asset('vendor/jqvmap/css/jqvmap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
-    <link href="./vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="{{asset('./vendor/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
 
     <!-- Datatable -->
     <link href="{{asset('./vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
@@ -26,6 +26,9 @@
    <!-- jsGrid CSS -->
     <link href="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css')}}" rel="stylesheet" />
     <link href="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css')}}" rel="stylesheet" />
+
+    <!-- Form step -->
+    <link href="{{asset('./vendor/jquery-steps/css/jquery.steps.css')}}" rel="stylesheet">
 
     <!-- csrf-token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -388,7 +391,7 @@
 
     <script src="{{asset('./js/dashboard/dashboard-1.js')}}"></script>
 
-        <!-- AJAX ICIN -->
+    <!-- AJAX ICIN -->
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js')}}"></script>
     <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/tr.js')}}"></script>
@@ -397,6 +400,15 @@
 
     <!-- SweetAlert JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- form wizard için -->
+    <script src="{{asset('./vendor/jquery-steps/build/jquery.steps.min.js')}}"></script>
+    <script src="{{asset('./vendor/jquery-validation/jquery.validate.min.js')}}"></script>
+    <!-- Form validate init -->
+    <script src="{{asset('./js/plugins-init/jquery.validate-init.js')}}"></script>
+    <!-- Form step init -->
+    <script src="{{asset('./js/plugins-init/jquery-steps-init.js')}}"></script>
+
 </body>
 
 </html>

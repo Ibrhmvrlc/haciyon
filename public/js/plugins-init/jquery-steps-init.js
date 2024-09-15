@@ -5,9 +5,15 @@
     form.children('div').steps({
         headerTag: "h4",
         bodyTag: "section",
-        transitionEffect: "slideLeft",
         autoFocus: true, 
-        transitionEffect: "slideLeft",
+        transitionEffect: "fade",
+        enableAllSteps: false,
+        labels: {
+            finish: "Tamamla",
+            next: "İleri",
+            previous: "Geri",
+            loading: "Yükleniyor...",
+        },
         onStepChanging: function (event, currentIndex, newIndex)
         {
             form.validate().settings.ignore = ":disabled,:hidden";
