@@ -1,9 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-<style>
-
-</style>
 <div class="container-fluid">
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
@@ -18,6 +15,9 @@
                 <li class="breadcrumb-item active"><a href="javascript:void(0)">Components</a></li>
             </ol>
         </div>
+        <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <a href="xxxxxxxxxxxx" class="btn btn-primary">Listeye Dön</a>
+        </div>
     </div>
     <!-- row -->
     <div class="row">
@@ -26,50 +26,86 @@
                 <div class="card-body">
                     <form action="#" id="step-form-horizontal" class="step-form-horizontal">                
                         <div>
-                            <h4>Personal Info</h4>
+                            <h4>Müşteri Türü</h4>
                             <section>
                                 <div class="row">
+                                    <div class="col-lg-12 mb-4">
+                                        <div class="form-group">
+                                            <div class="mb-3">
+                                               <h5>Bildirim yapılacak müşteri türlerini seçiniz: </h5>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="parca" value="" name="parca" checked>
+                                                <label class="form-check-label" for="parca">Parça Beton</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="piyasa" value="" name="piyasa" checked>
+                                                <label class="form-check-label" for="piyasa">Piyasa</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="tersane" value="" name="tersane" checked>
+                                                <label class="form-check-label" for="tersane">Tersane</label>
+                                            </div>
+                                            <div class="form-check disabled mb-2">
+                                                <input type="checkbox" class="form-check-input" id="osb" value="" name="osb" checked>
+                                                <label class="form-check-label" for="osb">OSB</label>
+                                            </div>
+                                            <div class="form-check disabled">
+                                                <input type="checkbox" class="form-check-input" id="ozel" value="" name="ozel" checked>
+                                                <label class="form-check-label" for="ozel">Özel Üretim Firmalar</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group">
-                                            <label class="text-label">First Name*</label>
-                                            <select name="asd" id="asssa" class="form-control" required>
-                                                <option value="">seç</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
+                                            <div class="mb-3">
+                                                <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
+                                             </div>
+                                             <select class="match-grouped-options" multiple="multiple">
+                                                <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                    <option>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, deleniti.</option>
+                                                    <option>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae, vitae.</option>
+                                                </optgroup>
+                                                <optgroup label="Pacific Time Zone">
+                                                    <option>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque!</option>
+                                                    <option>Lorem ipsum dolor sit amet consectetur.</option>
+                                                    <option>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, esse cumque!</option>
+                                                    <option>Lorem, ipsum.</option>
+                                                </optgroup>
+                                                <optgroup label="Mountain Time Zone">
+                                                    <option>Lorem ipsum dolor sit.</option>
+                                                    <option>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</option>
+                                                    <option>Lorem ipsum dolor sit amet consectetur adipisicing.</option>
+                                                    <option>Mountana</option>
+                                                    <option>Nebraska</option>
+                                                    <option>New Mexico</option>
+                                                    <option>Utah</option>
+                                                    <option>Wyoming</option>
+                                                </optgroup>
+                                                <optgroup label="Central Time Zone">
+                                                    <option>Alabama</option>
+                                                    <option>Arkansas</option>
+                                                    <option>Illinois</option>
+                                                    <option>Lowa</option>
+                                                    <option>Kansas</option>
+                                                </optgroup>
+                                                <optgroup label="Eastern Time Zone">
+                                                    <option>Connecticut</option>
+                                                    <option>Delaware</option>
+                                                    <option>Florida</option>
+                                                    <option>Georgia</option>
+                                                    <option>Indiana</option>
+                                                    <option>Maine</option>
+                                                    <option>Maryland</option>
+                                                    <option>Massachusetts</option>
+                                                    <option>Michigan</option>
+                                                </optgroup>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Last Name*</label>
-                                            <input type="text" name="lastName" class="form-control" placeholder="Montana" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Email Address*</label>
-                                            <div class="input-group">
-                                                <input type="email" class="form-control" id="inputGroupPrepend2" aria-describedby="inputGroupPrepend2" placeholder="example@example.com.com" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Phone Number*</label>
-                                            <div class="input-group">
-                                                <input type="text" name="phoneNumber" class="form-control" placeholder="(+1)408-657-9007" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Where are you from*</label>
-                                            <input type="text" name="place" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
                             </section>
-                            <h4>Company Info</h4>
+                            <h4>Gönderim Türü</h4>
                             <section>
                                 <div class="row">
                                     <div class="col-lg-12 mb-4">
@@ -104,7 +140,7 @@
                                     </div>
                                 </div>
                             </section>
-                            <h4>Business Hours</h4>
+                            <h4>Önizleme</h4>
                             <section>
                                 <div class="row">
                                     <div class="col-4 col-sm-3 mb-4">
@@ -182,7 +218,7 @@
                                     </div>
                                 </div>
                             </section>
-                            <h4>Email Setup</h4>
+                            <h4>Onay</h4>
                             <section>
                                 <div class="row emial-setup">
                                     <div class="col-sm-3 col-6">
@@ -247,5 +283,5 @@
             </div>
         </div>
     </div>
-</div>  
+</div>
 @endsection

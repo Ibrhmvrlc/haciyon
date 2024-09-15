@@ -30,9 +30,12 @@
     <!-- Form step -->
     <link href="{{asset('./vendor/jquery-steps/css/jquery.steps.css')}}" rel="stylesheet">
 
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('./vendor/select2/css/select2.min.css')}}">
+
     <!-- csrf-token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+   
 </head>
 
 <body>
@@ -408,6 +411,11 @@
     <script src="{{asset('./js/plugins-init/jquery.validate-init.js')}}"></script>
     <!-- Form step init -->
     <script src="{{asset('./js/plugins-init/jquery-steps-init.js')}}"></script>
+
+    
+    <script src="{{asset('./vendor/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('./js/plugins-init/select2-init.js')}}"></script>
+
 
 </body>
 

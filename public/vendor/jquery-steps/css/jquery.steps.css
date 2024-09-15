@@ -31,6 +31,8 @@
     padding: 0;
 }
 
+
+
 /* Accessibility */
 .wizard > .steps .current-info,
 .tabcontrol > .steps .current-info
@@ -45,8 +47,6 @@
     position: absolute;
     left: -999em;
 }
-
-
 
 /*
     Wizard
@@ -268,7 +268,7 @@
     background: #eee;
     color: #aaa;
     background: #2184be;
-    color: #fff;
+    
     display: block;
     padding: 0.5em 1em;
     text-decoration: none;
@@ -286,6 +286,15 @@
 {
 }
 
+
+
+/* Veya ID kullanarak */
+#steps-uid-0-t-0,
+#steps-uid-0-t-1,
+#steps-uid-0-t-2,
+#steps-uid-0-t-3 {
+    color: black;
+}
 
 
 /*
@@ -355,6 +364,7 @@
 .tabcontrol > .steps > ul > li.current > a
 {
     padding: 15px 30px 10px 30px;
+    
 }
 
 .tabcontrol > .content
