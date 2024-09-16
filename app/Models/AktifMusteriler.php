@@ -33,4 +33,9 @@ class AktifMusteriler extends Model
     {
         return $this->hasMany(AktifSantiyeFiyat::class, 'aktif_musteri_id');
     }
+
+    public function turs()
+    {
+        return $this->belongsToMany(Tur::class);
+    }
 }

@@ -34,26 +34,14 @@
                                             <div class="mb-3">
                                                <h5>Bildirim yapılacak müşteri türlerini seçiniz: </h5>
                                             </div>
+                                            @foreach ($turler as $tur)
                                             <div class="form-check mb-2">
-                                                <input type="checkbox" class="form-check-input" id="parca" value="" name="parca" checked>
-                                                <label class="form-check-label" for="parca">Parça Beton</label>
+                                                @if ($tur->name != 'BOŞ')
+                                                <input type="checkbox" class="form-check-input" id="{{$tur->id}}tur" name="tur{{$tur->id}}" checked>
+                                                <label class="form-check-label" for="{{$tur->id}}tur">{{$tur->name}}</label>
+                                                @endif
                                             </div>
-                                            <div class="form-check mb-2">
-                                                <input type="checkbox" class="form-check-input" id="piyasa" value="" name="piyasa" checked>
-                                                <label class="form-check-label" for="piyasa">Piyasa</label>
-                                            </div>
-                                            <div class="form-check mb-2">
-                                                <input type="checkbox" class="form-check-input" id="tersane" value="" name="tersane" checked>
-                                                <label class="form-check-label" for="tersane">Tersane</label>
-                                            </div>
-                                            <div class="form-check disabled mb-2">
-                                                <input type="checkbox" class="form-check-input" id="osb" value="" name="osb" checked>
-                                                <label class="form-check-label" for="osb">OSB</label>
-                                            </div>
-                                            <div class="form-check disabled">
-                                                <input type="checkbox" class="form-check-input" id="ozel" value="" name="ozel" checked>
-                                                <label class="form-check-label" for="ozel">Özel Üretim Firmalar</label>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-lg-6 mb-4">
@@ -62,44 +50,15 @@
                                                 <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
                                              </div>
                                              <select class="match-grouped-options" multiple="multiple">
-                                                <optgroup label="Alaskan/Hawaiian Time Zone">
-                                                    <option>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, deleniti.</option>
-                                                    <option>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae, vitae.</option>
+                                                @foreach ($turler as $tur)
+                                                <optgroup label="{{$tur->name}}">
+                                                    @foreach ($musteriler as $musteri)
+                                                    @if ($musteri->tur == $tur->name)
+                                                    <option>{{$musteri->unvan}}</option>
+                                                    @endif
+                                                    @endforeach
                                                 </optgroup>
-                                                <optgroup label="Pacific Time Zone">
-                                                    <option>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque!</option>
-                                                    <option>Lorem ipsum dolor sit amet consectetur.</option>
-                                                    <option>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, esse cumque!</option>
-                                                    <option>Lorem, ipsum.</option>
-                                                </optgroup>
-                                                <optgroup label="Mountain Time Zone">
-                                                    <option>Lorem ipsum dolor sit.</option>
-                                                    <option>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</option>
-                                                    <option>Lorem ipsum dolor sit amet consectetur adipisicing.</option>
-                                                    <option>Mountana</option>
-                                                    <option>Nebraska</option>
-                                                    <option>New Mexico</option>
-                                                    <option>Utah</option>
-                                                    <option>Wyoming</option>
-                                                </optgroup>
-                                                <optgroup label="Central Time Zone">
-                                                    <option>Alabama</option>
-                                                    <option>Arkansas</option>
-                                                    <option>Illinois</option>
-                                                    <option>Lowa</option>
-                                                    <option>Kansas</option>
-                                                </optgroup>
-                                                <optgroup label="Eastern Time Zone">
-                                                    <option>Connecticut</option>
-                                                    <option>Delaware</option>
-                                                    <option>Florida</option>
-                                                    <option>Georgia</option>
-                                                    <option>Indiana</option>
-                                                    <option>Maine</option>
-                                                    <option>Maryland</option>
-                                                    <option>Massachusetts</option>
-                                                    <option>Michigan</option>
-                                                </optgroup>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

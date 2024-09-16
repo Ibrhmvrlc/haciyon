@@ -8,6 +8,7 @@ use App\Models\AktifMusteriYetkililer;
 use App\Models\AktifSantiyeFiyat;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
+use App\Models\Tur;
 use Illuminate\Http\Request;
 
 
@@ -232,7 +233,9 @@ class MusteriController extends Controller
 
     public function bildirimGit(){
         $title = 'Bildirim Listesi';
+        $turler = Tur::all();
+        $musteriler = AktifMusteriler::all();
 
-        return view('musteri.fiyat.bildirim_listesi', compact('title'));
+        return view('musteri.fiyat.bildirim_listesi', compact('title', 'turler', 'musteriler'));
     }
 }
