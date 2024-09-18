@@ -68,33 +68,32 @@
                             <section>
                                 <div class="row">
                                     <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Company Name*</label>
-                                            <input type="text" name="firstName" class="form-control" placeholder="Cellophane Square" required>
+                                        <div class="form-check mb-2">
+                                            <input type="radio" class="form-check-input" id="bildirimEposta" name="bildirimSekli" checked>
+                                            <label class="form-check-label" for="bildirimEposta">E-posta Gönder:</label>
+                                            <p>
+                                                Bu seçenekte ile zam bildirimleri müşterilere kayıtlı E-posta adreslerinden gönderilir. 
+                                                Önizleme adımında E-posta adresi olmayan müşterileri görebilir, başka yöntem ile bildirim yapılacak istisnaları seçebilirsiniz.
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Company Email Address*</label>
-                                            <div class="input-group">
-                                                <input type="email" class="form-control" id="emial1" placeholder="example@example.com.com" required>
-
-                                            </div>
+                                        <div class="form-check mb-2">
+                                            <input type="radio" class="form-check-input" id="bildirimWhatsapp" name="bildirimSekli" >
+                                            <label class="form-check-label" for="bildirimWhatsapp">WhatsApp ile Gönder</label>
+                                            <p>
+                                                Bu seçenekte ile zam bildirimleri müşterilere kayıtlı Telefon numaraları üzerinden WhatsApp uygulaması ile gönderilir. 
+                                                Önizleme adımında telefon numarası olmayan müşterileri görebilir, başka yöntem ile bildirim yapılacak istisnaları seçebilirsiniz.
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Company Phone Number*</label>
-                                            <div class="input-group">
-                                                <input type="text" name="phoneNumber" class="form-control" placeholder="(+1)408-657-9007" required>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <label class="text-label">Your position in Company*</label>
-                                            <input type="text" name="place" class="form-control" required>
+                                        <div class="form-check mb-2">
+                                            <input type="radio" class="form-check-input" id="bildirimIndir" name="bildirimSekli" >
+                                            <label class="form-check-label" for="bildirimIndir">Yalnızca indir</label>
+                                            <p>
+                                                Fiyat güncelleme yazılarını gönderme işlemi yapmadan yalnızca indirir.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
