@@ -238,4 +238,34 @@ class MusteriController extends Controller
 
         return view('musteri.fiyat.bildirim_listesi', compact('title', 'turler', 'musteriler'));
     }
+
+    public function filter(Request $request)
+    {
+        $turs = Tur::all();
+
+        foreach($turs as $tur) {
+            $filter = $request->input('tur' . $tur->id .'');
+
+            if (empty($filter)) {
+              // ERROR
+            } else {
+                $musteriler = AktifMusteriler::whereIn('tur', $filter)->get();
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+
+       
+        
+        // Verileri JSON olarak döndür
+        return response()->json($musteriler);
+    }
 }

@@ -56,6 +56,8 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::delete('/aktif-musteri/destroy/{id}', [MusteriController::class, 'destroy'])->name('aktif_musteri.destroy');
 
     Route::get('/zam-bildirimi', [MusteriController::class, 'bildirimGit'])->name('bildirim.yap');
+    Route::get('/filtrele', [MusteriController::class, 'filter'])->name('musteri.filter');
+
 });
 
 Route::prefix('api')->group(function () {
