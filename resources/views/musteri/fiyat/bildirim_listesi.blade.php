@@ -43,7 +43,7 @@
                                             @foreach ($turler as $tur)
                                             <div class="form-check mb-2">
                                                 @if ($tur->name != 'BOŞ')
-                                                <input type="checkbox" class="form-check-input" id="{{$tur->id}}tur" name="tur{{$tur->id}}" checked>
+                                                <input type="checkbox" class="tur" id="{{$tur->id}}tur" name="tur{{$tur->id}}" value="tur{{$tur->name}}" checked>
                                                 <label class="form-check-label" for="{{$tur->id}}tur">{{$tur->name}}</label>
                                                 @endif
                                             </div>
@@ -108,64 +108,88 @@
                             <section>
                                 <div class="row">
                                     <h2 class="mb-4">Bildirim Bilgileri Önizlemesi</h2>
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th>Onay</th>
-                                                <th>Müşteri Ünvanı</th>
-                                                <th>e-Posta Adresleri</th>
-                                                <th>Telefon Numarası</th>
-                                                <th>Fiyat Güncelleme Yazısı</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><input type="checkbox" class="row-select"></td>
-                                                <td>John Doe</td>
-                                                <td>
-                                                    <select class="match-grouped-options" multiple="multiple" required>
-                                                        <optgroup label="">
-                                                            <option value="dee@john.co" selected>dee@john.co</option>
-                                                            <option value="john@dee.co">john@dee.co</option>
-                                                        </optgroup>
-                                                    </select>
-                                                </td>
-                                                <td>0555 555 55 55</td>
-                                                <td><a href="">yazi.pdf</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="checkbox" class="row-select"></td>
-                                                <td>John Doe</td>
-                                                <td>
-                                                    <select class="match-grouped-options" multiple="multiple" required>
-                                                        <optgroup label="">
-                                                            <option value="dee@john.co" selected>asd@john.co</option>
-                                                            <option value="john@dee.co">dsqa@dee.co</option>
-                                                        </optgroup>
-                                                    </select>
-                                                </td>
-                                                <td>0555 555 55 55</td>
-                                                <td><a href="">yazi.pdf</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="checkbox" class="row-select"></td>
-                                                <td>John Doe</td>
-                                                <td>
-                                                    <select class="match-grouped-options" multiple="multiple" required>
-                                                        <optgroup label="">
-                                                            <option value="dee@john.co" selected>zxc@john.co</option>
-                                                            <option value="john@dee.co">johrtyn@dee.co</option>
-                                                        </optgroup>
-                                                    </select>
-                                                </td>
-                                                <td>0555 555 55 55</td>
-                                                <td><a href="">yazi.pdf</a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button id="getSelected" type="button" class="btn btn-primary">Get Selected Rows</button>
+                                    <div class="table-container mb-5" style="width: 100%;">
+                                        <table class="table table-bordered table-hover" id="musteri-table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Onay</th>
+                                                    <th>Müşteri Ünvanı</th>
+                                                    <th>e-Posta Adresleri</th>
+                                                    <th>Telefon Numarası</th>
+                                                    <th>Fiyat Güncelleme Yazısı</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($musteriler as $musteri)
+                                                <tr>
+                                                    <td><input type="checkbox" class="row-select"></td>
+                                                    <td>{{$musteri->unvan}}</td>
+                                                    <td>
+                                                        <select class="match-grouped-options" multiple="multiple" required>
+                                                            <optgroup label="">
+                                                                <option value="dee@john.co" selected>{{$musteri->mail}}</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </td>
+                                                    <td>{{$musteri->tel}}</td>
+                                                    <td><a href="">yazi.pdf</a></td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- DataTable icin CDN -->
+                                    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+                                    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+                                    
+                                    <button id="getSelected" class="btn btn-primary" type="button">Get Selected Rows</button>
                                     <p id="result" class="mt-4"></p>
+
                                     <script>
+                                        $(document).ready(function() {
+                                            if ($.fn.DataTable.isDataTable('#musteri-table')) {
+                                                $('#musteri-table').DataTable().destroy();
+                                            }
+                                            $('#musteri-table').DataTable({
+                                                "paging": true,
+                                                "pageLength": 50,
+                                                "searching": true
+                                            });
+                                        });
+
+                                        $(document).ready(function () {
+                                            // Checkbox'ların durum değişikliğini dinle
+                                            $('input[class="tur"]').change(function () {
+                                                var selectedTurs = [];
+
+                                                // Seçili olan checkbox'ları al
+                                                $('input[class="tur"]:checked').each(function () {
+                                                    selectedTurs.push($(this).val()); // Değerleri array'e ekle
+                                                });
+
+                                                // Ajax isteği gönder
+                                                $.ajax({
+                                                    url: '{{ route("musteri.filter") }}',
+                                                    type: 'GET',
+                                                    data: { musteriler: selectedTurs }, // Seçilen cinsiyetleri gönderiyoruz
+                                                    success: function (response) {
+                                                        var tbody = $('#musteri-table tbody');
+                                                        tbody.empty(); // Mevcut tabloyu temizle
+
+                                                        // Gelen müşteri verilerini tabloya ekle
+                                                        $.each(response, function (index, musteri) {
+                                                            tbody.append('<tr><td>' + musteri.isim + '</td><td>' + musteri.cinsiyet + '</td><td>' + musteri.email + '</td></tr>');
+                                                        });
+                                                    },
+                                                    error: function () {
+                                                        alert('Veriler yüklenirken bir hata oluştu.');
+                                                    }
+                                                });
+                                            });
+                                        });
+
+
                                         // Seçili satırları al
                                         document.getElementById('getSelected').addEventListener('click', function() {
                                             let selectedRows = [];

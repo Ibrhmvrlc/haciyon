@@ -251,20 +251,8 @@ class MusteriController extends Controller
             } else {
                 $musteriler = AktifMusteriler::whereIn('tur', $filter)->get();
             }
-
-
-
-
         }
 
-
-
-
-
-
-
-       
-        
         // Verileri JSON olarak döndür
         return response()->json($musteriler);
     }
