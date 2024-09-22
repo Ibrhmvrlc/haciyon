@@ -25,17 +25,29 @@
             if (currentIndex === 2) { // 0'dan başlayarak sayıldığı için 3. adım 2. index'tir
                 $(".content").css({
                     "height": "45rem",
-                    "overflow-y": "visible",   // Dikey kaydırmayı etkinleştir
+                    "overflow-y": "scroll",   // Dikey kaydırmayı etkinleştir
+                    "overflow-x": "auto"  // Yatay kaydırmayı devre dışı bırak
+                });
+            } else if(currentIndex === 0) {
+                $(".content").css({
+                    "height": "auto",
+                    "overflow-y": "scroll",   // Dikey kaydırmayı etkinleştir
                     "overflow-x": "auto"  // Yatay kaydırmayı devre dışı bırak
                 });
             } else {
                 $(".content").css({
                     "height": "auto",
-                    "overflow-y": "visible",   // Dikey kaydırmayı etkinleştir
+                    "overflow-y": "hidden",   // Dikey kaydırmayı etkinleştir
                     "overflow-x": "auto"  // Yatay kaydırmayı devre dışı bırak
                 });
             }
         }
+    });
+
+    $(".content").css({
+        "height": "auto",
+        "overflow-y": "scroll",   // Dikey kaydırmayı etkinleştir
+        "overflow-x": "auto"  // Yatay kaydırmayı devre dışı bırak
     });
     
 })(jQuery);

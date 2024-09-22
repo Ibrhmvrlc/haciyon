@@ -57,7 +57,7 @@
             
         </div>
         <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-            <a href="{{route('bildirim.yap')}}" class="btn btn-primary">Bildirim Yap</a>
+            <a href="{{route('bildirim.musteri.turu')}}" class="btn btn-primary">Bildirim Yap</a>
         </div>
     </div>
     <div id="jsGrid"></div>

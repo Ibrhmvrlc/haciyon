@@ -231,29 +231,32 @@ class MusteriController extends Controller
         return view('musteri.fiyat.fiyat_listesi', compact('veriler', 'title'));
     }
 
-    public function bildirimGit(){
+    public function musteriTuru(){
         $title = 'Bildirim Listesi';
         $turler = Tur::all();
         $musteriler = AktifMusteriler::all();
 
-        return view('musteri.fiyat.bildirim_listesi', compact('title', 'turler', 'musteriler'));
+        return view('musteri.fiyat.bildirim_musteri_turu', compact('title', 'turler', 'musteriler'));
+    }
+
+    public function gonderimSekli(){
+        $title = 'Bildirim Listesi';
+        $turler = Tur::all();
+        $musteriler = AktifMusteriler::all();
+
+        return view('musteri.fiyat.bildirim_gonderim_sekli', compact('title', 'turler', 'musteriler'));
     }
 
     public function filter(Request $request)
     {
-        $turs = Tur::all();
+        $selectedTurs = $request->input('checkboxes', []);
 
-        foreach($turs as $tur) {
-            $filter = $request->input('tur' . $tur->id .'');
+        if (!empty($selectedTurs)) {
+            $musteriler = AktifMusteriler::whereIn('turs', $selectedTurs)->get();
 
-            if (empty($filter)) {
-              // ERROR
-            } else {
-                $musteriler = AktifMusteriler::whereIn('tur', $filter)->get();
-            }
+            return response()->json($musteriler);
+        } else {
+            return response()->json(['message' => 'Hiçbir checkbox işaretlenmedi.']);
         }
-
-        // Verileri JSON olarak döndür
-        return response()->json($musteriler);
     }
 }

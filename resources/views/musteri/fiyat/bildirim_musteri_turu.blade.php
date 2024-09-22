@@ -24,6 +24,213 @@
         <div class="col-xl-12 col-xxl-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="step-counter">
+                        <div class="step-counter-steps">
+                          <div class="step active" id="step-1">
+                            <span class="step-number">1</span>
+                            <span class="step-description">Müşteri Türü</span>
+                          </div>
+                          <div class="step" id="step-2">
+                            <span class="step-number">2</span>
+                            <span class="step-description">Gönderim Şekli</span>
+                          </div>
+                          <div class="step" id="step-3">
+                            <span class="step-number">3</span>
+                            <span class="step-description">Önizleme</span>
+                          </div>
+                          <div class="step" id="step-4">
+                            <span class="step-number">4</span>
+                            <span class="step-description">Onay</span>
+                          </div>
+                        </div>
+                        <div class="step-counter-progress">
+                          <div class="step-counter-progress-bar" id="step-counter-progress-bar"></div>
+                        </div>
+                    </div>
+                    <style>
+                        .step-counter {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            margin-bottom: 20px;
+                        }
+                        .step-counter-steps {
+                            display: flex;
+                            justify-content: space-around;
+                            margin-bottom: 20px;
+                        }
+                        .step {
+                            margin-right: 85px;
+                            text-align: center;
+                        }
+                        .step-number {
+                            font-size: 24px;
+                            font-weight: bold;
+                            color: #ccc;
+                            display: block;
+                            margin-bottom: 10px;
+                        }
+                        .step-description {
+                            font-size: 16px;
+                            color: #666;
+                        }
+                        .step.active {
+                            color: #4CAF50;
+                        }
+                        .step.active .step-number {
+                            color: #4CAF50;
+                        }
+                        .step.active .step-description {
+                            font-weight: bold;
+                        }
+                        .step.inactive {
+                            color: #ccc;
+                        }
+                        .step.inactive .step-number {
+                            color: #ccc;
+                        }
+                        .step.inactive .step-description {
+                            color: #ccc;
+                        }
+                        .step-counter-progress {
+                            width: 100%;
+                            height: 10px;
+                            background-color: #ccc;
+                            border-radius: 10px;
+                            margin-top: 20px;
+                        }
+                        .step-counter-progress-bar {
+                            width: 0%;
+                            height: 100%;
+                            background-color: #4CAF50;
+                            border-radius: 10px;
+                            transition: width 0.5s ease;
+                        }
+                        /* Responsive styles */
+                        @media (max-width: 768px) {
+                            .step-counter-steps {
+                                flex-wrap: wrap;
+                            }
+                            .step {
+                                margin-right: 15px;
+                                margin-bottom: 20px;
+                            }
+                            .step-number {
+                                font-size: 18px;
+                            }
+                            .step-description {
+                                font-size: 12px;
+                            }
+                        }
+                    </style>
+                    <script>
+                     class StepCounter {
+                        constructor(totalSteps, stepDescriptions) {
+                            this.totalSteps = totalSteps;
+                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 1;
+                            this.stepDescriptions = stepDescriptions;
+                            this.progressbar = document.getElementById('step-counter-progress-bar');
+                            this.updateStepCounter();
+                        }
+
+                        updateStepCounter() {
+                            this.progressbar.style.width = (this.currentStep / this.totalSteps) * 100 + '%';
+                            this.steps.forEach((step, index) => {
+                                if (index < this.currentStep - 1) {
+                                    step.classList.add('inactive');
+                                } else if (index === this.currentStep - 1) {
+                                    step.classList.add('active');
+                                } else {
+                                    step.classList.remove('active', 'inactive');
+                                }
+                            });
+                        }
+
+                        nextStep() {
+                            if (this.currentStep < this.totalSteps) {
+                            this.currentStep++;
+                            localStorage.setItem('currentStep', this.currentStep);
+                            window.location.href = `{{ route("bildirim.gonderim.sekli") }}`; // Redirect to the next page
+                            } else {
+                            console.log('You have completed all steps!');
+                            }
+                        }
+                        }
+
+                        // Example usage:
+                        const stepDescriptions = [
+                            'Enter your name',
+                            'Enter your email',
+                            'Enter your password',
+                            'Confirm your password'
+                        ];
+                        const stepCounter = new StepCounter(4, stepDescriptions);
+                        document.getElementById('next-step-button').addEventListener('click', () => {
+                        stepCounter.nextStep();
+                        });
+                    </script>
+
+                    <!-- STEP 1 START-->
+                    <form action="xxxxxxx" method="post">
+                    @csrf
+                        <div class="row">
+                            <div class="col-lg-12 mb-4">
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                    <h5>Bildirim yapılacak müşteri türlerini seçiniz: </h5>
+                                    </div>
+                                    <div class="form-group">
+                                        <p>
+                                            Lütfen Fiyat güncelleme bildirimi yapılacak müşteri çeşitlerini seçiniz. Eğer İlgili müşteri çeşidi arasında bildirim yapılmayacak müşteriler varsa,
+                                            istisna olarak bu müşterileri seçip bildirim listesinin dışında tutabilirsiniz.
+                                        </p>
+                                    </div>
+                                    @foreach ($turler as $tur)
+                                    <div class="form-check mb-2">
+                                        <input type="checkbox" class="tur" id="tur{{$tur->id}}" name="checkboxes[]" value="{{$tur->name}}" checked>
+                                        <label class="form-check-label" for="tur{{$tur->id}}">{{$tur->name}}</label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
+                                    </div>
+                                    <select class="match-grouped-options" multiple="multiple">
+                                        @foreach ($turler as $tur)
+                                        <optgroup label="{{$tur->name}}">
+                                            @foreach ($musteriler as $musteri)
+                                            @if ($musteri->turs == $tur->name)
+                                            <option>{{$musteri->unvan}}</option>
+                                            @endif
+                                            @endforeach
+                                        </optgroup>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- STEP 1 END -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <form action="#" id="step-form-horizontal" class="step-form-horizontal">                
                         <div>
                             <h4>Müşteri Türü</h4>
@@ -42,10 +249,8 @@
                                             </div>
                                             @foreach ($turler as $tur)
                                             <div class="form-check mb-2">
-                                                @if ($tur->name != 'BOŞ')
-                                                <input type="checkbox" class="tur" id="{{$tur->id}}tur" name="tur{{$tur->id}}" value="tur{{$tur->name}}" checked>
-                                                <label class="form-check-label" for="{{$tur->id}}tur">{{$tur->name}}</label>
-                                                @endif
+                                                <input type="checkbox" class="tur" id="tur{{$tur->id}}" name="checkboxes[]" value="{{$tur->name}}" checked>
+                                                <label class="form-check-label" for="tur{{$tur->id}}">{{$tur->name}}</label>
                                             </div>
                                             @endforeach
                                         </div>
@@ -59,7 +264,7 @@
                                                 @foreach ($turler as $tur)
                                                 <optgroup label="{{$tur->name}}">
                                                     @foreach ($musteriler as $musteri)
-                                                    @if ($musteri->tur == $tur->name)
+                                                    @if ($musteri->turs == $tur->name)
                                                     <option>{{$musteri->unvan}}</option>
                                                     @endif
                                                     @endforeach
@@ -161,28 +366,48 @@
                                         $(document).ready(function () {
                                             // Checkbox'ların durum değişikliğini dinle
                                             $('input[class="tur"]').change(function () {
-                                                var selectedTurs = [];
+                                                let selectedTurs = [];
 
-                                                // Seçili olan checkbox'ları al
-                                                $('input[class="tur"]:checked').each(function () {
-                                                    selectedTurs.push($(this).val()); // Değerleri array'e ekle
+                                                // Seçili checkboxları topla
+                                                $('input[class="tur"]:checked').each(function() {
+                                                    selectedTurs.push($(this).val());
                                                 });
+
+                                                // Eğer hiçbir checkbox seçili değilse uyarı ver
+                                                if (selectedTurs.length === 0) {
+                                                    alert('Lütfen en az bir müşteri türü seçin.');
+                                                    return;
+                                                }
 
                                                 // Ajax isteği gönder
                                                 $.ajax({
-                                                    url: '{{ route("musteri.filter") }}',
-                                                    type: 'GET',
-                                                    data: { musteriler: selectedTurs }, // Seçilen cinsiyetleri gönderiyoruz
-                                                    success: function (response) {
-                                                        var tbody = $('#musteri-table tbody');
-                                                        tbody.empty(); // Mevcut tabloyu temizle
-
-                                                        // Gelen müşteri verilerini tabloya ekle
-                                                        $.each(response, function (index, musteri) {
-                                                            tbody.append('<tr><td>' + musteri.isim + '</td><td>' + musteri.cinsiyet + '</td><td>' + musteri.email + '</td></tr>');
-                                                        });
+                                                    url: '/musteri/filtrele',
+                                                    type: 'get',
+                                                    data: {
+                                                        checkboxes: selectedTurs,
+                                                        _token: '{{ csrf_token() }}'  // CSRF token eklenmeli
                                                     },
-                                                    error: function () {
+                                                    success: function(response) {
+                                                        if (response.length === 0) {
+                                                            $('#musteri-table').html('<tr><td colspan="5">Veri bulunamadı</td></tr>');
+                                                        } else {
+                                                            let rows = '';
+                                                            response.forEach(function(musteri) {
+                                                                rows += '<tr>'
+                                                                    + '<td><input type="checkbox" class="row-select"></td>'
+                                                                    + '<td>' + musteri.unvan + '</td>'
+                                                                    + '<td><select class="match-grouped-options" multiple="multiple" required>'
+                                                                    + '<optgroup label=""><option value="' + musteri.mail + '" selected>' + musteri.mail + '</option></optgroup>'
+                                                                    + '</select></td>'
+                                                                    + '<td>' + musteri.tel + '</td>'
+                                                                    + '<td><a href="">yazi.pdf</a></td>'
+                                                                    + '</tr>';
+                                                            });
+                                                            $('#musteri-table').html(rows);
+                                                        }
+                                                    },
+                                                    error: function (jqXHR, textStatus, errorThrown) {
+                                                        console.error('Hata: ', textStatus, errorThrown);
                                                         alert('Veriler yüklenirken bir hata oluştu.');
                                                     }
                                                 });

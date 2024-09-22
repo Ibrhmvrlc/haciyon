@@ -55,7 +55,16 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::put('/aktif-musteri/update/{id}', [MusteriController::class, 'update'])->name('aktif_musteri.update');
     Route::delete('/aktif-musteri/destroy/{id}', [MusteriController::class, 'destroy'])->name('aktif_musteri.destroy');
 
-    Route::get('/zam-bildirimi', [MusteriController::class, 'bildirimGit'])->name('bildirim.yap');
+    Route::get('/zam-bildirimi/musteri-turu', [MusteriController::class, 'musteriTuru'])->name('bildirim.musteri.turu');
+    Route::post('/zam-bildirimi/musteri-turu', [MusteriController::class, 'xxxxxxxx'])->name('bildirim.musteri.turu.form');
+
+    Route::get('/zam-bildirimi/gonderim-sekli', [MusteriController::class, 'gonderimSekli'])->name('bildirim.gonderim.sekli');
+
+
+
+
+
+
     Route::get('/filtrele', [MusteriController::class, 'filter'])->name('musteri.filter');
 
 });
