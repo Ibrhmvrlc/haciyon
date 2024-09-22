@@ -232,7 +232,7 @@ class MusteriController extends Controller
     }
 
     public function musteriTuru(){
-        $title = 'Bildirim Listesi';
+        $title = 'Müşteri Türü';
         $turler = Tur::all();
         $musteriler = AktifMusteriler::all();
 
@@ -240,11 +240,19 @@ class MusteriController extends Controller
     }
 
     public function gonderimSekli(){
-        $title = 'Bildirim Listesi';
+        $title = 'Gönderim Şekli';
         $turler = Tur::all();
         $musteriler = AktifMusteriler::all();
 
         return view('musteri.fiyat.bildirim_gonderim_sekli', compact('title', 'turler', 'musteriler'));
+    }
+
+    public function onizleme(){
+        $title = 'Önizleme';
+        $turler = Tur::all();
+        $musteriler = AktifMusteriler::all();
+
+        return view('musteri.fiyat.bildirim_onizleme', compact('title', 'turler', 'musteriler'));
     }
 
     public function filter(Request $request)

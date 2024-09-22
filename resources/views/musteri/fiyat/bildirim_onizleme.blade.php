@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="step-counter">
                         <div class="step-counter-steps">
-                          <div class="step active" id="step-1">
+                          <div class="step" id="step-1">
                             <span class="step-number">1</span>
                             <span class="step-description">Müşteri Türü</span>
                           </div>
@@ -34,7 +34,7 @@
                             <span class="step-number">2</span>
                             <span class="step-description">Gönderim Şekli</span>
                           </div>
-                          <div class="step" id="step-3">
+                          <div class="step active" id="step-3">
                             <span class="step-number">3</span>
                             <span class="step-description">Önizleme</span>
                           </div>
@@ -47,12 +47,11 @@
                           <div class="step-counter-progress-bar" id="step-counter-progress-bar"></div>
                         </div>
                     </div>
-                  
                     <script>
                      class StepCounter {
                         constructor(totalSteps, stepDescriptions) {
                             this.totalSteps = totalSteps;
-                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 1;
+                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 3;
                             this.stepDescriptions = stepDescriptions;
                             this.progressbar = document.getElementById('step-counter-progress-bar');
                             this.updateStepCounter();
@@ -75,7 +74,7 @@
                             if (this.currentStep < this.totalSteps) {
                             this.currentStep++;
                             localStorage.setItem('currentStep', this.currentStep);
-                            window.location.href = `{{ route("bildirim.gonderim.sekli") }}`; // Redirect to the next page
+                            window.location.href = `xxxxxxx`; // Redirect to the next page
                             } else {
                             console.log('You have completed all steps!');
                             }
@@ -95,50 +94,134 @@
                         });
                     </script>
 
-                    <!-- STEP 1 START-->
+                    <!-- STEP 3 START-->
                     <form action="xxxxxxx" method="post">
                     @csrf
-                        <div class="row">
-                            <div class="col-lg-12 mb-4">
-                                <div class="form-group">
-                                    <div class="mb-3">
-                                    <h5>Bildirim yapılacak müşteri türlerini seçiniz: </h5>
-                                    </div>
-                                    <div class="form-group">
-                                        <p>
-                                            Lütfen Fiyat güncelleme bildirimi yapılacak müşteri çeşitlerini seçiniz. Eğer İlgili müşteri çeşidi arasında bildirim yapılmayacak müşteriler varsa,
-                                            istisna olarak bu müşterileri seçip bildirim listesinin dışında tutabilirsiniz.
-                                        </p>
-                                    </div>
-                                    @foreach ($turler as $tur)
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="tur" id="tur{{$tur->id}}" name="checkboxes[]" value="{{$tur->name}}" checked>
-                                        <label class="form-check-label" for="tur{{$tur->id}}">{{$tur->name}}</label>
-                                    </div>
+                    <div class="row">
+                        <h2 class="mb-4 ml-4">Bildirim Bilgileri Önizlemesi</h2>
+                        <div class="table-container mb-5" style="width: 95%; margin: auto;">
+                            <table class="table table-bordered table-hover" id="musteri-table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Onay</th>
+                                        <th>Müşteri Ünvanı</th>
+                                        <th>e-Posta Adresleri</th>
+                                        <th>Telefon Numarası</th>
+                                        <th>Fiyat Güncelleme Yazısı</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($musteriler as $musteri)
+                                    <tr>
+                                        <td><input type="checkbox" class="row-select"></td>
+                                        <td>{{$musteri->unvan}}</td>
+                                        <td>
+                                            <select class="match-grouped-options" multiple="multiple" required>
+                                                <optgroup label="">
+                                                    <option value="dee@john.co" selected>{{$musteri->mail}}</option>
+                                                </optgroup>
+                                            </select>
+                                        </td>
+                                        <td>{{$musteri->tel}}</td>
+                                        <td><a href="">yazi.pdf</a></td>
+                                    </tr>
                                     @endforeach
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="form-group">
-                                    <div class="mb-3">
-                                        <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
-                                    </div>
-                                    <select class="match-grouped-options" multiple="multiple">
-                                        @foreach ($turler as $tur)
-                                        <optgroup label="{{$tur->name}}">
-                                            @foreach ($musteriler as $musteri)
-                                            @if ($musteri->turs == $tur->name)
-                                            <option>{{$musteri->unvan}}</option>
-                                            @endif
-                                            @endforeach
-                                        </optgroup>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                                </tbody>
+                            </table>
+
+                            <button id="getSelected" class="btn btn-primary" type="button">Get Selected Rows</button>
+                            <p id="result" class="mt-4"></p>
                         </div>
+
+                        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+                        
+                        <script>
+                            $(document).ready(function () {
+                                // Checkbox'ların durum değişikliğini dinle
+                                $('input[class="tur"]').change(function () {
+                                    let selectedTurs = [];
+
+                                    // Seçili checkboxları topla
+                                    $('input[class="tur"]:checked').each(function() {
+                                        selectedTurs.push($(this).val());
+                                    });
+
+                                    // Eğer hiçbir checkbox seçili değilse uyarı ver
+                                    if (selectedTurs.length === 0) {
+                                        alert('Lütfen en az bir müşteri türü seçin.');
+                                        return;
+                                    }
+
+                                    // Ajax isteği gönder
+                                    $.ajax({
+                                        url: '/musteri/filtrele',
+                                        type: 'get',
+                                        data: {
+                                            checkboxes: selectedTurs,
+                                            _token: '{{ csrf_token() }}'  // CSRF token eklenmeli
+                                        },
+                                        success: function(response) {
+                                            if (response.length === 0) {
+                                                $('#musteri-table').html('<tr><td colspan="5">Veri bulunamadı</td></tr>');
+                                            } else {
+                                                let rows = '';
+                                                response.forEach(function(musteri) {
+                                                    rows += '<tr>'
+                                                        + '<td><input type="checkbox" class="row-select"></td>'
+                                                        + '<td>' + musteri.unvan + '</td>'
+                                                        + '<td><select class="match-grouped-options" multiple="multiple" required>'
+                                                        + '<optgroup label=""><option value="' + musteri.mail + '" selected>' + musteri.mail + '</option></optgroup>'
+                                                        + '</select></td>'
+                                                        + '<td>' + musteri.tel + '</td>'
+                                                        + '<td><a href="">yazi.pdf</a></td>'
+                                                        + '</tr>';
+                                                });
+                                                $('#musteri-table').html(rows);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            console.error('Hata: ', textStatus, errorThrown);
+                                            alert('Veriler yüklenirken bir hata oluştu.');
+                                        }
+                                    });
+                                });
+                            });
+
+
+                            // Seçili satırları al
+                            document.getElementById('getSelected').addEventListener('click', function() {
+                                let selectedRows = [];
+                                let checkboxes = document.querySelectorAll('.row-select:checked');
+                                
+                                checkboxes.forEach(function(checkbox) {
+                                    let row = checkbox.closest('tr');
+                                    let unvan = row.cells[1].innerText;
+                                    let tel = row.cells[3].innerText;
+                                    
+                                    // Select elementinden birden fazla seçimi al
+                                    let optionsSelect = row.querySelector('.match-grouped-options');
+                                    let selectedOptions = Array.from(optionsSelect.selectedOptions).map(option => option.value);
+                                    
+                                    selectedRows.push({
+                                        unvan: unvan,
+                                        selectedOptions: selectedOptions,
+                                        tel: tel,
+                                    });
+                                });
+                                
+                                // Seçili satırları ekrana yazdır
+                                let result = document.getElementById('result');
+                                if (selectedRows.length > 0) {
+                                    result.innerHTML = `<strong>Selected Rows:</strong> ${JSON.stringify(selectedRows)}`;
+                                } else {
+                                    result.innerHTML = "<strong>No rows selected</strong>";
+                                }
+                            });
+                        </script>
+                    
+                    </div>
                     </form>
-                    <!-- STEP 1 END -->
+                    <!-- STEP 3 END -->
 
 
 
