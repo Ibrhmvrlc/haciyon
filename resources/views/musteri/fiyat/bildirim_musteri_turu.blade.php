@@ -1,18 +1,60 @@
 @extends('layouts.main')
 
 @section('content')
+@php
+    use App\Models\PermissionRequest;
+@endphp
 <div class="container-fluid">
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
-                <h4>Fiyat Güncelleme Bildirim Listesi</h4>
-                <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat, corporis? </p>
+                <h4 class="mb-1">Fiyat Güncelleme Modülü</h4>
+                <span>
+                    <b>Dikkat!</b> yapılan değişiklikler kalıcıdır. Sistemdeki tüm fiyat bilgileri değişir.
+                </span>
+                <br />
+                <span>
+                    Talebinizin bitimine <b><span id="countdown"></span></b> kaldı.
+                </span>
             </div>
         </div>
+
+         
+        @php
+            $permission = PermissionRequest::where('user_id', auth()->user()->id)->where('status', 'onaylandi')->get();
+        @endphp
+        <script>
+            // PHP'den alınan tarihleri JavaScript'e geçir
+            var endDate = new Date("{{ $permission->first()->expires_at }}").getTime();
+            
+            // Geri sayım işlevi
+            var countdown = setInterval(function() {
+                var now = new Date().getTime(); // Şu anki zaman
+                var distance = endDate - now; // Hedef tarihe kalan zaman
+
+                // Gün, saat, dakika, saniye hesaplama
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Geri sayımı HTML'e yazdırma
+                document.getElementById("countdown").innerHTML = days + "g " + hours + "s " 
+                + minutes + "dk " + seconds + "sn ";
+
+                // Geri sayım bittiğinde mesaj göster
+                if (distance < 0) {
+                    clearInterval(countdown);
+                    document.getElementById("countdown").innerHTML = "Süre doldu!";
+                }
+            }, 1000);
+        </script>
+
+
         <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Components</a></li>
+                <li class="breadcrumb-item"><a href="xxxxxxxxxxxxx">Müşteri Fiyat Listesi</a></li>
+                <li class="breadcrumb-item active">Bildirim Ayarları</li>
             </ol>
         </div>
         <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -23,6 +65,9 @@
     <div class="row">
         <div class="col-xl-12 col-xxl-12">
             <div class="card">
+                <div class="card-header">
+                    <h3>Bildirim Ayarları</h3>
+                </div>
                 <div class="card-body">
                     <div class="step-counter">
                         <div class="step-counter-steps">
@@ -123,7 +168,7 @@
                                     <div class="mb-3">
                                         <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
                                     </div>
-                                    <select class="match-grouped-options" multiple="multiple">
+                                    <select class="match-grouped-options" multiple="multiple" id="mySelect">
                                         @foreach ($turler as $tur)
                                         <optgroup label="{{$tur->name}}">
                                             @foreach ($musteriler as $musteri)
@@ -137,167 +182,12 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <!-- STEP 1 END -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <form action="#" id="step-form-horizontal" class="step-form-horizontal">                
-                        <div>
-                            <h4>Müşteri Türü</h4>
-                            <section>
-                                <div class="row">
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-group">
-                                            <div class="mb-3">
-                                               <h5>Bildirim yapılacak müşteri türlerini seçiniz: </h5>
-                                            </div>
-                                            <div class="form-group">
-                                                <p>
-                                                    Lütfen Fiyat güncelleme bildirimi yapılacak müşteri çeşitlerini seçiniz. Eğer İlgili müşteri çeşidi arasında bildirim yapılmayacak müşteriler varsa,
-                                                    istisna olarak bu müşterileri seçip bildirim listesinin dışında tutabilirsiniz.
-                                                </p>
-                                            </div>
-                                            @foreach ($turler as $tur)
-                                            <div class="form-check mb-2">
-                                                <input type="checkbox" class="tur" id="tur{{$tur->id}}" name="checkboxes[]" value="{{$tur->name}}" checked>
-                                                <label class="form-check-label" for="tur{{$tur->id}}">{{$tur->name}}</label>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 mb-4">
-                                        <div class="form-group">
-                                            <div class="mb-3">
-                                                <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
-                                             </div>
-                                             <select class="match-grouped-options" multiple="multiple">
-                                                @foreach ($turler as $tur)
-                                                <optgroup label="{{$tur->name}}">
-                                                    @foreach ($musteriler as $musteri)
-                                                    @if ($musteri->turs == $tur->name)
-                                                    <option>{{$musteri->unvan}}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </optgroup>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <h4>Gönderim Türü</h4>
-                            <section>
-                                <div class="row">
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-check mb-2">
-                                            <input type="radio" class="form-check-input" id="bildirimEposta" name="bildirimSekli" checked>
-                                            <label class="form-check-label" for="bildirimEposta"><b>E-posta Gönder:</b></label>
-                                            <p>
-                                                Bu seçenekte ile zam bildirimleri müşterilere kayıtlı E-posta adreslerinden gönderilir. 
-                                                'Önizleme' adımında E-posta adresi olmayan müşterileri görebilir, başka yöntem ile bildirim yapılacak istisnaları seçebilirsiniz.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-check mb-2">
-                                            <input type="radio" class="form-check-input" id="bildirimWhatsapp" name="bildirimSekli" >
-                                            <label class="form-check-label" for="bildirimWhatsapp"><b>WhatsApp ile Gönder:</b></label>
-                                            <p>
-                                                Bu seçenekte ile zam bildirimleri müşterilere kayıtlı Telefon numaraları üzerinden WhatsApp uygulaması ile gönderilir. 
-                                                'Önizleme' adımında telefon numarası olmayan müşterileri görebilir, başka yöntem ile bildirim yapılacak istisnaları seçebilirsiniz.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 mb-4">
-                                        <div class="form-check mb-2">
-                                            <input type="radio" class="form-check-input" id="bildirimIndir" name="bildirimSekli" >
-                                            <label class="form-check-label" for="bildirimIndir"><b>Yalnızca indir:</b></label>
-                                            <p>
-                                                Fiyat güncelleme yazılarını gönderme işlemi yapmadan yalnızca indirir.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <h4>Önizleme</h4>
-                            <section>
-                               
-                            </section>
-                            <h4>Onay</h4>
-                            <section>
-                                <div class="row emial-setup">
-                                    <div class="col-sm-3 col-6">
-                                        <div class="form-group">
-                                            <label for="mailclient11" class="mailclinet mailclinet-gmail">
-                                                <input type="radio" name="emailclient" id="mailclient11">
-                                                <span class="mail-icon">
-                                                    <i class="mdi mdi-google-plus" aria-hidden="true"></i>
-                                                </span>
-                                                <span class="mail-text">I'm using Gmail</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3 col-6">
-                                        <div class="form-group">
-                                            <label for="mailclient12" class="mailclinet mailclinet-office">
-                                                <input type="radio" name="emailclient" id="mailclient12">
-                                                <span class="mail-icon">
-                                                    <i class="mdi mdi-office" aria-hidden="true"></i>
-                                                </span>
-                                                <span class="mail-text">I'm using Office</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3 col-6">
-                                        <div class="form-group">
-                                            <label for="mailclient13" class="mailclinet mailclinet-drive">
-                                                <input type="radio" name="emailclient" id="mailclient13">
-                                                <span class="mail-icon">
-                                                    <i class="mdi mdi-google-drive" aria-hidden="true"></i>
-                                                </span>
-                                                <span class="mail-text">I'm using Drive</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3 col-6">
-                                        <div class="form-group">
-                                            <label for="mailclient14" class="mailclinet mailclinet-another">
-                                                <input type="radio" name="emailclient" id="mailclient14">
-                                                <span class="mail-icon">
-                                                    <i class="fa fa-question-circle-o"
-                                                        aria-hidden="true"></i>
-                                                </span>
-                                                <span class="mail-text">Another Service</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="skip-email text-center">
-                                            <p>Or if want skip this step entirely and setup it later</p>
-                                            <a href="javascript:void()">Skip step</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+                        <div class="text-right">
+                            <button class="btn btn-primary mr-2 px-3" type="button" disabled>Geri</button>
+                            <button class="btn btn-primary px-4" type="submit">İleri</button>
                         </div>
                     </form>
+                    <!-- STEP 1 END -->
                 </div>
             </div>
         </div>

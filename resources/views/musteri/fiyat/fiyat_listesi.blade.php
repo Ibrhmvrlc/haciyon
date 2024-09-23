@@ -8,7 +8,7 @@
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
-                <h4 class="mb-1">Fiyat Güncelleme Listesi </h4>
+                <h4 class="mb-1">Fiyat Güncelleme Modülü </h4>
                 <span>
                     <b>Dikkat!</b> yapılan değişiklikler kalıcıdır. Sistemdeki tüm fiyat bilgileri değişir.
                 </span>
@@ -51,8 +51,7 @@
 
         <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="xxxxxxx">xxxxxxxx</a></li>
-                <li class="breadcrumb-item active"><a href="xxxxxx">xxxxxxxx</a></li>
+                <li class="breadcrumb-item">Müşteri Fiyat Listesi</li>
             </ol>
             
         </div>
@@ -60,7 +59,14 @@
             <a href="{{route('bildirim.musteri.turu')}}" class="btn btn-primary">Bildirim Yap</a>
         </div>
     </div>
-    <div id="jsGrid"></div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Müşteri Fiyat Listesi</h3>
+        </div>
+        <div class="card-body">
+            <div id="jsGrid"></div>
+        </div>
+    </div>
     <style>
         .jsgrid-grid-header {
             overflow-y: hidden; /* Dikey scroll'u gizlemek için */

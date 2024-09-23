@@ -219,7 +219,7 @@
                         <ul aria-expanded="false">
                             <li><a href="{{route('aktif.musteri.listesi')}}">Aktif Müşteriler</a></li>
                             <li><a href="{{route('tum.musteri.listesi')}}">Diğer Müşteriler</a></li>
-                            <li><a href="{{route('updatePage')}}">Fiyat Güncelleme</a></li>
+                            <li><a href="{{route('updatePage')}}">Fiyat Güncelleme Modülü</a></li>
                         </ul>
                     </li>
 
