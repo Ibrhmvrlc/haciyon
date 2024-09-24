@@ -141,7 +141,7 @@
                     </script>
 
                     <!-- STEP 1 START-->
-                    <form action="xxxxxxx" method="post">
+                    <form action="{{route('bildirim.onizleme.form')}}" method="post">
                     @csrf
                         <div class="row">
                             <div class="col-lg-12 mb-4">

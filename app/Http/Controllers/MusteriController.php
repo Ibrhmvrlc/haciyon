@@ -267,4 +267,33 @@ class MusteriController extends Controller
             return response()->json(['message' => 'Hiçbir checkbox işaretlenmedi.']);
         }
     }
+
+    public function ilkAdimForm(Request $request)
+    {
+        // Checkboxlardan seçilen müşteri türlerini alıyoruz
+        $selectedTurler = $request->input('checkboxes');
+
+        if ($selectedTurler) {
+            // Seçilen türlere ait müşterileri alıyoruz
+            $musteriler = Musteri::whereIn('tur', $selectedTurler)->get();
+
+            // Eğer müşteriler bulunduysa, bunları bildirim tablosuna ekleyelim
+            if ($musteriler->isNotEmpty()) {
+                foreach ($musteriler as $musteri) {
+                    // Fiyat güncelleme bildirimlerini ekliyoruz
+                    FiyatGuncellemeBildirim::create([
+                        'musteri_id' => $musteri->id,
+                        'tur' => $musteri->tur,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+                return redirect()->back()->with('success', 'Fiyat güncelleme bildirimi listesi başarıyla oluşturuldu.');
+            } else {
+                return redirect()->back()->with('error', 'Seçilen türler için müşteri bulunamadı.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Hiçbir tür seçilmedi.');
+        }
+    }
 }

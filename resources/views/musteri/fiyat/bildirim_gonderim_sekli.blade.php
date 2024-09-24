@@ -140,31 +140,36 @@
                         <div class="row">
                             <div class="col-lg-12 mb-4">
                                 <div class="form-check mb-2">
+                                    <label class="form-check-label">
+                                        <b>
+                                            Lütfen bildirimi ağırlıklı olarak hangi yöntem ile yapacağınızı seçiniz. Önizleme adımında istisna müşterileri seçebilirsiniz. 
+                                            Böylece örneğin E-posta kullanmayan müşterilere farklı yollarla bildirim yapabilirsiniz.
+                                        </b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-4">
+                                <div class="form-check mb-2">
                                     <input type="radio" class="form-check-input" id="bildirimEposta" name="bildirimSekli" checked>
-                                    <label class="form-check-label" for="bildirimEposta"><b>E-posta Gönder:</b></label>
-                                    <p>
-                                        Bu seçenekte ile zam bildirimleri müşterilere kayıtlı E-posta adreslerinden gönderilir. 
-                                        'Önizleme' adımında E-posta adresi olmayan müşterileri görebilir, başka yöntem ile bildirim yapılacak istisnaları seçebilirsiniz.
-                                    </p>
+                                    <label class="form-check-label" for="bildirimEposta">
+                                        <b>E-posta ile Gönder:</b> Bildirimi ana yöntem olarak E-posta üzerinden yap. Önizleme adımında müşteri bazında değişiklik yapabilirsiniz.
+                                    </label>
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-4">
                                 <div class="form-check mb-2">
                                     <input type="radio" class="form-check-input" id="bildirimWhatsapp" name="bildirimSekli" >
-                                    <label class="form-check-label" for="bildirimWhatsapp"><b>WhatsApp ile Gönder:</b></label>
-                                    <p>
-                                        Bu seçenekte ile zam bildirimleri müşterilere kayıtlı Telefon numaraları üzerinden WhatsApp uygulaması ile gönderilir. 
-                                        'Önizleme' adımında telefon numarası olmayan müşterileri görebilir, başka yöntem ile bildirim yapılacak istisnaları seçebilirsiniz.
-                                    </p>
+                                    <label class="form-check-label" for="bildirimWhatsapp">
+                                        <b>WhatsApp ile Gönder:</b> Bildirimi ana yöntem olarak WhatsApp üzerinden yap. Önizleme adımında müşteri bazında değişiklik yapabilirsiniz.
+                                    </label>
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-4">
                                 <div class="form-check mb-2">
                                     <input type="radio" class="form-check-input" id="bildirimIndir" name="bildirimSekli" >
-                                    <label class="form-check-label" for="bildirimIndir"><b>Yalnızca indir:</b></label>
-                                    <p>
-                                        Fiyat güncelleme yazılarını gönderme işlemi yapmadan yalnızca indirir.
-                                    </p>
+                                    <label class="form-check-label" for="bildirimIndir">
+                                        <b>Yalnızca İndir:</b> Bildirim yazısını yalnızca cihazıma indir. Önizleme adımında müşteri bazında değişiklik yapabilirsiniz.
+                                    </label>
                                 </div>
                             </div>
                         </div>
