@@ -6,10 +6,12 @@ use App\Models\AktifMusteriler;
 use App\Models\AktifMusteriSantiye;
 use App\Models\AktifMusteriYetkililer;
 use App\Models\AktifSantiyeFiyat;
+use App\Models\FiyatGuncellemeBildirim;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use App\Models\Tur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 use function PHPUnit\Framework\isEmpty;
@@ -270,25 +272,48 @@ class MusteriController extends Controller
 
     public function ilkAdimForm(Request $request)
     {
+        // Islem her basladiginda karisikligi engellemek icin bildirim tablosunun verilerini sifirliyoruz/siliyoruz
+        DB::table('fiyat_guncelleme_bildirims')->truncate();
+
         // Checkboxlardan seçilen müşteri türlerini alıyoruz
         $selectedTurler = $request->input('checkboxes');
 
+        // Select'ten secilen istisna musterileri aliyoruz
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         if ($selectedTurler) {
             // Seçilen türlere ait müşterileri alıyoruz
-            $musteriler = Musteri::whereIn('tur', $selectedTurler)->get();
+            $musteriler = AktifMusteriler::whereIn('turs', $selectedTurler)->get();
 
+            // İstisna Müşterileri Seçilen Müşterilerden çıkarıyoruz
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // İstisna müşterileri çıkarttıktan sonra $musteriler değişkeniyle işlemlere devam ediyoruz
             // Eğer müşteriler bulunduysa, bunları bildirim tablosuna ekleyelim
             if ($musteriler->isNotEmpty()) {
                 foreach ($musteriler as $musteri) {
-                    // Fiyat güncelleme bildirimlerini ekliyoruz
                     FiyatGuncellemeBildirim::create([
                         'musteri_id' => $musteri->id,
-                        'tur' => $musteri->tur,
+                        'musteri_unvani' => $musteri->unvan,
+                        'tur' => $musteri->turs,
+                        'tel' => $musteri->tel,
+                        'eposta' => $musteri->mail,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
                 }
-                return redirect()->back()->with('success', 'Fiyat güncelleme bildirimi listesi başarıyla oluşturuldu.');
+                return redirect()->back()->with('success', 'Fiyat güncelleme bildirimi listesi başarıyla oluşturuldu.'); // Formun ikinci adimina yonlendirecegiz
             } else {
                 return redirect()->back()->with('error', 'Seçilen türler için müşteri bulunamadı.');
             }

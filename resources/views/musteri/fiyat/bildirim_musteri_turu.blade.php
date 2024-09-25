@@ -116,15 +116,6 @@
                             });
                         }
 
-                        nextStep() {
-                            if (this.currentStep < this.totalSteps) {
-                            this.currentStep++;
-                            localStorage.setItem('currentStep', this.currentStep);
-                            window.location.href = `{{ route("bildirim.gonderim.sekli") }}`; // Redirect to the next page
-                            } else {
-                            console.log('You have completed all steps!');
-                            }
-                        }
                         }
 
                         // Example usage:
@@ -141,7 +132,7 @@
                     </script>
 
                     <!-- STEP 1 START-->
-                    <form action="{{route('bildirim.onizleme.form')}}" method="post">
+                    <form action="{{route('bildirim.musteri.turu.form')}}" method="post">
                     @csrf
                         <div class="row">
                             <div class="col-lg-12 mb-4">
