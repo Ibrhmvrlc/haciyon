@@ -257,8 +257,7 @@ class MusteriController extends Controller
         return view('musteri.fiyat.bildirim_onizleme', compact('title', 'turler', 'musteriler'));
     }
 
-    public function filter(Request $request)
-    {
+    public function filter(Request $request){
         $selectedTurs = $request->input('checkboxes', []);
 
         if (!empty($selectedTurs)) {
@@ -270,50 +269,41 @@ class MusteriController extends Controller
         }
     }
 
-    public function ilkAdimForm(Request $request)
-    {
-        // Islem her basladiginda karisikligi engellemek icin bildirim tablosunun verilerini sifirliyoruz/siliyoruz
+    public function ilkAdimForm(Request $request){
+        // Bildirim tablosunu sıfırlıyoruz
         DB::table('fiyat_guncelleme_bildirims')->truncate();
 
         // Checkboxlardan seçilen müşteri türlerini alıyoruz
         $selectedTurler = $request->input('checkboxes');
 
         // Select'ten secilen istisna musterileri aliyoruz
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        $istisnaMusteriler = $request->input('musteriler');
 
         if ($selectedTurler) {
             // Seçilen türlere ait müşterileri alıyoruz
             $musteriler = AktifMusteriler::whereIn('turs', $selectedTurler)->get();
 
-            // İstisna Müşterileri Seçilen Müşterilerden çıkarıyoruz
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // İstisna müşterileri çıkarttıktan sonra $musteriler değişkeniyle işlemlere devam ediyoruz
-            // Eğer müşteriler bulunduysa, bunları bildirim tablosuna ekleyelim
             if ($musteriler->isNotEmpty()) {
+                // Bildirim tablosunu her müşteri için oluşturmaya başlıyoruz
                 foreach ($musteriler as $musteri) {
+                    // Eğer müşteri istisna listesinde yer alıyorsa 'bildirim_olacak_mi' false olacak
+                    $isIstisna = !empty($istisnaMusteriler) && in_array($musteri->id, $istisnaMusteriler);
+
+                    // Bildirim kaydını yapıyoruz
                     FiyatGuncellemeBildirim::create([
                         'musteri_id' => $musteri->id,
                         'musteri_unvani' => $musteri->unvan,
                         'tur' => $musteri->turs,
                         'tel' => $musteri->tel,
                         'eposta' => $musteri->mail,
+                        'bildirim_olacak_mi' => !$isIstisna, // İstisna olanlar false, diğerleri true
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
                 }
-                return redirect()->back()->with('success', 'Fiyat güncelleme bildirimi listesi başarıyla oluşturuldu.'); // Formun ikinci adimina yonlendirecegiz
+                
+                // Başarıyla işlem tamamlandıktan sonra ikinci adıma yönlendiriyoruz
+                return redirect()->route('bildirim.gonderim.sekli')->with('success', 'İlk adım başarıyla tamamlandı, lütfen ikinci adımı doldurunuz.');
             } else {
                 return redirect()->back()->with('error', 'Seçilen türler için müşteri bulunamadı.');
             }

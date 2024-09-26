@@ -58,7 +58,7 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::get('/zam-bildirimi/musteri-turu', [MusteriController::class, 'musteriTuru'])->name('bildirim.musteri.turu');
     Route::post('/zam-bildirimi/musteri-turu', [MusteriController::class, 'ilkAdimForm'])->name('bildirim.musteri.turu.form');
 
-    Route::get('/zam-bildirimi/gonderim-sekli', [MusteriController::class, 'gonderimSekli'])->name('bildirim.gonderim.sekli');
+    Route::get('/zam-bildirimi/gonderim-sekli', [MusteriController::class, 'gonderimSekli'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.gonderim.sekli');
     Route::post('/zam-bildirimi/gonderim-sekli', [MusteriController::class, 'xxxxxxxxx'])->name('bildirim.gonderim.sekli.form');
 
     Route::get('/zam-bildirimi/onizleme', [MusteriController::class, 'onizleme'])->name('bildirim.onizleme');

@@ -5,6 +5,11 @@
     use App\Models\PermissionRequest;
 @endphp
 <div class="container-fluid">
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
@@ -18,8 +23,7 @@
                 </span>
             </div>
         </div>
-
-         
+ 
         @php
             $permission = PermissionRequest::where('user_id', auth()->user()->id)->where('status', 'onaylandi')->get();
         @endphp
@@ -159,12 +163,12 @@
                                     <div class="mb-3">
                                         <h5>Bildirim yapılmayacak istisna müşterileri seçiniz: </h5>
                                     </div>
-                                    <select class="match-grouped-options" multiple="multiple" id="mySelect">
+                                    <select class="match-grouped-options" multiple="multiple" id="mySelect" name="musteriler[]">
                                         @foreach ($turler as $tur)
                                         <optgroup label="{{$tur->name}}">
                                             @foreach ($musteriler as $musteri)
                                             @if ($musteri->turs == $tur->name)
-                                            <option>{{$musteri->unvan}}</option>
+                                            <option value="{{ $musteri->id }}" >{{$musteri->unvan}}</option>
                                             @endif
                                             @endforeach
                                         </optgroup>
