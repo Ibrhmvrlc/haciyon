@@ -157,12 +157,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       <tr>
-                                        <td>1</td>
-                                        <td>İbrahim Varelci</td>
-                                        <td>WhatsApp - 0505 524 59 78 - İbrahim Varelci</td>
-                                        <td><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
+                                       @foreach ($musteriler as $musteri)
+                                          
+                                        <tr>
+                                            <td>{{$musteri->id}}</td>
+                                            <td>{{$musteri->musteri_unvani}}</td>
+                                            <td style="text-align: center;">
+                                                @if ($musteri->bildirim_sekli == 'eposta')
+                                                E-posta - {{$musteri->eposta}}
+                                                @elseif ($musteri->bildirim_sekli == 'wp')
+                                                WhatsApp - {{$musteri->tel}}
+                                                @endif
+                                               
+                                            </td>
+                                            <td><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
                                        </tr>
+                                       @endforeach
+                                      
                                     </tbody>
                                 </table>
                             </div>

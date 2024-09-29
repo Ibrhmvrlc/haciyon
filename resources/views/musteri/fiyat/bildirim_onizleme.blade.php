@@ -149,12 +149,20 @@
                             <div class="table-container mb-5" style="width: 95%; margin: auto;">
                                 <table class="table table-bordered table-hover" id="musteri-table">
                                     <thead class="thead-dark">
+                                        @php
+                                        $bildirim_sekli = session('bildirim_sekli');    
+                                        @endphp
                                         <tr>
                                             <th style="text-align: center; vertical-align: middle;">Onay</th>
                                             <th style="text-align: center; vertical-align: middle;">Müşteri Ünvanı</th>
-                                            <th style="text-align: center; vertical-align: middle; min-width: 120px;">Gönderim Bilgisi</th>
+                                            <th style="text-align: center; vertical-align: middle; min-width: 120px;">
+                                                Gönderim Bilgisi
+                                                @if ($bildirim_sekli == 'wp')
+                                                    <br />
+                                                    <small>('05...' ile başlamayan kayıtlar listelenmemektedir.)</small>
+                                                @endif
+                                            </th>
                                             <th style="text-align: center; vertical-align: middle;">Gönderim Şekli</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -168,31 +176,29 @@
                                                 $teller_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                                                 $teller_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
                                             @endphp
-
-
                                             @php
                                             $bildirim_sekli = session('bildirim_sekli');    
                                             @endphp
                                             @if ($bildirim_sekli == 'eposta')
                                             <td style="max-width: 20rem;">
-                                                <select class="match-grouped-options" multiple="multiple" required>
+                                                <select class="match-grouped-options" multiple="multiple" name="epostalar[{{$musteri->musteri_id}}][]" required>
                                                     @foreach ($epostalar_must as $eposta)
                                                         @if (!empty($eposta->mail))
-                                                        <option value="dee@john.co" selected>{{$eposta->mail}}</option>
+                                                        <option value="{{$eposta->mail}}" selected>{{$eposta->mail}}</option>
                                                         @endif
                                                     @endforeach
                                                     @foreach ($epostalar_yet as $eposta)
                                                         @if (!empty($eposta->mail))
-                                                        <option value="dee@john.co">{{$eposta->mail}}</option>
+                                                        <option value="{{$eposta->mail}}">{{$eposta->mail}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
                                             </td>                
                                             @elseif ($bildirim_sekli == 'wp')
                                             <td style="text-align: center;">
-                                                <select class="match-grouped-options" multiple="multiple" required>
+                                                <select class="match-grouped-options" multiple="multiple" name="teller[{{$musteri->musteri_id}}][]" required>
                                                     @foreach ($teller_yet as $tel)
-                                                        @if (!empty($tel->tel))
+                                                        @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
                                                         <option value="dee@john.co" selected>{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
                                                         @endif
                                                     @endforeach

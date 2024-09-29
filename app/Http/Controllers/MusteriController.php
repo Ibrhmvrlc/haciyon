@@ -342,17 +342,66 @@ class MusteriController extends Controller
     }
 
     public function ucuncuAdim(Request $request){
+        $bildirim_yapilacaklar = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+        $secilen_epostalar = $request->input('epostalar');
+        $secilen_teller = $request->input('teller');
+
        
+
+
+            foreach ($secilen_epostalar as $musteri_id => $eposta_listesi) {
+                foreach ($eposta_listesi as $eposta) {
+                    // Burada $musteri_id ve $eposta ile işlem yapabilirsin
+
+                    $kontrol = FiyatGuncellemeBildirim::where('eposta', $eposta)->get();
+                   
+                    if($kontrol){
+                        //kayit var
+                    }else{
+                        // Bildirim kaydını yapıyoruz
+                        FiyatGuncellemeBildirim::create([
+                            'musteri_id' => $musteri_id,
+                            'eposta' => $eposta,
+                            'bildirim_sekli' => 'eposta',
+                            'bildirim_olacak_mi' => 1,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
+                }
+            }
+        
+     
+
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+        // Değişkenleri query string ile birlikte yönlendiriyoruz
         return redirect()->route('bildirim.onay');
     }
 
-    /*
+   
     public function bildirimForm()
     {
-        $musteriler = AktifMusteriler::with('santiyeFiyatlar')->get();
-        return view('bildirim.form', compact('musteriler'));
+        $musteriler = FiyatGuncellemeBildirim::with('santiyeFiyatlar')->get();
+        return view('musteri.fiyat.bildirim_onay', compact('musteriler'));
     }
 
+ /*
     public function bildirimGonder(Request $request)
     {
         $musteri = AktifMusteriler::with('santiyeFiyatlar')->find($request->musteri_id);
