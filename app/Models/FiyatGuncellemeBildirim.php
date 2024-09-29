@@ -10,5 +10,5 @@ class FiyatGuncellemeBildirim extends Model
     use HasFactory;
 
     protected $table = 'fiyat_guncelleme_bildirims'; // Veritabanı tablonuzun adı
-    protected $fillable = ['musteri_id', 'tur', 'musteri_unvani', 'tel', 'eposta', 'bildirim_olacak_mi']; // Doldurulabilir alanlar
+    protected $fillable = ['musteri_id', 'tur', 'musteri_unvani', 'tel', 'eposta', 'bildirim_sekli', 'bildirim_olacak_mi']; // Doldurulabilir alanlar
 }

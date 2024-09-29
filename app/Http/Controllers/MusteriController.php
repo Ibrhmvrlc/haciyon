@@ -311,4 +311,17 @@ class MusteriController extends Controller
             return redirect()->back()->with('error', 'Hiçbir tür seçilmedi.');
         }
     }
+
+    public function ikinciAdimForm(Request $request){
+         // Validasyon
+         $request->validate([
+            'bildirimSekli' => 'required|string',
+        ]);
+
+        // Tüm user kayıtlarını güncelle
+        FiyatGuncellemeBildirim::query()->update(['bildirim_sekli' => $request->input('bildirimSekli')]);
+
+       // Başarıyla işlem tamamlandıktan sonra ikinci adıma yönlendiriyoruz
+       return redirect()->route('bildirim.onizleme')->with('success', 'İkinci adım başarıyla tamamlandı, lütfen üçüncü adımı doldurunuz.');
+    }
 }

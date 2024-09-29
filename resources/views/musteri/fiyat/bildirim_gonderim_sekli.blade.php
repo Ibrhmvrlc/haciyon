@@ -140,7 +140,7 @@
                     </script>
 
                     <!-- STEP 2 START-->
-                    <form action="xxxxxxx" method="post">
+                    <form action="{{route('bildirim.gonderim.sekli.form')}}" method="post">
                     @csrf
                         <div class="row">
                             <div class="col-lg-12 mb-4">
@@ -155,7 +155,7 @@
                             </div>
                             <div class="col-lg-12 mb-4">
                                 <div class="form-check mb-2">
-                                    <input type="radio" class="form-check-input" id="bildirimEposta" name="bildirimSekli" checked>
+                                    <input type="radio" class="form-check-input" id="bildirimEposta" name="bildirimSekli" value="eposta" checked>
                                     <label class="form-check-label" for="bildirimEposta">
                                         <b>E-posta ile Gönder:</b> Bildirimi ana yöntem olarak E-posta üzerinden yap. Önizleme adımında müşteri bazında değişiklik yapabilirsiniz.
                                     </label>
@@ -163,7 +163,7 @@
                             </div>
                             <div class="col-lg-12 mb-4">
                                 <div class="form-check mb-2">
-                                    <input type="radio" class="form-check-input" id="bildirimWhatsapp" name="bildirimSekli" >
+                                    <input type="radio" class="form-check-input" id="bildirimWhatsapp" name="bildirimSekli" value="wp" >
                                     <label class="form-check-label" for="bildirimWhatsapp">
                                         <b>WhatsApp ile Gönder:</b> Bildirimi ana yöntem olarak WhatsApp üzerinden yap. Önizleme adımında müşteri bazında değişiklik yapabilirsiniz.
                                     </label>
@@ -171,7 +171,7 @@
                             </div>
                             <div class="col-lg-12 mb-4">
                                 <div class="form-check mb-2">
-                                    <input type="radio" class="form-check-input" id="bildirimIndir" name="bildirimSekli" >
+                                    <input type="radio" class="form-check-input" id="bildirimIndir" name="bildirimSekli" value="indir" >
                                     <label class="form-check-label" for="bildirimIndir">
                                         <b>Yalnızca İndir:</b> Bildirim yazısını yalnızca cihazıma indir. Önizleme adımında müşteri bazında değişiklik yapabilirsiniz.
                                     </label>
