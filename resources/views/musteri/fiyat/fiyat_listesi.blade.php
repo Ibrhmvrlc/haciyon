@@ -67,28 +67,7 @@
             <div id="jsGrid"></div>
         </div>
     </div>
-    <style>
-        .jsgrid-grid-header {
-            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
-        }
-
-        .jsgrid-grid-body {
-            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
-        }
-
-        .number-center {
-            text-align: center;
-        }
-
-        .jsgrid-cell {
-            white-space: normal; /* Metinlerin hücre sınırlarına göre sarılmasını sağlar */
-            word-wrap: break-word; /* Uzun kelimelerin hücre sınırlarına göre kırılmasını sağlar */
-            overflow: hidden; /* Taşmayı gizler */
-        }
-        .jsgrid-delete-button{
-            display: none;
-        }
-    </style>
+    
     <!-- jQuery (jsGrid'in bağımlılığı) -->
     <script src="{{asset('https://code.jquery.com/jquery-3.6.0.min.js')}}"></script>
 
@@ -136,7 +115,7 @@
                 { name: "artis", title: "Üst Sınıf (+)" , type: "number", width: 40, css: "number-center" },
                 { name: "azalis", title: "Alt Sınıf (-)" , type: "number", width: 40, css: "number-center" },
                 { name: "pb", title: "Pompa Fiyatı" , type: "number", width: 40, css: "number-center" },
-                { type: "control", width: 40  }
+                { type: "control", width: 40 }
             ],
 
             onItemUpdated: function(args) {
@@ -158,5 +137,32 @@
             },
         });
     </script>
+    <style>
+        .jsgrid-grid-header .jsgrid-header-cell {
+            background-color: #343a40; /* İstediğiniz rengi buraya yazın */
+            color: #fff !important;
+        }
+
+        .jsgrid-grid-header {
+            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
+        }
+
+        .jsgrid-grid-body {
+            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
+        }
+
+        .number-center {
+            text-align: center;
+        }
+
+        .jsgrid-cell {
+            white-space: normal; /* Metinlerin hücre sınırlarına göre sarılmasını sağlar */
+            word-wrap: break-word; /* Uzun kelimelerin hücre sınırlarına göre kırılmasını sağlar */
+            overflow: hidden; /* Taşmayı gizler */
+        }
+        .jsgrid-delete-button{
+            display: none;
+        }
+    </style>
 </div>
 @endsection

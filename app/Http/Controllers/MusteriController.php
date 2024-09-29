@@ -12,6 +12,8 @@ use App\Models\MusteriNotlari;
 use App\Models\Tur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
+use Illuminate\Support\Facades\Mail;
 
 
 use function PHPUnit\Framework\isEmpty;
@@ -252,9 +254,17 @@ class MusteriController extends Controller
     public function onizleme(){
         $title = 'Önizleme';
         $turler = Tur::all();
-        $musteriler = AktifMusteriler::all();
+        $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
 
         return view('musteri.fiyat.bildirim_onizleme', compact('title', 'turler', 'musteriler'));
+    }
+
+    public function onay(){
+        $title = 'Onay';
+        $turler = Tur::all();
+        $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+
+        return view('musteri.fiyat.bildirim_onay', compact('title', 'turler', 'musteriler'));
     }
 
     public function filter(Request $request){
@@ -313,15 +323,69 @@ class MusteriController extends Controller
     }
 
     public function ikinciAdimForm(Request $request){
-         // Validasyon
-         $request->validate([
+        // Validasyon
+        $request->validate([
             'bildirimSekli' => 'required|string',
         ]);
+    
+        $bildirim_sekli = $request->input('bildirimSekli');
+    
+        // bildirim_olacak_mi sütunu 1 olan kayıtları güncelle
+        FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)
+            ->update(['bildirim_sekli' => $bildirim_sekli]);
 
-        // Tüm user kayıtlarını güncelle
-        FiyatGuncellemeBildirim::query()->update(['bildirim_sekli' => $request->input('bildirimSekli')]);
+        // Oturumda sakla
+        session(['bildirim_sekli' => $bildirim_sekli]);
 
-       // Başarıyla işlem tamamlandıktan sonra ikinci adıma yönlendiriyoruz
-       return redirect()->route('bildirim.onizleme')->with('success', 'İkinci adım başarıyla tamamlandı, lütfen üçüncü adımı doldurunuz.');
+        // Başarıyla işlem tamamlandıktan sonra ikinci adıma yönlendiriyoruz
+        return redirect()->route('bildirim.onizleme');
     }
+
+    public function ucuncuAdim(Request $request){
+       
+        return redirect()->route('bildirim.onay');
+    }
+
+    /*
+    public function bildirimForm()
+    {
+        $musteriler = AktifMusteriler::with('santiyeFiyatlar')->get();
+        return view('bildirim.form', compact('musteriler'));
+    }
+
+    public function bildirimGonder(Request $request)
+    {
+        $musteri = AktifMusteriler::with('santiyeFiyatlar')->find($request->musteri_id);
+
+        // PDF oluşturma
+        $pdf = PDF::loadView('pdf.fiyat_bildirim', ['musteri' => $musteri]);
+
+        switch ($request->bildirim_tipi) {
+            case 'mail':
+                // Mail ile gönderim
+               // Mail::send([], [], function($message) use ($pdf, $musteri) {
+               //     $message->to($musteri->email)
+                //        ->subject('Fiyat Güncelleme Bildirimi')
+                //        ->attachData($pdf->output(), "fiyat_bildirim.pdf");
+               // });
+               // return back()->with('success', 'Mail başarıyla gönderildi.');
+                
+                return back()->with('success', 'Mail ayarları riskli'); // Ayar yapıp silinecek
+            case 'whatsapp':
+                // WhatsApp mesajı ile bildirim (3. parti hizmetler ile)
+                $this->whatsappBildirim($musteri, $pdf);
+                return back()->with('success', 'WhatsApp bildirimi gönderildi.');
+                
+            case 'indir':
+                // PDF indir
+                return $pdf->download('fiyat_bildirim.pdf');
+        }
+    }
+
+    private function whatsappBildirim($musteri, $pdf)
+    {
+        // WhatsApp API entegrasyonu (örn: Twilio, WhatsApp Business API)
+        // Burada örnek bir entegrasyon bulunmamaktadır
+    }
+    */
 }

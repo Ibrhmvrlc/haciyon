@@ -38,4 +38,9 @@ class AktifMusteriler extends Model
     {
         return $this->belongsToMany(Tur::class);
     }
+
+    public function bildirimler()
+    {
+        return $this->hasMany(FiyatGuncellemeBildirim::class, 'musteri_id');
+    }
 }

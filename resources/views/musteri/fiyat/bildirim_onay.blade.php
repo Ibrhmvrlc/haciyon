@@ -81,11 +81,11 @@
                             <span class="step-number">2</span>
                             <span class="step-description">Gönderim Şekli</span>
                           </div>
-                          <div class="step active" id="step-3">
+                          <div class="step" id="step-3">
                             <span class="step-number">3</span>
                             <span class="step-description">Önizleme</span>
                           </div>
-                          <div class="step" id="step-4">
+                          <div class="step active" id="step-4">
                             <span class="step-number">4</span>
                             <span class="step-description">Onay</span>
                           </div>
@@ -98,7 +98,7 @@
                      class StepCounter {
                         constructor(totalSteps, stepDescriptions) {
                             this.totalSteps = totalSteps;
-                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 3;
+                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 4;
                             this.stepDescriptions = stepDescriptions;
                             this.progressbar = document.getElementById('step-counter-progress-bar');
                             this.updateStepCounter();
@@ -141,91 +141,38 @@
                         });
                     </script>
 
-                    <!-- STEP 3 START-->
-                    <form action="{{route('bildirim.onizleme.form')}}" method="post">
+                    <!-- STEP 4 START-->
+                    <form action="xxxxxxxxx" method="post">
                         @csrf
                         <div class="row">
-                            <h2 class="mb-4 ml-4">Bildirim Bilgileri Önizlemesi</h2>
+                            <h2 class="mb-4 ml-4">Bildirim Onay</h2>
                             <div class="table-container mb-5" style="width: 95%; margin: auto;">
                                 <table class="table table-bordered table-hover" id="musteri-table">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th style="text-align: center; vertical-align: middle;">Onay</th>
+                                            <th style="text-align: center; vertical-align: middle;">#</th>
                                             <th style="text-align: center; vertical-align: middle;">Müşteri Ünvanı</th>
-                                            <th style="text-align: center; vertical-align: middle; min-width: 120px;">Gönderim Bilgisi</th>
-                                            <th style="text-align: center; vertical-align: middle;">Gönderim Şekli</th>
-
+                                            <th style="text-align: center; vertical-align: middle; min-width: 120px;">Özet Bilgi</th>
+                                            <th style="text-align: center; vertical-align: middle;">Bildirim Yazısı</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($musteriler as $musteri)
-                                        <tr>
-                                            <td style="text-align: center;"><input type="checkbox" class="row-select" checked></td>
-                                            <td>{{$musteri->musteri_unvani}}</td>
-                                            @php
-                                                $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
-                                                $epostalar_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
-                                                $teller_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
-                                                $teller_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
-                                            @endphp
-
-
-                                            @php
-                                            $bildirim_sekli = session('bildirim_sekli');    
-                                            @endphp
-                                            @if ($bildirim_sekli == 'eposta')
-                                            <td style="max-width: 20rem;">
-                                                <select class="match-grouped-options" multiple="multiple" required>
-                                                    @foreach ($epostalar_must as $eposta)
-                                                        @if (!empty($eposta->mail))
-                                                        <option value="dee@john.co" selected>{{$eposta->mail}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                    @foreach ($epostalar_yet as $eposta)
-                                                        @if (!empty($eposta->mail))
-                                                        <option value="dee@john.co">{{$eposta->mail}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </td>                
-                                            @elseif ($bildirim_sekli == 'wp')
-                                            <td style="text-align: center;">
-                                                <select class="match-grouped-options" multiple="multiple" required>
-                                                    @foreach ($teller_yet as $tel)
-                                                        @if (!empty($tel->tel))
-                                                        <option value="dee@john.co" selected>{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            @elseif ($bildirim_sekli == 'indir')
-                                            <td style="text-align: center;">Dosyalarınıza indirilecektir.</td>
-                                            @endif
-
-                                            <td style="text-align: center; vertical-align: middle;">
-                                                <select class="default-placeholder" name="gonderim_sekli">
-                                                    <option value="eposta" value="eposta" @if ($musteri->bildirim_sekli == 'eposta') selected @endif >E-posta</option>
-                                                    <option value="wp" value="wp" @if ($musteri->bildirim_sekli == 'wp') selected @endif>WhatsApp</option>
-                                                    <option value="indir" value="indir" @if ($musteri->bildirim_sekli == 'indir') selected @endif>İndir</option>
-                                                </select>
-                                                <style>
-                                                    .select2-search {
-                                                        display: none !important;
-                                                    }
-                                                </style>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                       <tr>
+                                        <td>1</td>
+                                        <td>İbrahim Varelci</td>
+                                        <td>WhatsApp - 0505 524 59 78 - İbrahim Varelci</td>
+                                        <td><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
+                                       </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="text-right">
                             <a href="xxxxxxx" class="btn btn-primary mr-2 px-3">Geri</a>
-                            <button class="btn btn-primary px-4" type="submit">İleri</button>
+                            <button class="btn btn-success px-4" type="submit">İşlemi Onayla</button>
                         </div>
                     </form>
-                    <!-- STEP 3 END -->
+                    <!-- STEP 4 END -->
                 </div>
             </div>
         </div>

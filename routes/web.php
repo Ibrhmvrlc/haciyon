@@ -62,8 +62,10 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::post('/zam-bildirimi/gonderim-sekli', [MusteriController::class, 'ikinciAdimForm'])->name('bildirim.gonderim.sekli.form');
 
     Route::get('/zam-bildirimi/onizleme', [MusteriController::class, 'onizleme'])->name('bildirim.onizleme');
-    Route::post('/zam-bildirimi/onizleme', [MusteriController::class, 'xxxxxxxxxxx'])->name('bildirim.onizleme.form');
+    Route::post('/zam-bildirimi/onizleme', [MusteriController::class, 'ucuncuAdim'])->name('bildirim.onizleme.form');
 
+    Route::get('/zam-bildirimi/onay', [MusteriController::class, 'onay'])->name('bildirim.onay');
+    Route::post('/zam-bildirimi/onay', [MusteriController::class, 'xxxxxxxx'])->name('bildirim.onay.form');
 
 
 
