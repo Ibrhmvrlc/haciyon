@@ -181,25 +181,30 @@
                                             @endphp
                                             @if ($bildirim_sekli == 'eposta')
                                             <td style="max-width: 20rem;">
-                                                <select class="match-grouped-options" multiple="multiple" name="epostalar[{{$musteri->musteri_id}}][]" required>
+                                                <select class="match-grouped-options" multiple="multiple" name="epostalar[]" required>
                                                     @foreach ($epostalar_must as $eposta)
                                                         @if (!empty($eposta->mail))
-                                                        <option value="{{$eposta->mail}}" selected>{{$eposta->mail}}</option>
+                                                        <option value="{{$eposta->id}}_{{$eposta->mail}}" selected>{{$eposta->mail}}</option>
                                                         @endif
                                                     @endforeach
                                                     @foreach ($epostalar_yet as $eposta)
                                                         @if (!empty($eposta->mail))
-                                                        <option value="{{$eposta->mail}}">{{$eposta->mail}}</option>
+                                                        <option value="{{$eposta->aktif_musteri_id}}_{{$eposta->mail}}">{{$eposta->mail}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
                                             </td>                
                                             @elseif ($bildirim_sekli == 'wp')
                                             <td style="text-align: center;">
-                                                <select class="match-grouped-options" multiple="multiple" name="teller[{{$musteri->musteri_id}}][]" required>
+                                                <select class="match-grouped-options" multiple="multiple" name="teller[]" required>
                                                     @foreach ($teller_yet as $tel)
                                                         @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
-                                                        <option value="dee@john.co" selected>{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
+                                                        <option value="{{$tel->aktif_musteri_id}}_{{$tel->tel}}" selected>{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                    @foreach ($teller_must as $tel)
+                                                        @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
+                                                        <option value="{{$tel->id}}_{{$tel->tel}}">{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>

@@ -5,6 +5,7 @@
     use App\Models\PermissionRequest;
     use App\Models\AktifMusteriYetkililer;
     use App\Models\AktifMusteriler;
+    use App\Models\FiyatGuncellemeBildirim;
 @endphp
 <div class="container-fluid">
     @if(session('error'))
@@ -157,23 +158,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       @foreach ($musteriler as $musteri)
-                                          
+                                    @foreach ($musteriler as $musteri)
+                                       @if ($musteri->musteri_unvani)
                                         <tr>
                                             <td>{{$musteri->id}}</td>
                                             <td>{{$musteri->musteri_unvani}}</td>
                                             <td style="text-align: center;">
                                                 @if ($musteri->bildirim_sekli == 'eposta')
-                                                E-posta - {{$musteri->eposta}}
+                                                    @php
+                                                        $musteri_epostalari = FiyatGuncellemeBildirim::where('musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
+                                                    @endphp
+                                                    <b>E-posta:</b> 
+                                                    @foreach ($musteri_epostalari as $musteri_epostasi)
+                                                    {{$musteri_epostasi->eposta}} <br />
+                                                    @endforeach
                                                 @elseif ($musteri->bildirim_sekli == 'wp')
-                                                WhatsApp - {{$musteri->tel}}
+                                                    @php
+                                                    $musteri_telleri = FiyatGuncellemeBildirim::where('musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
+                                                    @endphp
+                                                    <b>WhatsApp:</b> 
+                                                    @foreach ($musteri_telleri as $musteri_teli)
+                                                        @if (substr($musteri_teli->tel, 0, 2) == '05')
+                                                        {{$musteri_teli->tel}} <br />
+                                                        @endif
+                                                    @endforeach
                                                 @endif
-                                               
                                             </td>
                                             <td><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
-                                       </tr>
-                                       @endforeach
-                                      
+                                        </tr>
+                                        @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>

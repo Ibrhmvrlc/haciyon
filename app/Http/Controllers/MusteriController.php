@@ -299,12 +299,18 @@ class MusteriController extends Controller
                     // Eğer müşteri istisna listesinde yer alıyorsa 'bildirim_olacak_mi' false olacak
                     $isIstisna = !empty($istisnaMusteriler) && in_array($musteri->id, $istisnaMusteriler);
 
+                    if(substr($musteri->tel, 0, 2) == '05'){
+                        $musteriTel = $musteri->tel;
+                    }else{
+                        $musteriTel = '';
+                    }
+
                     // Bildirim kaydını yapıyoruz
                     FiyatGuncellemeBildirim::create([
                         'musteri_id' => $musteri->id,
                         'musteri_unvani' => $musteri->unvan,
                         'tur' => $musteri->turs,
-                        'tel' => $musteri->tel,
+                        'tel' => $musteriTel,
                         'eposta' => $musteri->mail,
                         'bildirim_olacak_mi' => !$isIstisna, // İstisna olanlar false, diğerleri true
                         'created_at' => now(),
@@ -343,52 +349,58 @@ class MusteriController extends Controller
 
     public function ucuncuAdim(Request $request){
         $bildirim_yapilacaklar = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
-        $secilen_epostalar = $request->input('epostalar');
-        $secilen_teller = $request->input('teller');
+        $secilen_epostalar = $request->input('epostalar', []);
+        $secilen_teller = $request->input('teller', []);
 
-       
-
-
-            foreach ($secilen_epostalar as $musteri_id => $eposta_listesi) {
-                foreach ($eposta_listesi as $eposta) {
-                    // Burada $musteri_id ve $eposta ile işlem yapabilirsin
-
-                    $kontrol = FiyatGuncellemeBildirim::where('eposta', $eposta)->get();
-                   
-                    if($kontrol){
-                        //kayit var
-                    }else{
+        if(!empty($secilen_epostalar)) {
+            foreach ($secilen_epostalar as $eposta) {
+                // $selected formatı: musteri_id_email şeklinde olduğu için ayırıyoruz.
+                [$musteri_id, $email] = explode('_', $eposta);
+    
+                // İlgili müşteri ve mail adresi zaten var mı kontrol et.
+                $exists = DB::table('fiyat_guncelleme_bildirims')
+                ->where('musteri_id', $musteri_id)
+                ->where('eposta', $email)
+                ->exists();
+    
+                // Eğer kayıt zaten yoksa tabloya ekle.
+                if (!$exists) {
                         // Bildirim kaydını yapıyoruz
                         FiyatGuncellemeBildirim::create([
-                            'musteri_id' => $musteri_id,
-                            'eposta' => $eposta,
-                            'bildirim_sekli' => 'eposta',
-                            'bildirim_olacak_mi' => 1,
-                            'created_at' => now(),
-                            'updated_at' => now()
-                        ]);
-                    }
+                        'musteri_id' => $musteri_id,
+                        'eposta' => $email,
+                        'bildirim_sekli' => 'eposta',
+                        'bildirim_olacak_mi' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
                 }
             }
-        
-     
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
+        } elseif(!empty($secilen_teller)) {
+            foreach ($secilen_teller as $tel) {
+                // $selected formatı: musteri_id_email şeklinde olduğu için ayırıyoruz.
+                [$musteri_id, $tel] = explode('_', $tel);
+    
+                // İlgili müşteri ve mail adresi zaten var mı kontrol et.
+                $exists = DB::table('fiyat_guncelleme_bildirims')
+                ->where('musteri_id', $musteri_id)
+                ->where('tel', $tel)
+                ->exists();
+    
+                // Eğer kayıt zaten yoksa tabloya ekle.
+                if (!$exists) {
+                        // Bildirim kaydını yapıyoruz
+                        FiyatGuncellemeBildirim::create([
+                        'musteri_id' => $musteri_id,
+                        'tel' => $tel,
+                        'bildirim_sekli' => 'tel',
+                        'bildirim_olacak_mi' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        }
 
         // Değişkenleri query string ile birlikte yönlendiriyoruz
         return redirect()->route('bildirim.onay');
