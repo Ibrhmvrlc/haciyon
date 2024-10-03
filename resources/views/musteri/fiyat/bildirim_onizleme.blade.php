@@ -167,6 +167,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($musteriler as $musteri)
+                                        @if ($musteri->musteri_unvani)
                                         <tr>
                                             <td style="text-align: center;"><input type="checkbox" class="row-select" checked></td>
                                             <td>{{$musteri->musteri_unvani}}</td>
@@ -226,6 +227,7 @@
                                                 </style>
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>

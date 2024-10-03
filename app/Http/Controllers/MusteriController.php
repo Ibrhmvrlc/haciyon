@@ -387,13 +387,28 @@ class MusteriController extends Controller
                 ->where('tel', $tel)
                 ->exists();
     
-                // Eğer kayıt zaten yoksa tabloya ekle.
-                if (!$exists) {
-                        // Bildirim kaydını yapıyoruz
-                        FiyatGuncellemeBildirim::create([
+
+                // İlgili müşteri var mı kontrol et.
+                $kayit = DB::table('fiyat_guncelleme_bildirims')
+                ->where('musteri_id', $musteri_id)
+                ->first();
+
+                if ($kayit) {
+                    // Müşteri varsa ve tel sütunu boşsa güncelle
+                    if (empty($kayit->tel)) {
+                        DB::table('fiyat_guncelleme_bildirims')
+                            ->where('id', $kayit->id)
+                            ->update([
+                                'tel' => $tel,
+                                'updated_at' => now(),
+                            ]);
+                    }
+                } elseif(!$exists) {
+                    // Müşteri yoksa yeni bir kayıt oluştur
+                    FiyatGuncellemeBildirim::create([
                         'musteri_id' => $musteri_id,
                         'tel' => $tel,
-                        'bildirim_sekli' => 'tel',
+                        'bildirim_sekli' => 'wp',
                         'bildirim_olacak_mi' => 1,
                         'created_at' => now(),
                         'updated_at' => now()

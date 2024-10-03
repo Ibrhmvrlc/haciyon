@@ -184,7 +184,7 @@
                                                     @endforeach
                                                 @endif
                                             </td>
-                                            <td><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
+                                            <td style="text-align: center;"><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
                                         </tr>
                                         @endif
                                     @endforeach
