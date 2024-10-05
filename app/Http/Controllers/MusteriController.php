@@ -12,7 +12,7 @@ use App\Models\MusteriNotlari;
 use App\Models\Tur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -427,6 +427,35 @@ class MusteriController extends Controller
         $musteriler = FiyatGuncellemeBildirim::with('santiyeFiyatlar')->get();
         return view('musteri.fiyat.bildirim_onay', compact('musteriler'));
     }
+
+    public function showPdf($musteri_id, $santiye_id)
+    {
+        // İlgili şantiye ve müşteri için fiyat bilgilerini çekiyoruz
+        $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $musteri_id)
+                        ->where('santiye_id', $santiye_id)
+                        ->get();
+
+        if ($fiyatlar->isEmpty()) {
+            abort(404, 'Fiyat bilgisi bulunamadı.');
+        }
+
+        // PDF taslağı için Blade view'ını kullanıyoruz
+        $pdf = Pdf::loadView('musteri.fiyat.fiyat_taslagi', compact('fiyatlar'));
+
+        // PDF'i yeni sekmede açmak için stream metodu
+        return $pdf->stream('fiyat_guncelleme_yazisi.pdf');
+    }
+
+
+
+
+
+
+
+
+
+
+
 
  /*
     public function bildirimGonder(Request $request)

@@ -6,6 +6,7 @@
     use App\Models\AktifMusteriYetkililer;
     use App\Models\AktifMusteriler;
     use App\Models\FiyatGuncellemeBildirim;
+    use App\Models\AktifMusteriSantiye;
 @endphp
 <div class="container-fluid">
     @if(session('error'))
@@ -184,7 +185,22 @@
                                                     @endforeach
                                                 @endif
                                             </td>
-                                            <td style="text-align: center;"><a href="xxxx">ibrahim varelci - fiyat guncelleme.pdf</a></td>
+                                            <td style="text-align: center;">
+                                                @php
+                                                    $santiyeleri = AktifMusteriSantiye::where('aktif_musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
+                                                @endphp
+                                                <ul>
+                                                @foreach ($santiyeleri as $santiye)
+                                                    <li>
+                                                        <a href="{{route('bildirim.fiyat_yazisi', ['musteri_id' => $musteri->musteri_id, 'santiye_id' => $santiye->id])}}" target="_blank">
+                                                            {{$santiye->santiye}} Fiyat Yazısı
+                                                        </a>
+                                                        -
+                                                        SİL
+                                                    </li>
+                                                @endforeach
+                                                </ul>
+                                            </td>
                                         </tr>
                                         @endif
                                     @endforeach
