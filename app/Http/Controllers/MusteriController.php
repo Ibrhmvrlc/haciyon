@@ -429,8 +429,7 @@ class MusteriController extends Controller
         return view('musteri.fiyat.bildirim_onay', compact('musteriler'));
     }
 
-    public function showPdf($musteri_id, $santiye_id)
-    {
+    public function showPdf($musteri_id, $santiye_id) {
         // İlgili şantiye ve müşteri için fiyat bilgilerini çekiyoruz
         $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $musteri_id)
                         ->where('santiye_id', $santiye_id)

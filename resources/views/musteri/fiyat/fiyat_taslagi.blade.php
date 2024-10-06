@@ -36,7 +36,7 @@
                     @foreach ($fiyatlar as $fiyat)
 
                         @php
-                            $betonSinifi = $fiyat->first()->betonSinifi; // İlk beton sınıfını değişkene al
+                            $betonSinifi = $fiyat->betonSinifi; // İlk beton sınıfını değişkene al
                             $orijinalFiyat = $fiyat->fiyat; // Orijinal fiyatı kaydet
                         @endphp
 
@@ -48,19 +48,68 @@
                                 $urunFiyat = $orijinalFiyat; // Her ürün için başlangıç fiyatını tekrar başlat
                             @endphp
 
+                            {{-- C16 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 1)
+                            {{-- Alt sınıflar için fiyat azaltma işlemi yapilmaz --}}
+                            @endif
+
+                            {{-- C20 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 2)
                             {{-- Alt sınıflar için fiyat azaltma işlemi --}}
-                            @if ($urun->id < $betonSinifi->id)
-                                @if ($urun->id == 1)
-                                <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis)}}</td>
-                                @elseif ($urun->id == 2)
-                                <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}</td>
-                                @elseif ($urun->id == 3)
-                                <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}</td>
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}</td>
+                                    @endif
                                 @endif
                             @endif
 
+                            {{-- C25 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 3)
+                            {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}</td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= ($fiyat->azalis)}}</td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C30 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 4)
+                                 {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis)}}</td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}</td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}</td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C35 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 5)
+                                {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis + $fiyat->artis)}}</td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis + $fiyat->artis)}}</td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= ($fiyat->azalis + $fiyat->artis) }}</td>
+                                    @elseif ($urun->id == 4)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}</td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C40 C45 C50 C55 C60 ANA FIYAT SINIFI OLARAK SECILMIS ISE ADIMLARI YAPILACAK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --}} 
+                           
+
                             {{-- Ana ürün için fiyatı sabit göster --}}
-                            @if ($betonSinifi->adi == $urun->adi)
+                            @if ($betonSinifi->id == $urun->id)
                                 <td style="text-align: center;">{{ $fiyat->fiyat }}</td>
                             @endif
 
