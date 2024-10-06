@@ -14,8 +14,7 @@ class Urunler extends Model
         'aciklama'
     ];
 
-    public function fiyat()
-    {
+    public function fiyat() {
         return $this->hasMany(AktifSantiyeFiyat::class, 'beton_sinifi');
     }
 }

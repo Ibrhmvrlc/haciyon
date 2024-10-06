@@ -10,6 +10,7 @@ use App\Models\FiyatGuncellemeBildirim;
 use App\Models\Musteri;
 use App\Models\MusteriNotlari;
 use App\Models\Tur;
+use App\Models\Urunler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -438,9 +439,11 @@ class MusteriController extends Controller
         if ($fiyatlar->isEmpty()) {
             abort(404, 'Fiyat bilgisi bulunamadı.');
         }
+        $musteri = FiyatGuncellemeBildirim::where('musteri_id', $musteri_id)->get();
+        $urunler = Urunler::all();
 
         // PDF taslağı için Blade view'ını kullanıyoruz
-        $pdf = Pdf::loadView('musteri.fiyat.fiyat_taslagi', compact('fiyatlar'));
+        $pdf = Pdf::loadView('musteri.fiyat.fiyat_taslagi', compact('fiyatlar', 'urunler', 'musteri'));
 
         // PDF'i yeni sekmede açmak için stream metodu
         return $pdf->stream('fiyat_guncelleme_yazisi.pdf');

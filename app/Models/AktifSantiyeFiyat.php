@@ -32,6 +32,6 @@ class AktifSantiyeFiyat extends Model
 
     public function betonSinifi()
     {
-        return $this->hasOne(Urunler::class, 'id');
+        return $this->belongsTo(Urunler::class, 'beton_sinifi', 'id');
     }
 }
