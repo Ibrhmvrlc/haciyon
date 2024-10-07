@@ -29,7 +29,7 @@
                 <thead>
                     <tr>
                         <th style="text-align: center;">Beton Sınıfı</th>
-                        <th style="text-align: center;">Fiyat</th>
+                        <th style="text-align: center;">Fiyat (m³/₺)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,7 +58,7 @@
                             {{-- Alt sınıflar için fiyat azaltma işlemi --}}
                                 @if ($urun->id < $betonSinifi->id)
                                     @if ($urun->id == 1)
-                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}<small>+KDV</small></td>
                                     @endif
                                 @endif
                             @endif
@@ -68,9 +68,9 @@
                             {{-- Alt sınıflar için fiyat azaltma işlemi --}}
                                 @if ($urun->id < $betonSinifi->id)
                                     @if ($urun->id == 1)
-                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}<small>+KDV</small></td>
                                     @elseif ($urun->id == 2)
-                                    <td style="text-align: center;">{{ $urunFiyat -= ($fiyat->azalis)}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= ($fiyat->azalis)}}<small>+KDV</small></td>
                                     @endif
                                 @endif
                             @endif
@@ -80,11 +80,11 @@
                                  {{-- Alt sınıflar için fiyat azaltma işlemi --}}
                                 @if ($urun->id < $betonSinifi->id)
                                     @if ($urun->id == 1)
-                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis)}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis)}}<small>+KDV</small></td>
                                     @elseif ($urun->id == 2)
-                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis)}}<small>+KDV</small></td>
                                     @elseif ($urun->id == 3)
-                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->azalis}}<small>+KDV</small></td>
                                     @endif
                                 @endif
                             @endif
@@ -94,37 +94,158 @@
                                 {{-- Alt sınıflar için fiyat azaltma işlemi --}}
                                 @if ($urun->id < $betonSinifi->id)
                                     @if ($urun->id == 1)
-                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis + $fiyat->artis)}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
                                     @elseif ($urun->id == 2)
-                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis + $fiyat->artis)}}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
                                     @elseif ($urun->id == 3)
-                                    <td style="text-align: center;">{{ $urunFiyat -= ($fiyat->azalis + $fiyat->artis) }}</td>
+                                    <td style="text-align: center;">{{ $urunFiyat -= ($fiyat->azalis + $fiyat->artis) }}<small>+KDV</small></td>
                                     @elseif ($urun->id == 4)
-                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}</td>
+                                    <td style="text-align: center;"><strong>{{ $urunFiyat -= $fiyat->artis }}<small>+KDV</small></strong></td>
                                     @endif
                                 @endif
                             @endif
 
-                            {{-- C40 C45 C50 C55 C60 ANA FIYAT SINIFI OLARAK SECILMIS ISE ADIMLARI YAPILACAK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --}} 
-                           
+                            {{-- C40 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 6)
+                                {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (6 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (5 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (4 * $fiyat->azalis + $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 4)
+                                    <td style="text-align: center;"><strong>{{ $urunFiyat -= (2 * $fiyat->artis) }}<small>+KDV</small></strong></td>
+                                    @elseif ($urun->id == 5)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}<small>+KDV</small></td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C45 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 7)
+                                {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (9 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (8 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (7 * $fiyat->azalis + $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 4)
+                                    <td style="text-align: center;"><strong>{{ $urunFiyat -= (3 * $fiyat->artis) }}<small>+KDV</small></strong></td>
+                                    @elseif ($urun->id == 5)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 6)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}<small>+KDV</small></td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C50 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 8)
+                                {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (12 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (11 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (10 * $fiyat->azalis + $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 4)
+                                    <td style="text-align: center;"><strong>{{ $urunFiyat -= (4 * $fiyat->artis) }}<small>+KDV</small></strong></td>
+                                    @elseif ($urun->id == 5)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 6)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 7)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}<small>+KDV</small></td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C50 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 9)
+                                {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (15 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (14 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (13 * $fiyat->azalis + $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 4)
+                                    <td style="text-align: center;"><strong>{{ $urunFiyat -= (5 * $fiyat->artis) }}<small>+KDV</small></strong></td>
+                                    @elseif ($urun->id == 5)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (4 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 6)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 7)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 8)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}<small>+KDV</small></td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            {{-- C60 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            @if ($betonSinifi->id == 10)
+                                {{-- Alt sınıflar için fiyat azaltma işlemi --}}
+                                @if ($urun->id < $betonSinifi->id)
+                                    @if ($urun->id == 1)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (18 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 2)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (17 * $fiyat->azalis + $fiyat->artis)}}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 3)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (16 * $fiyat->azalis + $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 4)
+                                    <td style="text-align: center;"><strong>{{ $urunFiyat -= (6 * $fiyat->artis) }}<small>+KDV</small></strong></td>
+                                    @elseif ($urun->id == 5)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (5 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 6)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (4 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 7)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (3 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 8)
+                                    <td style="text-align: center;">{{ $urunFiyat -= (2 * $fiyat->artis) }}<small>+KDV</small></td>
+                                    @elseif ($urun->id == 9)
+                                    <td style="text-align: center;">{{ $urunFiyat -= $fiyat->artis }}<small>+KDV</small></td>
+                                    @endif
+                                @endif
+                            @endif
 
                             {{-- Ana ürün için fiyatı sabit göster --}}
                             @if ($betonSinifi->id == $urun->id)
-                                <td style="text-align: center;">{{ $fiyat->fiyat }}</td>
+                                <td style="text-align: center;">
+                                    @if ($betonSinifi->id != 4)
+                                    {{ $fiyat->fiyat }}<small>+KDV</small>
+                                    @else
+                                    <strong>{{ $fiyat->fiyat }}<small>+KDV</small></strong>
+                                    @endif
+                                </td>
                             @endif
 
                             {{-- Üst sınıflar için fiyat artırma işlemi --}}
                             @if ($betonSinifi->id < $urun->id)
-                                <td style="text-align: center;">{{ $fiyat->fiyat += $fiyat->artis}}</td>
+                                <td style="text-align: center;">{{ $fiyat->fiyat += $fiyat->artis}}<small>+KDV</small></td>
                             @endif
                         </tr>
                         @endforeach
                     @endforeach
-
+                        <tr>
+                            <td style="text-align: center;">Brüt, Katkısız</td>
+                            <td style="text-align: center;">+{{ $fiyatlar->first()->katki_farki }} (<small>+KDV</small>)</td>
+                        </tr>
                 </tbody>
             </table>
 
+            <ul>
+                <li>{{ $fiyatlar->first()->pb_siniri }} m³ altında olan dökümlerde {{ $fiyatlar->first()->pb }}<small>+KDV</small> Pompa bedeli uygulanır.</li>
+            </ul>
+
             <p><strong>Artış:</strong> {{ $fiyatlar->first()->artis }} TL</p>
+            <p><strong>Azalış:</strong> {{ $fiyatlar->first()->azalis }} TL</p>
             <p><strong>Azalış:</strong> {{ $fiyatlar->first()->azalis }} TL</p>
         </div>
     </div>
