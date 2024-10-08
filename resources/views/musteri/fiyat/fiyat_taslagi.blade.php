@@ -239,9 +239,11 @@
                         </tr>
                 </tbody>
             </table>
-
+            
             <ul>
+                @if ($fiyatlar->first()->pb_siniri and $fiyatlar->first()->pb)
                 <li>{{ $fiyatlar->first()->pb_siniri }} m³ altında olan dökümlerde {{ $fiyatlar->first()->pb }}<small>+KDV</small> Pompa bedeli uygulanır.</li>
+                @endif
             </ul>
 
             <p><strong>Artış:</strong> {{ $fiyatlar->first()->artis }} TL</p>

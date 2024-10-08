@@ -162,7 +162,7 @@
                                     @foreach ($musteriler as $musteri)
                                        @if ($musteri->musteri_unvani)
                                         <tr>
-                                            <td>{{$musteri->id}}</td>
+                                            <td style="text-align: center;">{{$musteri->id}}</td>
                                             <td>{{$musteri->musteri_unvani}}</td>
                                             <td style="text-align: center;">
                                                 @if ($musteri->bildirim_sekli == 'eposta')

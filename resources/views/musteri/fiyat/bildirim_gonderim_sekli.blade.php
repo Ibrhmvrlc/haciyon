@@ -177,6 +177,17 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-lg-12 mb-4">
+                                <label class="form-check-label mb-4" for="bildirimTarih">
+                                    <b>
+                                        * Fiyat güncellemesi genel olarak şu tarihten itibaren olacak : 
+                                    </b>
+                                </label>
+                                <div class="date-input-wrapper">
+                                    <input type="date" class="date-input" name="bildirimTarih" id="bildirimTarih">
+                                    <small>* Önizleme adımında farklı tarihte fiyat güncellemesi olacak müşterileri seçebilirsiniz.</small>
+                                </div>                                  
+                            </div>
                         </div>
                         <div class="text-right">
                             <a href="xxxxxxx" class="btn btn-primary mr-2 px-3">Geri</a>

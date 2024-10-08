@@ -155,6 +155,7 @@
                                         <tr>
                                             <th style="text-align: center; vertical-align: middle;">Onay</th>
                                             <th style="text-align: center; vertical-align: middle;">Müşteri Ünvanı</th>
+                                            <th style="text-align: center; vertical-align: middle;">Güncelleme Tarihi</th>
                                             <th style="text-align: center; vertical-align: middle; min-width: 120px;">
                                                 Gönderim Bilgisi
                                                 @if ($bildirim_sekli == 'wp')
@@ -171,6 +172,12 @@
                                         <tr>
                                             <td style="text-align: center;"><input type="checkbox" class="row-select" checked></td>
                                             <td>{{$musteri->musteri_unvani}}</td>
+                                            <td style="text-align: center;">
+                                                @php
+                                                $bildirim_tarihi = session('bildirim_tarihi');    
+                                                @endphp
+                                                <input type="date" class="table-date-input" name="bildirimTarih" id="bildirimTarih" value="{{ $bildirim_tarihi }}">
+                                            </td>
                                             @php
                                                 $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                                                 $epostalar_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();

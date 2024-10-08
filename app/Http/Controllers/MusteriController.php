@@ -333,16 +333,23 @@ class MusteriController extends Controller
         // Validasyon
         $request->validate([
             'bildirimSekli' => 'required|string',
+           'bildirimTarih' => 'required|date',
         ]);
     
         $bildirim_sekli = $request->input('bildirimSekli');
+        $bildirim_tarihi = $request->input('bildirimTarih');
     
-        // bildirim_olacak_mi sütunu 1 olan kayıtları güncelle
-        FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)
-            ->update(['bildirim_sekli' => $bildirim_sekli]);
+       // bildirim_olacak_mi sütunu 1 olan kayıtları güncelle
+        FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->update([
+            'bildirim_sekli' => $bildirim_sekli,
+            'tarih' => $bildirim_tarihi,
+        ]);
 
         // Oturumda sakla
-        session(['bildirim_sekli' => $bildirim_sekli]);
+        session([
+            'bildirim_sekli' => $bildirim_sekli,
+            'bildirim_tarihi' => $bildirim_tarihi,
+        ]);
 
         // Başarıyla işlem tamamlandıktan sonra ikinci adıma yönlendiriyoruz
         return redirect()->route('bildirim.onizleme');
