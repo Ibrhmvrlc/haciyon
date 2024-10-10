@@ -359,7 +359,10 @@ class MusteriController extends Controller
         $bildirim_yapilacaklar = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
         $secilen_epostalar = $request->input('epostalar', []);
         $secilen_teller = $request->input('teller', []);
-
+        $secilen_tarih = $request->input('bildirimTarih', []);
+        $secilen_id = $request->input('bildirimId', []);
+        
+    
         if(!empty($secilen_epostalar)) {
             foreach ($secilen_epostalar as $eposta) {
                 // $selected formatı: musteri_id_email şeklinde olduğu için ayırıyoruz.
@@ -422,6 +425,18 @@ class MusteriController extends Controller
                         'updated_at' => now()
                     ]);
                 }
+            }
+        }
+
+        if (!empty($secilen_tarih) && !empty($secilen_id)) {
+            foreach ($secilen_tarih as $index => $tarih) {
+                $id = $secilen_id[$index]; // ID'yi aynı indeksten alıyoruz
+                DB::table('fiyat_guncelleme_bildirims')
+                    ->where('musteri_id', $id)
+                    ->update([
+                        'tarih' => $tarih,
+                        'updated_at' => now(),
+                    ]);
             }
         }
 

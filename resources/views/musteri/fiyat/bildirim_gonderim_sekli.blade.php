@@ -184,7 +184,7 @@
                                     </b>
                                 </label>
                                 <div class="date-input-wrapper">
-                                    <input type="date" class="date-input" name="bildirimTarih" id="bildirimTarih">
+                                    <input type="date" class="date-input" name="bildirimTarih" id="bildirimTarih" required >
                                     <small>* Önizleme adımında farklı tarihte fiyat güncellemesi olacak müşterileri seçebilirsiniz.</small>
                                 </div>                                  
                             </div>

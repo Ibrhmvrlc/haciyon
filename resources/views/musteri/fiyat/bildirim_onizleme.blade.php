@@ -5,6 +5,7 @@
     use App\Models\PermissionRequest;
     use App\Models\AktifMusteriYetkililer;
     use App\Models\AktifMusteriler;
+    use App\Models\FiyatGuncellemeBildirim;
 @endphp
 <div class="container-fluid">
     @if(session('error'))
@@ -174,9 +175,15 @@
                                             <td>{{$musteri->musteri_unvani}}</td>
                                             <td style="text-align: center;">
                                                 @php
-                                                $bildirim_tarihi = session('bildirim_tarihi');    
+                                                $tarih_var_mi = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->where('musteri_id', $musteri->musteri_id)->get();
+                                                if($tarih_var_mi){
+                                                    $bildirim_tarihi = $tarih_var_mi->first()->tarih;
+                                                }else{
+                                                    $bildirim_tarihi = session('bildirim_tarihi');    
+                                                }
                                                 @endphp
-                                                <input type="date" class="table-date-input" name="bildirimTarih" id="bildirimTarih" value="{{ $bildirim_tarihi }}">
+                                                <input type="date" class="table-date-input" name="bildirimTarih[]" id="bildirimTarih" value="{{$bildirim_tarihi}}">
+                                                <input type="hidden" name="bildirimId[]" value="{{$musteri->musteri_id}}">
                                             </td>
                                             @php
                                                 $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();

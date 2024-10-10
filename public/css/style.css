@@ -19559,14 +19559,14 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 }
 
 .table-date-input::-webkit-calendar-picker-indicator {
-  background-color: #007bff;
+  background-color: #ccc;
   padding: 4px;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .table-date-input::-webkit-calendar-picker-indicator:hover {
-  background-color: #0056b3;
+  background-color: #aaaaaa;
 }
 
 /* Responsive adjustments */
