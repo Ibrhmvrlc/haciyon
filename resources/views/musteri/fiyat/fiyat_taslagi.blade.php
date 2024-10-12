@@ -21,7 +21,11 @@
         </div>
         
         <div class="content">
-            <p>Sayın Yetkili, <strong>XX.XX.XXXX</strong> tarihinden itibaren {{ $fiyatlar->first()->santiye->santiye }} şantiyeniz için geçerli olacak güncel beton fiyatlarımız aşağıdaki gibidir.</p>
+            <p>
+                Sayın Yetkili, 
+                <strong>{{\Carbon\Carbon::parse($musteri->first()->tarih)->format('d/m/Y') }}</strong> 
+                tarihinden itibaren {{ $fiyatlar->first()->santiye->santiye }} şantiyeniz için geçerli olacak güncel beton fiyatlarımız aşağıdaki gibidir.
+            </p>
             <p>Fiyatları uygun karşılacayağınızı umarız.</p>
             <p>İyi Çalışmalar.</p>
 

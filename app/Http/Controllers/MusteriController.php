@@ -256,8 +256,9 @@ class MusteriController extends Controller
         $title = 'Önizleme';
         $turler = Tur::all();
         $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+        $urunler = Urunler::all();
 
-        return view('musteri.fiyat.bildirim_onizleme', compact('title', 'turler', 'musteriler'));
+        return view('musteri.fiyat.bildirim_onizleme', compact('title', 'turler', 'musteriler', 'urunler'));
     }
 
     public function onay(){
@@ -360,8 +361,9 @@ class MusteriController extends Controller
         $secilen_epostalar = $request->input('epostalar', []);
         $secilen_teller = $request->input('teller', []);
         $secilen_tarih = $request->input('bildirimTarih', []);
-        $secilen_id = $request->input('bildirimId', []);
-        
+        $tarihicin_secilen_id = $request->input('bildirimId', []);
+        $secilen_sinir_bs = $request->input('sinir_bs', []);
+        $sinirbs_secilen_id = $request->input('sinirBSBildirimId', []);
     
         if(!empty($secilen_epostalar)) {
             foreach ($secilen_epostalar as $eposta) {
@@ -428,13 +430,25 @@ class MusteriController extends Controller
             }
         }
 
-        if (!empty($secilen_tarih) && !empty($secilen_id)) {
+        if (!empty($secilen_tarih) && !empty($tarihicin_secilen_id)) {
             foreach ($secilen_tarih as $index => $tarih) {
-                $id = $secilen_id[$index]; // ID'yi aynı indeksten alıyoruz
+                $id = $tarihicin_secilen_id[$index]; // ID'yi aynı indeksten alıyoruz
                 DB::table('fiyat_guncelleme_bildirims')
                     ->where('musteri_id', $id)
                     ->update([
                         'tarih' => $tarih,
+                        'updated_at' => now(),
+                    ]);
+            }
+        }
+
+        if (!empty($secilen_sinir_bs)) {
+            foreach ($secilen_sinir_bs as $index => $sinir_bs) {
+                $id = $sinirbs_secilen_id[$index]; // ID'yi aynı indeksten alıyoruz
+                DB::table('fiyat_guncelleme_bildirims')
+                    ->where('musteri_id', $id)
+                    ->update([
+                        'sinir_bs' => $sinir_bs,
                         'updated_at' => now(),
                     ]);
             }
@@ -469,17 +483,6 @@ class MusteriController extends Controller
         // PDF'i yeni sekmede açmak için stream metodu
         return $pdf->stream('fiyat_guncelleme_yazisi.pdf');
     }
-
-
-
-
-
-
-
-
-
-
-
 
  /*
     public function bildirimGonder(Request $request)

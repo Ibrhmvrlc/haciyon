@@ -154,8 +154,10 @@
                                         $bildirim_sekli = session('bildirim_sekli');    
                                         @endphp
                                         <tr>
-                                            <th style="text-align: center; vertical-align: middle;">Onay</th>
+                                            <th style="text-align: center; vertical-align: middle;">#</th>
                                             <th style="text-align: center; vertical-align: middle;">Müşteri Ünvanı</th>
+                                            <th style="text-align: center; vertical-align: middle;">Müşteri Türü</th>
+                                            <th style="text-align: center; vertical-align: middle;">En Üst Sınıf</th>
                                             <th style="text-align: center; vertical-align: middle;">Güncelleme Tarihi</th>
                                             <th style="text-align: center; vertical-align: middle; min-width: 120px;">
                                                 Gönderim Bilgisi
@@ -171,8 +173,35 @@
                                         @foreach ($musteriler as $musteri)
                                         @if ($musteri->musteri_unvani)
                                         <tr>
-                                            <td style="text-align: center;"><input type="checkbox" class="row-select" checked></td>
+                                            <td style="text-align: center;">{{$musteri->id}}</td>
                                             <td>{{$musteri->musteri_unvani}}</td>
+                                            <td style="text-align: center; vertical-align: middle;">{{$musteri->tur}}</td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <select class="default-placeholder" name="sinir_bs[]" required>
+                                                    <option value="">Seçiniz</option>
+                                                    @foreach ($urunler as $urun)
+                                                        @if ($musteri->tur == 'PARÇA BETON')
+                                                        <option value="{{$urun->id}}" @if($urun->id == 5) selected @endif >{{$urun->adi}}</option>
+                                                        @endif
+                                                        @if ($musteri->tur == 'PİYASA')
+                                                        <option value="{{$urun->id}}" @if($urun->id == 6) selected @endif >{{$urun->adi}}</option>
+                                                        @endif
+                                                        @if ($musteri->tur == 'TERSANELER')
+                                                        <option value="{{$urun->id}}" @if($urun->id == 9) selected @endif >{{$urun->adi}}</option>
+                                                        @endif
+                                                        @if ($musteri->tur == 'OSB')
+                                                        <option value="{{$urun->id}}" @if($urun->id == 7) selected @endif >{{$urun->adi}}</option>
+                                                        @endif
+                                                        @if ($musteri->tur == 'ÖZEL DÖKÜMLER')
+                                                        <option value="{{$urun->id}}" >{{$urun->adi}}</option>
+                                                        @endif
+                                                        @if ($musteri->tur == 'BOŞ')
+                                                        <option value="{{$urun->id}}" >{{$urun->adi}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <input type="hidden" name="sinirBSBildirimId[]" value="{{$musteri->musteri_id}}">
+                                            </td>
                                             <td style="text-align: center;">
                                                 @php
                                                 $tarih_var_mi = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->where('musteri_id', $musteri->musteri_id)->get();
@@ -248,7 +277,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <a href="xxxxxxx" class="btn btn-primary mr-2 px-3">Geri</a>
+                            <button class="btn btn-primary px-4" onclick="window.history.back()" type="button">Geri</button>
                             <button class="btn btn-primary px-4" type="submit">İleri</button>
                         </div>
                     </form>

@@ -152,7 +152,7 @@
                                 <table class="table table-bordered table-hover" id="musteri-table">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th style="text-align: center; vertical-align: middle;">#</th>
+                                            <th style="text-align: center; vertical-align: middle;">Onay</th>
                                             <th style="text-align: center; vertical-align: middle;">Müşteri Ünvanı</th>
                                             <th style="text-align: center; vertical-align: middle; min-width: 120px;">Özet Bilgi</th>
                                             <th style="text-align: center; vertical-align: middle;">Bildirim Yazısı</th>
@@ -162,7 +162,7 @@
                                     @foreach ($musteriler as $musteri)
                                        @if ($musteri->musteri_unvani)
                                         <tr>
-                                            <td style="text-align: center;">{{$musteri->id}}</td>
+                                            <td style="text-align: center;"><input type="checkbox" class="row-select" checked></td>
                                             <td>{{$musteri->musteri_unvani}}</td>
                                             <td style="text-align: center;">
                                                 @if ($musteri->bildirim_sekli == 'eposta')
@@ -209,7 +209,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <a href="xxxxxxx" class="btn btn-primary mr-2 px-3">Geri</a>
+                            <button class="btn btn-primary px-4" onclick="window.history.back()" type="button">Geri</button>
                             <button class="btn btn-success px-4" type="submit">İşlemi Onayla</button>
                         </div>
                     </form>

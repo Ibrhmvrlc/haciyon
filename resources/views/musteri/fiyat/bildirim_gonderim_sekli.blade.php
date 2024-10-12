@@ -190,8 +190,9 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <a href="xxxxxxx" class="btn btn-primary mr-2 px-3">Geri</a>
+                            <button class="btn btn-primary px-4" onclick="window.history.back()" type="button">Geri</button>
                             <button class="btn btn-primary px-4" type="submit">İleri</button>
+                           
                         </div>
                     </form>
                     <!-- STEP 2 END -->
