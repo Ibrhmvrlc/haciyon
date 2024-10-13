@@ -176,6 +176,10 @@
                                             <td style="text-align: center;">{{$musteri->id}}</td>
                                             <td>{{$musteri->musteri_unvani}}</td>
                                             <td style="text-align: center; vertical-align: middle;">{{$musteri->tur}}</td>
+
+
+
+
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <select class="default-placeholder" name="sinir_bs[]" required>
                                                     <option value="">Seçiniz</option>
@@ -187,12 +191,15 @@
                                                         <option value="{{$urun->id}}" @if($urun->id == 6) selected @endif >{{$urun->adi}}</option>
                                                         @endif
                                                         @if ($musteri->tur == 'TERSANELER')
-                                                        <option value="{{$urun->id}}" @if($urun->id == 9) selected @endif >{{$urun->adi}}</option>
+                                                        <option value="{{$urun->id}}" @if($urun->id == 8) selected @endif >{{$urun->adi}}</option>
                                                         @endif
                                                         @if ($musteri->tur == 'OSB')
                                                         <option value="{{$urun->id}}" @if($urun->id == 7) selected @endif >{{$urun->adi}}</option>
                                                         @endif
                                                         @if ($musteri->tur == 'ÖZEL DÖKÜMLER')
+                                                        <option value="{{$urun->id}}" >{{$urun->adi}}</option>
+                                                        @endif
+                                                        @if ($musteri->tur == 'DİĞER')
                                                         <option value="{{$urun->id}}" >{{$urun->adi}}</option>
                                                         @endif
                                                         @if ($musteri->tur == 'BOŞ')
@@ -208,12 +215,16 @@
                                                 if($tarih_var_mi){
                                                     $bildirim_tarihi = $tarih_var_mi->first()->tarih;
                                                 }else{
-                                                    $bildirim_tarihi = session('bildirim_tarihi');    
+                                                    $bildirim_tarihi = session('bildirim_tarihi');  
                                                 }
                                                 @endphp
                                                 <input type="date" class="table-date-input" name="bildirimTarih[]" id="bildirimTarih" value="{{$bildirim_tarihi}}">
                                                 <input type="hidden" name="bildirimId[]" value="{{$musteri->musteri_id}}">
                                             </td>
+
+
+
+
                                             @php
                                                 $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                                                 $epostalar_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
@@ -240,18 +251,49 @@
                                             </td>                
                                             @elseif ($bildirim_sekli == 'wp')
                                             <td style="text-align: center;">
-                                                <select class="match-grouped-options" multiple="multiple" name="teller[]" required>
-                                                    @foreach ($teller_yet as $tel)
-                                                        @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
-                                                        <option value="{{$tel->aktif_musteri_id}}_{{$tel->tel}}" selected>{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
-                                                        @endif
-                                                    @endforeach
+
+
+
+                                                
+                                                @php
+                                                    $hasValidTels = false; // Değişken: uygun bir değer bulunup bulunmadığını takip eder
+                                                @endphp
+                                                
+                                                @foreach ($teller_yet as $tel)
+                                                    @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
+                                                        @php $hasValidTels = true; @endphp
+                                                        @break
+                                                    @endif
+                                                @endforeach
+                                                
+                                                @if (!$hasValidTels)
                                                     @foreach ($teller_must as $tel)
                                                         @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
-                                                        <option value="{{$tel->id}}_{{$tel->tel}}">{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
+                                                            @php $hasValidTels = true; @endphp
+                                                            @break
                                                         @endif
                                                     @endforeach
-                                                </select>
+                                                @endif
+                                                
+                                                @if ($hasValidTels)
+                                                    <select class="match-grouped-options" multiple="multiple" name="teller[]" required>
+                                                        @foreach ($teller_yet as $tel)
+                                                            @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
+                                                                <option value="{{$tel->aktif_musteri_id}}_{{$tel->tel}}" selected>{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                        @foreach ($teller_must as $tel)
+                                                            @if (!empty($tel->tel) && substr($tel->tel, 0, 2) == '05')
+                                                                <option value="{{$tel->id}}_{{$tel->tel}}">{{$tel->tel}} - {{$tel->adi_soyadi}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                @else
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#yetkiliEkle" data-id="{{$musteri->musteri_id}}">
+                                                        Telefon Ekle
+                                                    </button>
+                                                @endif
+
                                             </td>
                                             @elseif ($bildirim_sekli == 'indir')
                                             <td style="text-align: center;">Dosyalarınıza indirilecektir.</td>
@@ -282,6 +324,61 @@
                         </div>
                     </form>
                     <!-- STEP 3 END -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="yetkiliEkle">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <form method="post" action="">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="yetkiliEkleLabel">Müşteri ID: <span id="modalMusteriId"></span></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label>Ad Soyad</label>
+                                                <input type="text" class="form-control" name="yeni_adSoyad">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>Telefon Numarası</label>
+                                                <input type="text" class="form-control" name="yeni_tel">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>E-Posta Adresi</label>
+                                                <input type="text" class="form-control" name="yeni_mail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                                        <button type="submit" class="btn btn-success">Kaydet</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('.btn-warning').click(function(){
+                                // Butonun data-id'sini al
+                                var musteriId = $(this).data('id');
+                                
+                                // Modal açılmadan önce müşteri ID'sini modal'a yerleştir
+                                $('#modalMusteriId').text(musteriId);
+
+                                // Form action URL'sini dinamik olarak güncelle (Laravel route ile)
+                                var formAction = "{{ route('telefon.ekle', ':id') }}";  // Laravel route
+                                formAction = formAction.replace(':id', musteriId); // ID'yi yerleştir
+                                
+                                // Form action'ı güncelle
+                                $('#musteriForm').attr('action', formAction);
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>

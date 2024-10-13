@@ -37,6 +37,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $counter = 0;
+                    @endphp
                     @foreach ($fiyatlar as $fiyat)
 
                         @php
@@ -229,18 +232,23 @@
                                     @endif
                                 </td>
                             @endif
-
                             {{-- Üst sınıflar için fiyat artırma işlemi --}}
                             @if ($betonSinifi->id < $urun->id)
                                 <td style="text-align: center;">{{ $fiyat->fiyat += $fiyat->artis}}<small>+KDV</small></td>
                             @endif
                         </tr>
+                        @php
+                            $counter++;
+                        @endphp
+                        @if ($counter == $musteri->first()->sinir_bs)
+                            @break
+                        @endif
                         @endforeach
                     @endforeach
-                        <tr>
-                            <td style="text-align: center;">Brüt, Katkısız</td>
-                            <td style="text-align: center;">+{{ $fiyatlar->first()->katki_farki }} (<small>+KDV</small>)</td>
-                        </tr>
+                    <tr>
+                        <td style="text-align: center;">Brüt, Katkısız</td>
+                        <td style="text-align: center;">+{{ $fiyatlar->first()->katki_farki }} (<small>+KDV</small>)</td>
+                    </tr>
                 </tbody>
             </table>
             
