@@ -331,10 +331,13 @@ class MusteriController extends Controller
     }
 
     public function ikinciAdimForm(Request $request){
+        $turler = Tur::all();
+        $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+        $urunler = Urunler::all();
         // Validasyon
         $request->validate([
             'bildirimSekli' => 'required|string',
-           'bildirimTarih' => 'required|date',
+            'bildirimTarih' => 'required|date',
         ]);
     
         $bildirim_sekli = $request->input('bildirimSekli');
@@ -351,6 +354,41 @@ class MusteriController extends Controller
             'bildirim_sekli' => $bildirim_sekli,
             'bildirim_tarihi' => $bildirim_tarihi,
         ]);
+
+        foreach($musteriler as $musteri){
+            if($musteri->musteri_unvani){
+                $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
+                $epostalar_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
+                $teller_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
+                $teller_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
+        
+                $hasValidTels = false;
+                
+                foreach($teller_yet as $tel){
+                    if(!empty($tel->tel) && substr($tel->tel, 0, 2) == '05'){
+                        $hasValidTels = true;
+                        break;
+                    }
+                }
+
+                if(!$hasValidTels){
+                    foreach($teller_must as $tel){
+                        if(!empty($tel->tel) && substr($tel->tel, 0, 2) == '05'){
+                            $hasValidTels = true;
+                            break;
+                        }
+                    }
+                }
+
+                if($hasValidTels){
+
+                }else{
+                    return redirect()->route('bildirim.musteri.turu')->with('error', 'Telefon bilgileri eksiktir.');
+                }
+        
+            }
+        }
+
 
         // Başarıyla işlem tamamlandıktan sonra ikinci adıma yönlendiriyoruz
         return redirect()->route('bildirim.onizleme');

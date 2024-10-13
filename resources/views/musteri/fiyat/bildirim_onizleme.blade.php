@@ -176,10 +176,6 @@
                                             <td style="text-align: center;">{{$musteri->id}}</td>
                                             <td>{{$musteri->musteri_unvani}}</td>
                                             <td style="text-align: center; vertical-align: middle;">{{$musteri->tur}}</td>
-
-
-
-
                                             <td style="text-align: center; vertical-align: middle;">
                                                 <select class="default-placeholder" name="sinir_bs[]" required>
                                                     <option value="">Seçiniz</option>
@@ -221,18 +217,12 @@
                                                 <input type="date" class="table-date-input" name="bildirimTarih[]" id="bildirimTarih" value="{{$bildirim_tarihi}}">
                                                 <input type="hidden" name="bildirimId[]" value="{{$musteri->musteri_id}}">
                                             </td>
-
-
-
-
                                             @php
                                                 $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                                                 $epostalar_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
                                                 $teller_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                                                 $teller_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
-                                            @endphp
-                                            @php
-                                            $bildirim_sekli = session('bildirim_sekli');    
+                                                $bildirim_sekli = session('bildirim_sekli');    
                                             @endphp
                                             @if ($bildirim_sekli == 'eposta')
                                             <td style="max-width: 20rem;">
@@ -251,10 +241,6 @@
                                             </td>                
                                             @elseif ($bildirim_sekli == 'wp')
                                             <td style="text-align: center;">
-
-
-
-                                                
                                                 @php
                                                     $hasValidTels = false; // Değişken: uygun bir değer bulunup bulunmadığını takip eder
                                                 @endphp
@@ -293,7 +279,6 @@
                                                         Telefon Ekle
                                                     </button>
                                                 @endif
-
                                             </td>
                                             @elseif ($bildirim_sekli == 'indir')
                                             <td style="text-align: center;">Dosyalarınıza indirilecektir.</td>
@@ -324,7 +309,6 @@
                         </div>
                     </form>
                     <!-- STEP 3 END -->
-
                     <!-- Modal -->
                     <div class="modal fade" id="yetkiliEkle">
                         <div class="modal-dialog" role="document">

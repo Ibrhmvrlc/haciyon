@@ -82,7 +82,7 @@
                                 @endif
                             @endif
 
-                            {{-- C30 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}} 
+                            {{-- C30 ANA FIYAT SINIFI OLARAK SECILMIS ISE --}}
                             @if ($betonSinifi->id == 4)
                                  {{-- Alt sınıflar için fiyat azaltma işlemi --}}
                                 @if ($urun->id < $betonSinifi->id)
