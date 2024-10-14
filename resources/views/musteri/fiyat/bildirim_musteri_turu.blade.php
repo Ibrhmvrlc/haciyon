@@ -6,10 +6,34 @@
 @endphp
 <div class="container-fluid">
     @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    {{-- Telefon bilgileri eksik olan müşteriler --}}
+    @if(session('telefon_error') && is_array(session('telefon_error')))
     <div class="alert alert-danger">
-        {{ session('error') }}
+        <strong>Telefon bilgileri eksik olan müşteriler:</strong>
+        <ul>
+            @foreach(session('telefon_error') as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
     @endif
+
+    {{-- E-posta bilgileri eksik olan müşteriler --}}
+    @if(session('eposta_error') && is_array(session('eposta_error')))
+    <div class="alert alert-danger">
+        <strong>E-posta bilgileri eksik olan müşteriler:</strong>
+        <ul>
+            @foreach(session('eposta_error') as $error)
+                <li><a id="bu" class="text-danger" href="xxxxxx" target="_blank">{{ $error }}</a></li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
             <div class="welcome-text">

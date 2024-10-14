@@ -332,7 +332,6 @@ class MusteriController extends Controller
 
     public function ikinciAdimForm(Request $request){
         $turler = Tur::all();
-        $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
         $urunler = Urunler::all();
         // Validasyon
         $request->validate([
@@ -355,15 +354,21 @@ class MusteriController extends Controller
             'bildirim_tarihi' => $bildirim_tarihi,
         ]);
 
+        $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+        $eksikTelefonlar = []; // Eksik telefon bilgisi olan müşteriler için dizi
+        $eksikEpostalar = []; // Eksik e-posta bilgisi olan müşteriler için dizi
+
         foreach($musteriler as $musteri){
             if($musteri->musteri_unvani){
                 $epostalar_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                 $epostalar_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
                 $teller_yet = AktifMusteriYetkililer::where('aktif_musteri_id', $musteri->musteri_id)->get();
                 $teller_must = AktifMusteriler::where('id', $musteri->musteri_id)->get();
-        
+
                 $hasValidTels = false;
-                
+                $hasValidEmails = false;
+
+                // Telefon kontrolü (Yetkililer)
                 foreach($teller_yet as $tel){
                     if(!empty($tel->tel) && substr($tel->tel, 0, 2) == '05'){
                         $hasValidTels = true;
@@ -371,6 +376,7 @@ class MusteriController extends Controller
                     }
                 }
 
+                // Telefon kontrolü (Müşteriler)
                 if(!$hasValidTels){
                     foreach($teller_must as $tel){
                         if(!empty($tel->tel) && substr($tel->tel, 0, 2) == '05'){
@@ -380,13 +386,41 @@ class MusteriController extends Controller
                     }
                 }
 
-                if($hasValidTels){
-
-                }else{
-                    return redirect()->route('bildirim.musteri.turu')->with('error', 'Telefon bilgileri eksiktir.');
+                // E-posta kontrolü (Yetkililer)
+                foreach($epostalar_yet as $eposta){
+                    if(!empty($eposta->mail) && filter_var($eposta->mail, FILTER_VALIDATE_EMAIL)){
+                        $hasValidEmails = true;
+                        break;
+                    }
                 }
-        
+
+                // E-posta kontrolü (Müşteriler)
+                if(!$hasValidEmails){
+                    foreach($epostalar_must as $eposta){
+                        if(!empty($eposta->mail) && filter_var($eposta->mail, FILTER_VALIDATE_EMAIL)){
+                            $hasValidEmails = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Eksik telefon bilgisi varsa, müşteri unvanını listeye ekle
+                if(!$hasValidTels){
+                    $eksikTelefonlar[] = $musteri->musteri_unvani;
+                }
+
+                // Eksik e-posta bilgisi varsa, müşteri unvanını listeye ekle
+                if(!$hasValidEmails){
+                    $eksikEpostalar[] = $musteri->musteri_unvani;
+                }
             }
+        }
+
+        // Eğer eksik telefon ya da e-posta bilgisi olan müşteriler varsa, session ile yönlendir
+        if(!empty($eksikTelefonlar) || !empty($eksikEpostalar)){
+            return redirect()->route('bildirim.musteri.turu')
+                ->with('telefon_error', $eksikTelefonlar) // Telefon eksikliklerini gönder
+                ->with('eposta_error', $eksikEpostalar); // E-posta eksikliklerini gönder
         }
 
 
