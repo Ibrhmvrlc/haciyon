@@ -257,10 +257,6 @@
                 <li>{{ $fiyatlar->first()->pb_siniri }} m³ altında olan dökümlerde {{ $fiyatlar->first()->pb }}<small>+KDV</small> Pompa bedeli uygulanır.</li>
                 @endif
             </ul>
-
-            <p><strong>Artış:</strong> {{ $fiyatlar->first()->artis }} TL</p>
-            <p><strong>Azalış:</strong> {{ $fiyatlar->first()->azalis }} TL</p>
-            <p><strong>Azalış:</strong> {{ $fiyatlar->first()->azalis }} TL</p>
         </div>
     </div>
 </body>

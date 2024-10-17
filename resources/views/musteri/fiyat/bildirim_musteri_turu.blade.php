@@ -10,13 +10,18 @@
             {{ session('error') }}
         </div>
     @endif
+    
     {{-- Telefon bilgileri eksik olan müşteriler --}}
     @if(session('telefon_error') && is_array(session('telefon_error')))
     <div class="alert alert-danger">
         <strong>Telefon bilgileri eksik olan müşteriler:</strong>
         <ul>
             @foreach(session('telefon_error') as $error)
-                <li>{{ $error }}</li>
+                <li>
+                    <a class="text-danger" href="{{ route('aktif.musteri.profil', $error['id']) }}" target="_blank">
+                        {{ $error['unvani'] }}
+                    </a>
+                </li>
             @endforeach
         </ul>
     </div>
@@ -28,7 +33,11 @@
         <strong>E-posta bilgileri eksik olan müşteriler:</strong>
         <ul>
             @foreach(session('eposta_error') as $error)
-                <li><a id="bu" class="text-danger" href="xxxxxx" target="_blank">{{ $error }}</a></li>
+                <li>
+                    <a class="text-danger" href="{{ route('aktif.musteri.profil', $error['id']) }}" target="_blank">
+                        {{ $error['unvani'] }}
+                    </a>
+                </li>
             @endforeach
         </ul>
     </div>

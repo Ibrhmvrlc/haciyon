@@ -404,14 +404,14 @@ class MusteriController extends Controller
                     }
                 }
 
-                // Eksik telefon bilgisi varsa, müşteri unvanını listeye ekle
+                // Eksik telefon bilgisi varsa, müşteri unvanını ve ID'sini listeye ekle
                 if(!$hasValidTels){
-                    $eksikTelefonlar[] = $musteri->musteri_unvani;
+                    $eksikTelefonlar[] = ['unvani' => $musteri->musteri_unvani, 'id' => $musteri->musteri_id];
                 }
 
-                // Eksik e-posta bilgisi varsa, müşteri unvanını listeye ekle
+                // Eksik e-posta bilgisi varsa, müşteri unvanını ve ID'sini listeye ekle
                 if(!$hasValidEmails){
-                    $eksikEpostalar[] = $musteri->musteri_unvani;
+                    $eksikEpostalar[] = ['unvani' => $musteri->musteri_unvani, 'id' => $musteri->musteri_id];
                 }
             }
         }
