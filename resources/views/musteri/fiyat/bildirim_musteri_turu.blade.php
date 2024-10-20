@@ -108,21 +108,25 @@
                 <div class="card-body">
                     <div class="step-counter">
                         <div class="step-counter-steps">
-                          <div class="step active" id="step-1">
+                          <div class="step active" id="step-1"><!-- bildirim_musteri_turu.blade.php -->
                             <span class="step-number">1</span>
                             <span class="step-description">Müşteri Türü</span>
                           </div>
-                          <div class="step" id="step-2">
+                          <div class="step" id="step-2"><!-- bildirim_gonderim.sekli.blade.php -->
                             <span class="step-number">2</span>
-                            <span class="step-description">Gönderim Şekli</span>
+                            <span class="step-description">Genel Tercihler</span>
                           </div>
                           <div class="step" id="step-3">
-                            <span class="step-number">3</span>
-                            <span class="step-description">Önizleme</span>
+                            <span class="step-number">3</span><!-- bildirim_onizleme.blade.php -->
+                            <span class="step-description">Gönderim Tercihleri</span>
                           </div>
-                          <div class="step" id="step-4">
+                          <div class="step" id="step-4"><!-- YENİ OLACAK -->
                             <span class="step-number">4</span>
-                            <span class="step-description">Onay</span>
+                            <span class="step-description">Yazı İçeriği</span>
+                          </div>
+                          <div class="step" id="step-5"><!-- bildirim_onay.blade.php -->
+                            <span class="step-number">5</span>
+                            <span class="step-description">Önizleme & Onay</span>
                           </div>
                         </div>
                         <div class="step-counter-progress">
@@ -162,7 +166,7 @@
                             'Enter your password',
                             'Confirm your password'
                         ];
-                        const stepCounter = new StepCounter(4, stepDescriptions);
+                        const stepCounter = new StepCounter(5, stepDescriptions);
                         document.getElementById('next-step-button').addEventListener('click', () => {
                         stepCounter.nextStep();
                         });

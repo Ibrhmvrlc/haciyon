@@ -75,22 +75,26 @@
                 <div class="card-body">
                     <div class="step-counter">
                         <div class="step-counter-steps">
-                          <div class="step" id="step-1">
-                            <span class="step-number">1</span>
-                            <span class="step-description">Müşteri Türü</span>
-                          </div>
-                          <div class="step" id="step-2">
-                            <span class="step-number">2</span>
-                            <span class="step-description">Gönderim Şekli</span>
-                          </div>
-                          <div class="step" id="step-3">
-                            <span class="step-number">3</span>
-                            <span class="step-description">Önizleme</span>
-                          </div>
-                          <div class="step active" id="step-4">
-                            <span class="step-number">4</span>
-                            <span class="step-description">Onay</span>
-                          </div>
+                            <div class="step" id="step-1"><!-- bildirim_musteri_turu.blade.php -->
+                              <span class="step-number">1</span>
+                              <span class="step-description">Müşteri Türü</span>
+                            </div>
+                            <div class="step" id="step-2"><!-- bildirim_gonderim.sekli.blade.php -->
+                              <span class="step-number">2</span>
+                              <span class="step-description">Genel Tercihler</span>
+                            </div>
+                            <div class="step" id="step-3">
+                              <span class="step-number">3</span><!-- bildirim_onizleme.blade.php -->
+                              <span class="step-description">Gönderim Tercihleri</span>
+                            </div>
+                            <div class="step" id="step-4"><!-- YENİ OLACAK -->
+                              <span class="step-number">4</span>
+                              <span class="step-description">Yazı İçeriği</span>
+                            </div>
+                            <div class="step active" id="step-5"><!-- bildirim_onay.blade.php -->
+                              <span class="step-number">5</span>
+                              <span class="step-description">Önizleme & Onay</span>
+                            </div>
                         </div>
                         <div class="step-counter-progress">
                           <div class="step-counter-progress-bar" id="step-counter-progress-bar"></div>
@@ -100,7 +104,7 @@
                      class StepCounter {
                         constructor(totalSteps, stepDescriptions) {
                             this.totalSteps = totalSteps;
-                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 4;
+                            this.currentStep = parseInt(localStorage.getItem('currentStep')) || 5;
                             this.stepDescriptions = stepDescriptions;
                             this.progressbar = document.getElementById('step-counter-progress-bar');
                             this.updateStepCounter();
@@ -137,7 +141,7 @@
                             'Enter your password',
                             'Confirm your password'
                         ];
-                        const stepCounter = new StepCounter(4, stepDescriptions);
+                        const stepCounter = new StepCounter(5, stepDescriptions);
                         document.getElementById('next-step-button').addEventListener('click', () => {
                         stepCounter.nextStep();
                         });

@@ -261,6 +261,15 @@ class MusteriController extends Controller
         return view('musteri.fiyat.bildirim_onizleme', compact('title', 'turler', 'musteriler', 'urunler'));
     }
 
+    public function yaziIcerigi(){
+        $title = 'Yazı İçeriği';
+        $turler = Tur::all();
+        $musteriler = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+        $urunler = Urunler::all();
+
+        return view('musteri.fiyat.bildirim_yazi_icerigi', compact('title', 'turler', 'musteriler', 'urunler'));
+    }
+
     public function onay(){
         $title = 'Onay';
         $turler = Tur::all();
@@ -312,8 +321,6 @@ class MusteriController extends Controller
                         'musteri_id' => $musteri->id,
                         'musteri_unvani' => $musteri->unvan,
                         'tur' => $musteri->turs,
-                        'tel' => $musteriTel,
-                        'eposta' => $musteri->mail,
                         'bildirim_olacak_mi' => !$isIstisna, // İstisna olanlar false, diğerleri true
                         'created_at' => now(),
                         'updated_at' => now()
@@ -428,32 +435,52 @@ class MusteriController extends Controller
         return redirect()->route('bildirim.onizleme');
     }
 
-    public function ucuncuAdim(Request $request){
-        $bildirim_yapilacaklar = FiyatGuncellemeBildirim::where('bildirim_olacak_mi', true)->get();
+    public function ucuncuAdim(Request $request)
+    {
         $secilen_epostalar = $request->input('epostalar', []);
         $secilen_teller = $request->input('teller', []);
-        $secilen_tarih = $request->input('bildirimTarih', []);
-        $tarihicin_secilen_id = $request->input('bildirimId', []);
-        $secilen_sinir_bs = $request->input('sinir_bs', []);
-        $sinirbs_secilen_id = $request->input('sinirBSBildirimId', []);
-    
-        if(!empty($secilen_epostalar)) {
+
+        // E-posta işlemleri
+        if (!empty($secilen_epostalar)) {
             foreach ($secilen_epostalar as $eposta) {
-                // $selected formatı: musteri_id_email şeklinde olduğu için ayırıyoruz.
                 [$musteri_id, $email] = explode('_', $eposta);
-    
-                // İlgili müşteri ve mail adresi zaten var mı kontrol et.
-                $exists = DB::table('fiyat_guncelleme_bildirims')
-                ->where('musteri_id', $musteri_id)
-                ->where('eposta', $email)
-                ->exists();
-    
-                // Eğer kayıt zaten yoksa tabloya ekle.
-                if (!$exists) {
-                        // Bildirim kaydını yapıyoruz
-                        FiyatGuncellemeBildirim::create([
+
+                // Müşteri kaydını al
+                $kayit = DB::table('fiyat_guncelleme_bildirims')
+                    ->where('musteri_id', $musteri_id)
+                    ->first();
+
+                if ($kayit) {
+                    // Aynı e-posta zaten kaydedilmiş mi kontrol et
+                    $eposta_sutunlari = ['eposta_bir', 'eposta_iki', 'eposta_uc', 'eposta_dort', 'eposta_bes'];
+                    $eposta_mevcut = false;
+
+                    foreach ($eposta_sutunlari as $sutun) {
+                        if ($kayit->$sutun === $email) {
+                            $eposta_mevcut = true;
+                            break; // Aynı e-posta varsa işlem yapma
+                        }
+                    }
+
+                    // Aynı e-posta yoksa boş olan ilk sütuna ekle
+                    if (!$eposta_mevcut) {
+                        foreach ($eposta_sutunlari as $sutun) {
+                            if (empty($kayit->$sutun)) {
+                                DB::table('fiyat_guncelleme_bildirims')
+                                    ->where('id', $kayit->id)
+                                    ->update([
+                                        $sutun => $email,
+                                        'updated_at' => now(),
+                                    ]);
+                                break; // Bir kez ekleme yaptıktan sonra döngüden çık
+                            }
+                        }
+                    }
+                } else {
+                    // Eğer müşteri kaydı yoksa, yeni bir kayıt oluştur
+                    FiyatGuncellemeBildirim::create([
                         'musteri_id' => $musteri_id,
-                        'eposta' => $email,
+                        'eposta_bir' => $email,
                         'bildirim_sekli' => 'eposta',
                         'bildirim_olacak_mi' => 1,
                         'created_at' => now(),
@@ -461,38 +488,49 @@ class MusteriController extends Controller
                     ]);
                 }
             }
-        } elseif(!empty($secilen_teller)) {
-            foreach ($secilen_teller as $tel) {
-                // $selected formatı: musteri_id_email şeklinde olduğu için ayırıyoruz.
-                [$musteri_id, $tel] = explode('_', $tel);
-    
-                // İlgili müşteri ve mail adresi zaten var mı kontrol et.
-                $exists = DB::table('fiyat_guncelleme_bildirims')
-                ->where('musteri_id', $musteri_id)
-                ->where('tel', $tel)
-                ->exists();
-    
+        }
 
-                // İlgili müşteri var mı kontrol et.
+        // Telefon işlemleri
+        if (!empty($secilen_teller)) {
+            foreach ($secilen_teller as $tel) {
+                [$musteri_id, $phone] = explode('_', $tel);
+
+                // Müşteri kaydını al
                 $kayit = DB::table('fiyat_guncelleme_bildirims')
-                ->where('musteri_id', $musteri_id)
-                ->first();
+                    ->where('musteri_id', $musteri_id)
+                    ->first();
 
                 if ($kayit) {
-                    // Müşteri varsa ve tel sütunu boşsa güncelle
-                    if (empty($kayit->tel)) {
-                        DB::table('fiyat_guncelleme_bildirims')
-                            ->where('id', $kayit->id)
-                            ->update([
-                                'tel' => $tel,
-                                'updated_at' => now(),
-                            ]);
+                    // Aynı telefon zaten kaydedilmiş mi kontrol et
+                    $tel_sutunlari = ['tel_bir', 'tel_iki', 'tel_uc', 'tel_dort', 'tel_bes'];
+                    $tel_mevcut = false;
+
+                    foreach ($tel_sutunlari as $sutun) {
+                        if ($kayit->$sutun === $phone) {
+                            $tel_mevcut = true;
+                            break; // Aynı telefon varsa işlem yapma
+                        }
                     }
-                } elseif(!$exists) {
-                    // Müşteri yoksa yeni bir kayıt oluştur
+
+                    // Aynı telefon yoksa boş olan ilk sütuna ekle
+                    if (!$tel_mevcut) {
+                        foreach ($tel_sutunlari as $sutun) {
+                            if (empty($kayit->$sutun)) {
+                                DB::table('fiyat_guncelleme_bildirims')
+                                    ->where('id', $kayit->id)
+                                    ->update([
+                                        $sutun => $phone,
+                                        'updated_at' => now(),
+                                    ]);
+                                break; // Bir kez ekleme yaptıktan sonra döngüden çık
+                            }
+                        }
+                    }
+                } else {
+                    // Eğer müşteri kaydı yoksa, yeni bir kayıt oluştur
                     FiyatGuncellemeBildirim::create([
                         'musteri_id' => $musteri_id,
-                        'tel' => $tel,
+                        'tel_bir' => $phone,
                         'bildirim_sekli' => 'wp',
                         'bildirim_olacak_mi' => 1,
                         'created_at' => now(),
@@ -501,6 +539,18 @@ class MusteriController extends Controller
                 }
             }
         }
+
+        return redirect()->route('bildirim.yazi.icerigi');
+    }
+
+
+
+    public function dorduncuAdim(Request $request){
+        $secilen_tarih = $request->input('bildirimTarih', []);
+        $tarihicin_secilen_id = $request->input('bildirimId', []);
+        $secilen_sinir_bs = $request->input('sinir_bs', []);
+        $sinirbs_secilen_id = $request->input('sinirBSBildirimId', []);
+
 
         if (!empty($secilen_tarih) && !empty($tarihicin_secilen_id)) {
             foreach ($secilen_tarih as $index => $tarih) {
@@ -526,7 +576,6 @@ class MusteriController extends Controller
             }
         }
 
-        // Değişkenleri query string ile birlikte yönlendiriyoruz
         return redirect()->route('bildirim.onay');
     }
 
