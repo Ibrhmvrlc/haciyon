@@ -173,19 +173,69 @@
                                                     @php
                                                         $musteri_epostalari = FiyatGuncellemeBildirim::where('musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
                                                     @endphp
-                                                    <b>E-posta:</b> 
+                                                    <b>E-posta</b> 
                                                     @foreach ($musteri_epostalari as $musteri_epostasi)
-                                                    {{$musteri_epostasi->eposta}} <br />
+                                                    <ul>
+                                                        @if ($musteri_epostasi->eposta_bir)
+                                                        <li>{{$musteri_epostasi->eposta_bir}}</li>
+                                                        @endif
+                                                        @if ($musteri_epostasi->eposta_iki)
+                                                        <li>{{$musteri_epostasi->eposta_iki}}</li>
+                                                        @endif
+                                                        @if ($musteri_epostasi->eposta_uc)
+                                                        <li>{{$musteri_epostasi->eposta_uc}}</li>
+                                                        @endif
+                                                        @if ($musteri_epostasi->eposta_dort)
+                                                        <li>{{$musteri_epostasi->eposta_dort}}</li>
+                                                        @endif
+                                                        @if ($musteri_epostasi->eposta_bes)
+                                                        <li>{{$musteri_epostasi->eposta_bes}}</li>
+                                                        @endif
+                                                    </ul>
                                                     @endforeach
                                                 @elseif ($musteri->bildirim_sekli == 'wp')
                                                     @php
                                                     $musteri_telleri = FiyatGuncellemeBildirim::where('musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
                                                     @endphp
-                                                    <b>WhatsApp:</b> 
+                                                    <b>WhatsApp</b> 
                                                     @foreach ($musteri_telleri as $musteri_teli)
-                                                        @if (substr($musteri_teli->tel, 0, 2) == '05')
-                                                        {{$musteri_teli->tel}} <br />
-                                                        @endif
+                                                        <ul>
+
+                                                            @if ($musteri_teli->tel_bir and substr($musteri_teli->tel_bir, 0, 2) == '05')
+                                                            @php
+                                                                $yetkili_bir = AktifMusteriYetkililer::where('tel', $musteri_teli->tel_bir)->first();
+                                                            @endphp
+                                                            <li>@if ($yetkili_bir) {{ $yetkili_bir->adi_soyadi }} - @else  @endif  {{$musteri_teli->tel_bir}}</li>
+                                                            @endif
+
+                                                            @if ($musteri_teli->tel_iki and substr($musteri_teli->tel_iki, 0, 2) == '05')
+                                                            @php
+                                                                $yetkili_iki = AktifMusteriYetkililer::where('tel', $musteri_teli->tel_iki)->first();
+                                                            @endphp
+                                                            <li>@if ($yetkili_iki) {{ $yetkili_iki->adi_soyadi }} - @else  @endif {{$musteri_teli->tel_iki}}</li>
+                                                            @endif
+
+                                                            @if ($musteri_teli->tel_uc and substr($musteri_teli->tel_uc, 0, 2) == '05')
+                                                            @php
+                                                                $yetkili_uc = AktifMusteriYetkililer::where('tel', $musteri_teli->tel_uc)->first();
+                                                            @endphp
+                                                            <li>@if ($yetkili_uc) {{ $yetkili_uc->adi_soyadi }} - @else  @endif {{$musteri_teli->yetkili_uc}}</li>
+                                                            @endif
+
+                                                            @if ($musteri_teli->tel_dort and substr($musteri_teli->tel_dort, 0, 2) == '05')
+                                                            @php
+                                                                $yetkili_dort = AktifMusteriYetkililer::where('tel', $musteri_teli->tel_dort)->first();
+                                                            @endphp
+                                                            <li>@if ($yetkili_dort) {{ $yetkili_dort->adi_soyadi }} - @else  @endif {{$musteri_teli->yetkili_dort}}</li>
+                                                            @endif
+
+                                                            @if ($musteri_teli->tel_bes and substr($musteri_teli->tel_bes, 0, 2) == '05')
+                                                            @php
+                                                                $yetkili_bes = AktifMusteriYetkililer::where('tel', $musteri_teli->tel_bes)->first();
+                                                            @endphp
+                                                            <li>@if ($yetkili_bes) {{ $yetkili_bes->adi_soyadi }} - @else  @endif {{$musteri_teli->yetkili_bes}}</li>
+                                                            @endif
+                                                        </ul>
                                                     @endforeach
                                                 @endif
                                             </td>
