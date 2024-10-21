@@ -200,7 +200,6 @@
                                                     <b>WhatsApp</b> 
                                                     @foreach ($musteri_telleri as $musteri_teli)
                                                         <ul>
-
                                                             @if ($musteri_teli->tel_bir and substr($musteri_teli->tel_bir, 0, 2) == '05')
                                                             @php
                                                                 $yetkili_bir = AktifMusteriYetkililer::where('tel', $musteri_teli->tel_bir)->first();
@@ -237,6 +236,8 @@
                                                             @endif
                                                         </ul>
                                                     @endforeach
+                                                @elseif ($musteri->bildirim_sekli == 'indir')
+                                                    <b>İndirilecektir</b>
                                                 @endif
                                             </td>
                                             <td style="text-align: center;">

@@ -15,7 +15,9 @@
 <body>
     <div class="container">
         <div class="title">
-            <div class="logo">BURAYA LOGO</div>
+            <div class="logo" style="text-align:left; margin-bottom: 2rem;">
+                <img src="{{ public_path('images/adsiz.png') }}" alt="logo" style="width: 40%; height: auto;">
+            </div>
             <div class="header-costumer-name">{{$musteri->first()->musteri_unvani}}</div>
             <div class="header-content">Fiyat Güncelleme Bildirimi</div>
         </div>

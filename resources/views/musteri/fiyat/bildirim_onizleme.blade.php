@@ -214,10 +214,10 @@
                                             </td>
 
                                             <td style="text-align: center; vertical-align: middle;">
-                                                <select class="default-placeholder" name="gonderim_sekli">
-                                                    <option value="eposta" value="eposta" @if ($musteri->bildirim_sekli == 'eposta') selected @endif >E-posta</option>
-                                                    <option value="wp" value="wp" @if ($musteri->bildirim_sekli == 'wp') selected @endif>WhatsApp</option>
-                                                    <option value="indir" value="indir" @if ($musteri->bildirim_sekli == 'indir') selected @endif>İndir</option>
+                                                <select class="default-placeholder" name="gonderim_sekli[]">
+                                                    <option value="{{$musteri->musteri_id}}_eposta" @if ($musteri->bildirim_sekli == 'eposta') selected @endif >E-posta</option>
+                                                    <option value="{{$musteri->musteri_id}}_wp" @if ($musteri->bildirim_sekli == 'wp') selected @endif >WhatsApp</option>
+                                                    <option value="{{$musteri->musteri_id}}_indir" @if ($musteri->bildirim_sekli == 'indir') selected @endif >İndir</option>
                                                 </select>
                                                 <style>
                                                     .select2-search {

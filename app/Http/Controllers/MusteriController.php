@@ -439,6 +439,20 @@ class MusteriController extends Controller
     {
         $secilen_epostalar = $request->input('epostalar', []);
         $secilen_teller = $request->input('teller', []);
+        $secilen_gonderim_sekli = $request->input('gonderim_sekli', []);
+
+        if (!empty($secilen_gonderim_sekli)) {
+            foreach ($secilen_gonderim_sekli as $gonderim_sekli) {
+                [$musteri_id, $gonderim] = explode('_', $gonderim_sekli);
+
+                DB::table('fiyat_guncelleme_bildirims')
+                ->where('musteri_id', $musteri_id)
+                ->update([
+                    'bildirim_sekli' => $gonderim,
+                    'updated_at' => now(),
+                ]);
+            }
+        }
 
         // E-posta işlemleri
         if (!empty($secilen_epostalar)) {
