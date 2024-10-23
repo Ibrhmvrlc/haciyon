@@ -55,25 +55,21 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::put('/aktif-musteri/update/{id}', [MusteriController::class, 'update'])->name('aktif_musteri.update');
     Route::delete('/aktif-musteri/destroy/{id}', [MusteriController::class, 'destroy'])->name('aktif_musteri.destroy');
 
-    Route::get('/zam-bildirimi/musteri-turu', [MusteriController::class, 'musteriTuru'])->name('bildirim.musteri.turu');
+    Route::get('/zam-bildirimi/musteri-turu', [MusteriController::class, 'musteriTuru'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.musteri.turu');
     Route::post('/zam-bildirimi/musteri-turu', [MusteriController::class, 'ilkAdimForm'])->name('bildirim.musteri.turu.form');
 
     Route::get('/zam-bildirimi/genel-tercihler', [MusteriController::class, 'gonderimSekli'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.gonderim.sekli');
     Route::post('/zam-bildirimi/genel-tercihler', [MusteriController::class, 'ikinciAdimForm'])->name('bildirim.gonderim.sekli.form');
 
-    Route::get('/zam-bildirimi/gonderim-tercihleri', [MusteriController::class, 'onizleme'])->name('bildirim.onizleme');
+    Route::get('/zam-bildirimi/gonderim-tercihleri', [MusteriController::class, 'onizleme'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.onizleme');
     Route::post('/zam-bildirimi/gonderim-tercihleri', [MusteriController::class, 'ucuncuAdim'])->name('bildirim.onizleme.form');
 
-    Route::get('/zam-bildirimi/yazi-icerigi', [MusteriController::class, 'yaziIcerigi'])->name('bildirim.yazi.icerigi');
+    Route::get('/zam-bildirimi/yazi-icerigi', [MusteriController::class, 'yaziIcerigi'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.yazi.icerigi');
     Route::post('/zam-bildirimi/yazi-icerigi', [MusteriController::class, 'dorduncuAdim'])->name('bildirim.yazi.icerigi.form');
 
-
-    Route::get('/zam-bildirimi/onay', [MusteriController::class, 'onay'])->name('bildirim.onay');
-    Route::get('/zam-bildirimi/fiyat-yazisi/{musteri_id}/{santiye_id}', [MusteriController::class, 'showPdf'])->name('bildirim.fiyat_yazisi');
+    Route::get('/zam-bildirimi/onay', [MusteriController::class, 'onay'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.onay');
+    Route::get('/zam-bildirimi/fiyat-yazisi/{musteri_id}/{santiye_id}', [MusteriController::class, 'showPdf'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.fiyat_yazisi');
     Route::post('/zam-bildirimi/onay', [MusteriController::class, 'xxxxxxxx'])->name('bildirim.onay.form');
-
-
-
 
     Route::get('/filtrele', [MusteriController::class, 'filter'])->name('musteri.filter');
 

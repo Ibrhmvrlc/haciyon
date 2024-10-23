@@ -323,6 +323,12 @@
             Content body start
         ***********************************-->
         <div class="content-body">
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+        
             @yield('content')
         </div>
         <!--**********************************

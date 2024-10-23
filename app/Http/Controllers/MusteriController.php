@@ -557,14 +557,11 @@ class MusteriController extends Controller
         return redirect()->route('bildirim.yazi.icerigi');
     }
 
-
-
     public function dorduncuAdim(Request $request){
         $secilen_tarih = $request->input('bildirimTarih', []);
         $tarihicin_secilen_id = $request->input('bildirimId', []);
         $secilen_sinir_bs = $request->input('sinir_bs', []);
         $sinirbs_secilen_id = $request->input('sinirBSBildirimId', []);
-
 
         if (!empty($secilen_tarih) && !empty($tarihicin_secilen_id)) {
             foreach ($secilen_tarih as $index => $tarih) {
@@ -592,7 +589,6 @@ class MusteriController extends Controller
 
         return redirect()->route('bildirim.onay');
     }
-
    
     public function bildirimForm()
     {

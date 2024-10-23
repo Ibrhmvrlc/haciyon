@@ -251,7 +251,7 @@
                                                             {{$santiye->santiye}} Fiyat Yazısı
                                                         </a>
                                                         -
-                                                        SİL
+                                                        <a href="xxxxx"><span class="ti-trash"></span></a>
                                                     </li>
                                                 @endforeach
                                                 </ul>
