@@ -242,7 +242,7 @@
                                             </td>
                                             <td style="text-align: center;">
                                                 @php
-                                                    $santiyeleri = AktifMusteriSantiye::where('aktif_musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
+                                                    $santiyeleri = AktifMusteriSantiye::where('aktif_musteri_id', $musteri->musteri_id)->where('aktif_mi', true)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
                                                 @endphp
                                                 <ul>
                                                 @foreach ($santiyeleri as $santiye)
@@ -251,7 +251,9 @@
                                                             {{$santiye->santiye}} Fiyat Yazısı
                                                         </a>
                                                         -
-                                                        <a href="xxxxx"><span class="ti-trash"></span></a>
+                                                        @if (isset($santiye->id))
+                                                        <a href="{{route('bildirim.onay.iptal.santiye', $santiye->id)}}"><span class="ti-trash"></span></a>
+                                                        @endif
                                                     </li>
                                                 @endforeach
                                                 </ul>

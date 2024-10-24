@@ -599,6 +599,7 @@ class MusteriController extends Controller
     public function showPdf($musteri_id, $santiye_id) {
         // İlgili şantiye ve müşteri için fiyat bilgilerini çekiyoruz
         $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $musteri_id)
+                        ->where('aktif_mi', true)
                         ->where('santiye_id', $santiye_id)
                         ->get();
 
@@ -613,6 +614,18 @@ class MusteriController extends Controller
 
         // PDF'i yeni sekmede açmak için stream metodu
         return $pdf->stream('fiyat_guncelleme_yazisi.pdf');
+    }
+
+    public function yaziyiIptalEt($id){
+        $santiye_tablosu = AktifMusteriSantiye::findOrFail($id);
+        $santiye_tablosu->aktif_mi = false;
+        $santiye_tablosu->save();
+
+        $fiyat_tablosu = AktifSantiyeFiyat::findOrFail($id);
+        $fiyat_tablosu->aktif_mi = false;
+        $fiyat_tablosu->save();
+
+        return back()->with('success', 'Yazı iptal edildi.');
     }
 
  /*
