@@ -628,6 +628,18 @@ class MusteriController extends Controller
         return back()->with('success', 'Yazı iptal edildi.');
     }
 
+    public function yaziyiAktifEt($id){
+        $santiye_tablosu = AktifMusteriSantiye::findOrFail($id);
+        $santiye_tablosu->aktif_mi = true;
+        $santiye_tablosu->save();
+
+        $fiyat_tablosu = AktifSantiyeFiyat::findOrFail($id);
+        $fiyat_tablosu->aktif_mi = true;
+        $fiyat_tablosu->save();
+
+        return back()->with('success', 'Yazı Aktif edildi.');
+    }
+
  /*
     public function bildirimGonder(Request $request)
     {

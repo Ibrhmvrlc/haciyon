@@ -17,7 +17,6 @@ class ReferrerMiddleware
     {
         // Rotalar ve izin verilen referer'lar
         $refererRoutes = [
-            'bildirim.musteri.turu' => [route('updatePage')], // Sadece updatePage'den
             'bildirim.gonderim.sekli' => [route('bildirim.musteri.turu.form')], // Sadece muster.turu.form'dan
             'bildirim.onizleme' => [route('bildirim.gonderim.sekli.form')], // Sadece gonderim.sekli.form'dan
             'bildirim.yazi.icerigi' => [route('bildirim.onizleme.form')], // Sadece onizleme.form'dan

@@ -159,7 +159,7 @@
                                             <th style="text-align: center; vertical-align: middle;">Onay</th>
                                             <th style="text-align: center; vertical-align: middle;">Müşteri Ünvanı</th>
                                             <th style="text-align: center; vertical-align: middle; min-width: 120px;">Özet Bilgi</th>
-                                            <th style="text-align: center; vertical-align: middle;">Bildirim Yazısı</th>
+                                            <th style="text-align: center; vertical-align: middle;">Şantiye Bazlı Bildirim Yazısı</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -242,17 +242,21 @@
                                             </td>
                                             <td style="text-align: center;">
                                                 @php
-                                                    $santiyeleri = AktifMusteriSantiye::where('aktif_musteri_id', $musteri->musteri_id)->where('aktif_mi', true)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
+                                                    $santiyeleri = AktifMusteriSantiye::where('aktif_musteri_id', $musteri->musteri_id)->get(); //MODELLERDEN YAPILMA SEKLI VAR BU ISLEMIN
                                                 @endphp
                                                 <ul>
                                                 @foreach ($santiyeleri as $santiye)
                                                     <li>
+                                                        @if ($santiye->aktif_mi == true)
                                                         <a href="{{route('bildirim.fiyat_yazisi', ['musteri_id' => $musteri->musteri_id, 'santiye_id' => $santiye->id])}}" target="_blank">
                                                             {{$santiye->santiye}} Fiyat Yazısı
                                                         </a>
                                                         -
-                                                        @if (isset($santiye->id))
-                                                        <a href="{{route('bildirim.onay.iptal.santiye', $santiye->id)}}"><span class="ti-trash"></span></a>
+                                                        <a href="{{route('bildirim.onay.iptal.santiye', $santiye->id)}}">Pasif Yap</a>
+                                                        @elseif ($santiye->aktif_mi == false)
+                                                        <s>{{$santiye->santiye}}</s>
+                                                        -
+                                                        <a href="{{route('bildirim.onay.aktif.santiye', $santiye->id)}}">Aktif Yap</a>
                                                         @endif
                                                     </li>
                                                 @endforeach

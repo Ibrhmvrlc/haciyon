@@ -55,7 +55,7 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::put('/aktif-musteri/update/{id}', [MusteriController::class, 'update'])->name('aktif_musteri.update');
     Route::delete('/aktif-musteri/destroy/{id}', [MusteriController::class, 'destroy'])->name('aktif_musteri.destroy');
 
-    Route::get('/zam-bildirimi/musteri-turu', [MusteriController::class, 'musteriTuru'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.musteri.turu');
+    Route::get('/zam-bildirimi/musteri-turu', [MusteriController::class, 'musteriTuru'])->name('bildirim.musteri.turu');
     Route::post('/zam-bildirimi/musteri-turu', [MusteriController::class, 'ilkAdimForm'])->name('bildirim.musteri.turu.form');
 
     Route::get('/zam-bildirimi/genel-tercihler', [MusteriController::class, 'gonderimSekli'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.gonderim.sekli');
@@ -71,6 +71,7 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
     Route::get('/zam-bildirimi/fiyat-yazisi/{musteri_id}/{santiye_id}', [MusteriController::class, 'showPdf'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.fiyat_yazisi');
     Route::post('/zam-bildirimi/onay', [MusteriController::class, 'xxxxxxxx'])->name('bildirim.onay.form');
     Route::get('/zam-bildirimi/onay/iptal/{id}', [MusteriController::class, 'yaziyiIptalEt'])->name('bildirim.onay.iptal.santiye');
+    Route::get('/zam-bildirimi/onay/aktif/{id}', [MusteriController::class, 'yaziyiAktifEt'])->name('bildirim.onay.aktif.santiye');
 
 
     Route::get('/filtrele', [MusteriController::class, 'filter'])->name('musteri.filter');
