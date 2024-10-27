@@ -38,7 +38,9 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
         Route::get('/bilgilendirme', [PermissionController::class, 'showInfo'])->middleware(\App\Http\Middleware\IsPending::class)->name('showInfo');
         Route::post('/bilgilendirme', [PermissionController::class, 'confirmRead'])->name('confirmRead');
         Route::get('/onay-bekleniyor', [PermissionController::class, 'permissionPending'])->middleware(\App\Http\Middleware\IsTherePermission::class)->name('permission.pending');
-        Route::get('/guncelle', [MusteriController::class, 'updatePage'])->middleware(\App\Http\Middleware\CheckPermission::class)->name('updatePage');
+
+        Route::get('/tabulator-data', [MusteriController::class, 'getData'])->middleware(\App\Http\Middleware\CheckPermission::class)->name('updatePage');
+        Route::post('/tabulator-data', [MusteriController::class, 'updateData'])->name('tabulator.updateData');
     });
     Route::get('/profil/{id}', [MusteriController::class, 'profile'])->name('musteri.profil');
     Route::get('/aktif-musteri-profil/{id}', [MusteriController::class, 'aktifProfile'])->name('aktif.musteri.profil');
@@ -78,9 +80,6 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
 
 });
 
-Route::prefix('api')->group(function () {
-    Route::put('/data/{id}', [ZamAPIController::class, 'update'])->name('api.update');
-});
 
 Route::middleware(['auth'])->prefix('/yonetim')->group(function(){ // YONETICELER
     Route::get('/fiyat-guncelleme-talepleri', [YonetimController::class, 'fiyatGuncellemeTalepleri'])->name('fiyat.guncelleme.talepleri');

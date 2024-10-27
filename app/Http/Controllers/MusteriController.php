@@ -208,12 +208,11 @@ class MusteriController extends Controller
         return redirect()->back();
     }
 
-    public function updatePage(){
-        $title = 'Fiyat Listesi';
-       
+    public function getData()
+    {
         // Müşteri, şantiye ve fiyat ilişkilerini çekiyoruz
         $musteriler = AktifMusteriler::with(['santiyeler.fiyatlar'])->get();
-       
+        $title = 'Fiyat Listesi';
         $veriler = []; // Verileri dışarıda başlat 
        
         foreach ($musteriler as $musteri) {
@@ -229,12 +228,64 @@ class MusteriController extends Controller
                         'artis' => $fiyat->first()->artis ?? 0,
                         'azalis' => $fiyat->first()->azalis ?? 0,
                         'pb' => $fiyat->first()->pb ?? 0,
+                        'aktif_mi' => $fiyat->first()->aktif_mi ?? 0,
+                        'pb_siniri' => $fiyat->first()->pb_siniri ?? 0,
                     ];  
             }
         }
 
         return view('musteri.fiyat.fiyat_listesi', compact('veriler', 'title'));
     }
+
+    public function updateData(Request $request, $id) {
+        // İlgili veriyi bul
+        $dbsave = AktifSantiyeFiyat::findOrFail($id);
+
+        if($dbsave->beton_sinifi != $request->input('beton_sinifi')) {
+            $dbsave->beton_sinifi = $request->input('beton_sinifi');
+        }
+
+        if($dbsave->fiyat != $request->input('fiyat')) {
+            $dbsave->fiyat = $request->input('fiyat');
+        }
+
+        if($dbsave->katki_farki != $request->input('katki_farki')) {
+            $dbsave->katki_farki = $request->input('katki_farki');
+        }
+
+        if($dbsave->artis != $request->input('artis')) {
+            $dbsave->artis = $request->input('artis');
+        }
+
+        if($dbsave->azalis != $request->input('azalis')) {
+            $dbsave->azalis = $request->input('azalis');
+        }
+
+        if($dbsave->pb != $request->input('pb')) {
+            $dbsave->pb = $request->input('pb');
+        }
+
+        // Veriyi kaydet
+        $dbsave->save();
+
+        if ($dbsave) {
+            $dbsave->update($request->all()); // Tüm gelen verileri güncelle
+            return response()->json(['success' => true, 'message' => 'Data updated successfully!']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data not found!'], 404);
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     public function musteriTuru(){
         $title = 'Müşteri Türü';

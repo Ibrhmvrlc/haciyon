@@ -13,6 +13,8 @@
     <link href="{{asset('vendor/jqvmap/css/jqvmap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
     <link href="{{asset('./vendor/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+
 
     <!-- Datatable -->
     <link href="{{asset('./vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">

@@ -59,26 +59,25 @@
             <a href="{{route('bildirim.musteri.turu')}}" class="btn btn-primary">Bildirim Yap</a>
         </div>
     </div>
+
+
     <div class="card">
         <div class="card-header">
-            <h3>Müşteri Fiyat Listesi</h3>
+            <h3>Müşteri Fiyat Listesi tabulator</h3>
         </div>
         <div class="card-body">
-            <div id="jsGrid"></div>
+            <div id="example-table"></div>
         </div>
     </div>
-    
-    <!-- jQuery (jsGrid'in bağımlılığı) -->
-    <script src="{{asset('https://code.jquery.com/jquery-3.6.0.min.js')}}"></script>
 
-    <!-- jsGrid JS -->
-    <script src="{{asset('https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
         var clients = @json($veriler);
-
+        
         var betonSinifi = [
-            { Name: "", Id: 0 },
             { Name: "C16", Id: 1 },
             { Name: "C20", Id: 2 },
             { Name: "C25", Id: 3 },
@@ -89,80 +88,102 @@
             { Name: "C50", Id: 8 }
         ];
 
-        $("#jsGrid").jsGrid({
-            width: "100%",
-            height: "auto",
+        // Beton sınıfı seçeneklerini çıkarıyoruz
+        var betonSinifiOptions = betonSinifi.reduce((acc, item) => {
+            acc[item.Id] = item.Name;
+            return acc;
+        }, {});
 
-            inserting: false,
-            deleting: false,
-            editing: true,
-            sorting: true,
-            paging: true,
-            deleteButton: false,
-            noDataContent: "Kayıt bulunamadı.", // Scrollbar olmadan boş veri gösterme
-            pageSize: 50, // Sayfa başına gösterilecek kayıt sayısı
-            pageButtonCount: 5, // Görüntülenecek sayfa düğmesi sayısı
-
+        // Tabloyu başlat
+        var table = new Tabulator("#example-table", {
             data: clients,
-
-            fields: [
-                { name: "id", type: "number", width: 40, validate: "required", css: "wrap-text text-center", editing: false, readOnly: true, insertable: false },
-                { name: "musteri", title: "Müşteri", type: "text", width: 100, validate: "required", css: "wrap-text", editing: false, readOnly: true, insertable: false  },
-                { name: "santiye", title: "Şantiye" , type: "text", width: 60, css: "wrap-text text-center", editing: false, readOnly: true, insertable: false   },
-                { name: "beton_sinifi", title: "Beton Sınıfı" , type: "select",  width: 40, items: betonSinifi, valueField: "Id", textField: "Name" },
-                { name: "fiyat", title: "Fiyat" , type: "number", width: 40, css: "number-center" },
-                { name: "katki_farki", title: "Katkı (+)" , type: "number", width: 40, css: "number-center" },
-                { name: "artis", title: "Üst Sınıf (+)" , type: "number", width: 40, css: "number-center" },
-                { name: "azalis", title: "Alt Sınıf (-)" , type: "number", width: 40, css: "number-center" },
-                { name: "pb", title: "Pompa Fiyatı" , type: "number", width: 40, css: "number-center" },
-                { type: "control", width: 40 }
-            ],
-
-            onItemUpdated: function(args) {
+            layout: "fitColumns",
+            responsiveLayout: "collapse",
+            addRowPos: "top",
+            history: true,
+            pagination: "local",
+            paginationSize: 50,
+            paginationCounter: "rows",
+            movableColumns: true,
+            initialSort: [{ column: "name", dir: "asc" }],
+            columnDefaults: {
+                tooltip: true,
+                cellVerticalAlign: "top",
+                cssClass: "wrap-text",
+            },
+            columns: [
+                { title: "A/P", field: "aktif_mi", width: 58, hozAlign: "center", formatter: "tickCross", sorter: "boolean", editor: true },
+                { title: "Ünvan", field: "musteri", width: 280 },
+                { title: "Şantiye", field: "santiye", width: 165 },
+                {
+                    title: "Sınıf",
+                    field: "beton_sinifi",
+                    width: 64,
+                    editor: "list",
+                    editorParams: {
+                        values: betonSinifiOptions,
+                    },
+                    formatter: function (cell) {
+                        return betonSinifiOptions[cell.getValue()] || cell.getValue();
+                    },
+                    hozAlign: "center"
+                },
+                { title: "Fiyat", field: "fiyat", editor: "input", hozAlign: "center", width: 65 },
+                { title: "Üst(+)", field: "artis", editor: "input", hozAlign: "center", width: 73 },
+                { title: "Alt(-)", field: "azalis", editor: "input", hozAlign: "center", width: 69 },
+                { title: "Brt-Ktz", field: "katki_farki", editor: "input", hozAlign: "center", width: 80 },
+                { title: "PB", field: "pb", editor: "input", hozAlign: "center", width: 79 },
+                { title: "PB Sınır", field: "pb_siniri", editor: "input", hozAlign: "center", width: 115 , cellEdited:function(cell){
+                    var updatedData = cell.getRow().getData();
+                
                 $.ajax({
-                    url: '/api/data/' + args.item.id,
-                    type: 'PUT',
-                    data: args.item,
+                    url: `{{ route('tabulator.updateData', ':id') }}`.replace(':id', updatedData.id),
+                    type: 'post',
+                    data: JSON.stringify(updatedData),
+                    contentType: 'application/json',
                     dataType: 'json',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
-                        $("#jsGrid").jsGrid("loadData");
+                        console.log("Güncelleme başarılı:", response);
+                        table.updateData([response.data]);  // Tabloyu güncel veriyle güncelle
                     },
                     error: function(xhr) {
-                        alert("Hata: " + xhr.responseJSON.message);
+                        console.log(xhr);
+                        let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Bilinmeyen bir hata oluştu.';
+                        alert("Hata: " + errorMessage);
                     }
                 });
-            },
+    },
+},
+            ],
+            cellEdited: function(cell) {  // Hücre düzenlendiğinde güncelle
+                var updatedData = cell.getRow().getData();
+                
+                $.ajax({
+                    url: `{{ route('tabulator.updateData', ':id') }}`.replace(':id', updatedData.id),
+                    type: 'PUT',
+                    data: JSON.stringify(updatedData),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log("Güncelleme başarılı:", response);
+                        table.updateData([response.data]);  // Tabloyu güncel veriyle güncelle
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                        let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Bilinmeyen bir hata oluştu.';
+                        alert("Hata: " + errorMessage);
+                    }
+                });
+            }
         });
-    </script>
-    <style>
-        .jsgrid-grid-header .jsgrid-header-cell {
-            background-color: #343a40; /* İstediğiniz rengi buraya yazın */
-            color: #fff !important;
-        }
+    });
 
-        .jsgrid-grid-header {
-            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
-        }
-
-        .jsgrid-grid-body {
-            overflow-y: hidden; /* Dikey scroll'u gizlemek için */
-        }
-
-        .number-center {
-            text-align: center;
-        }
-
-        .jsgrid-cell {
-            white-space: normal; /* Metinlerin hücre sınırlarına göre sarılmasını sağlar */
-            word-wrap: break-word; /* Uzun kelimelerin hücre sınırlarına göre kırılmasını sağlar */
-            overflow: hidden; /* Taşmayı gizler */
-        }
-        .jsgrid-delete-button{
-            display: none;
-        }
-    </style>
+    </script>   
 </div>
 @endsection
