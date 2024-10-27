@@ -40,7 +40,7 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
         Route::get('/onay-bekleniyor', [PermissionController::class, 'permissionPending'])->middleware(\App\Http\Middleware\IsTherePermission::class)->name('permission.pending');
 
         Route::get('/tabulator-data', [MusteriController::class, 'getData'])->middleware(\App\Http\Middleware\CheckPermission::class)->name('updatePage');
-        Route::post('/tabulator-data', [MusteriController::class, 'updateData'])->name('tabulator.updateData');
+        Route::post('/tabulator-data/{id}', [MusteriController::class, 'updateData'])->name('tabulator.updateData');
     });
     Route::get('/profil/{id}', [MusteriController::class, 'profile'])->name('musteri.profil');
     Route::get('/aktif-musteri-profil/{id}', [MusteriController::class, 'aktifProfile'])->name('aktif.musteri.profil');

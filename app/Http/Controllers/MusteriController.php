@@ -265,6 +265,18 @@ class MusteriController extends Controller
             $dbsave->pb = $request->input('pb');
         }
 
+        if($dbsave->pb_siniri != $request->input('pb_siniri')) {
+            $dbsave->pb_siniri = $request->input('pb_siniri');
+        }
+        
+        if($dbsave->aktif_mi != $request->input('aktif_mi')) {
+            $dbsave->aktif_mi = $request->input('aktif_mi');
+
+            $santiye = AktifMusteriSantiye::findOrFail($id);
+            $santiye->aktif_mi = $request->input('aktif_mi');
+            $santiye->save();
+        }
+
         // Veriyi kaydet
         $dbsave->save();
 
@@ -274,7 +286,6 @@ class MusteriController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Data not found!'], 404);
-
     }
 
 

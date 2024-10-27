@@ -60,12 +60,11 @@
         </div>
     </div>
 
-
     <div class="card">
         <div class="card-header">
             <h3>Müşteri Fiyat Listesi tabulator</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body" >
             <div id="example-table"></div>
         </div>
     </div>
@@ -75,69 +74,74 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-        var clients = @json($veriler);
-        
-        var betonSinifi = [
-            { Name: "C16", Id: 1 },
-            { Name: "C20", Id: 2 },
-            { Name: "C25", Id: 3 },
-            { Name: "C30", Id: 4 },
-            { Name: "C35", Id: 5 },
-            { Name: "C40", Id: 6 },
-            { Name: "C45", Id: 7 },
-            { Name: "C50", Id: 8 }
-        ];
+            var clients = @json($veriler);
+            
+            var betonSinifi = [
+                { Name: "C16", Id: 1 },
+                { Name: "C20", Id: 2 },
+                { Name: "C25", Id: 3 },
+                { Name: "C30", Id: 4 },
+                { Name: "C35", Id: 5 },
+                { Name: "C40", Id: 6 },
+                { Name: "C45", Id: 7 },
+                { Name: "C50", Id: 8 }
+            ];
 
-        // Beton sınıfı seçeneklerini çıkarıyoruz
-        var betonSinifiOptions = betonSinifi.reduce((acc, item) => {
-            acc[item.Id] = item.Name;
-            return acc;
-        }, {});
+            // Beton sınıfı seçeneklerini çıkarıyoruz
+            var betonSinifiOptions = betonSinifi.reduce((acc, item) => {
+                acc[item.Id] = item.Name;
+                return acc;
+            }, {});
 
-        // Tabloyu başlat
-        var table = new Tabulator("#example-table", {
-            data: clients,
-            layout: "fitColumns",
-            responsiveLayout: "collapse",
-            addRowPos: "top",
-            history: true,
-            pagination: "local",
-            paginationSize: 50,
-            paginationCounter: "rows",
-            movableColumns: true,
-            initialSort: [{ column: "name", dir: "asc" }],
-            columnDefaults: {
-                tooltip: true,
-                cellVerticalAlign: "top",
-                cssClass: "wrap-text",
-            },
-            columns: [
-                { title: "A/P", field: "aktif_mi", width: 58, hozAlign: "center", formatter: "tickCross", sorter: "boolean", editor: true },
-                { title: "Ünvan", field: "musteri", width: 280 },
-                { title: "Şantiye", field: "santiye", width: 165 },
-                {
-                    title: "Sınıf",
-                    field: "beton_sinifi",
-                    width: 64,
-                    editor: "list",
-                    editorParams: {
-                        values: betonSinifiOptions,
-                    },
-                    formatter: function (cell) {
-                        return betonSinifiOptions[cell.getValue()] || cell.getValue();
-                    },
-                    hozAlign: "center"
+            // Tabloyu başlat
+            var table = new Tabulator("#example-table", {
+                data: clients,
+                layout: "fitDataFill",
+                addRowPos: "top",
+                history: true,
+                pagination: "local",
+                paginationSize: 50,
+                paginationCounter: "rows",
+                movableColumns: true,
+                initialSort: [{ column: "name", dir: "asc" }],
+                columnDefaults: {
+                    tooltip: true,
+                    cellVerticalAlign: "top",
+                    cssClass: "wrap-text",
                 },
-                { title: "Fiyat", field: "fiyat", editor: "input", hozAlign: "center", width: 65 },
-                { title: "Üst(+)", field: "artis", editor: "input", hozAlign: "center", width: 73 },
-                { title: "Alt(-)", field: "azalis", editor: "input", hozAlign: "center", width: 69 },
-                { title: "Brt-Ktz", field: "katki_farki", editor: "input", hozAlign: "center", width: 80 },
-                { title: "PB", field: "pb", editor: "input", hozAlign: "center", width: 79 },
-                { title: "PB Sınır", field: "pb_siniri", editor: "input", hozAlign: "center", width: 115 , cellEdited:function(cell){
-                    var updatedData = cell.getRow().getData();
-                
+                columns: [
+                    { title: "A/P", field: "aktif_mi", width: "4%", hozAlign: "center", formatter: "tickCross", sorter: "boolean", editor: true },
+                    { title: "Ünvan", field: "musteri", width: "32%" },
+                    { title: "Şantiye", field: "santiye", width: "15%" },
+                    {
+                        title: "Sınıf",
+                        field: "beton_sinifi",
+                        width: "5%",
+                        editor: "list",
+                        editorParams: {
+                            values: betonSinifiOptions,
+                        },
+                        formatter: function (cell) {
+                            return betonSinifiOptions[cell.getValue()] || cell.getValue();
+                        },
+                        hozAlign: "center"
+                    },
+                    { title: "Fiyat", field: "fiyat", editor: "input", hozAlign: "center", width: "5%" },
+                    { title: "Üst(+)", field: "artis", editor: "input", hozAlign: "center", width: "7%" },
+                    { title: "Alt(-)", field: "azalis", editor: "input", hozAlign: "center", width: "6%" },
+                    { title: "Brt-Ktz", field: "katki_farki", editor: "input", hozAlign: "center", width: "8%" },
+                    { title: "PB", field: "pb", editor: "input", hozAlign: "center", width: "8%" },
+                    { title: "PB Sınır", field: "pb_siniri", editor: "input", hozAlign: "center", width: "10%" },
+                ]
+            });
+
+            table.on("cellEdited", function(cell) {
+                var updatedData = cell.getRow().getData();
+                var field = cell.getColumn().getField(); // Hangi alanın güncellendiğini al
+            
+                // Diğer hücreler için genel güncelleme işlemi
                 $.ajax({
-                    url: `{{ route('tabulator.updateData', ':id') }}`.replace(':id', updatedData.id),
+                    url: `/musteri/fiyat-listesi/tabulator-data/${updatedData.id}`,
                     type: 'post',
                     data: JSON.stringify(updatedData),
                     contentType: 'application/json',
@@ -147,7 +151,7 @@
                     },
                     success: function(response) {
                         console.log("Güncelleme başarılı:", response);
-                        table.updateData([response.data]);  // Tabloyu güncel veriyle güncelle
+                        table.updateData([response.data]);
                     },
                     error: function(xhr) {
                         console.log(xhr);
@@ -155,35 +159,8 @@
                         alert("Hata: " + errorMessage);
                     }
                 });
-    },
-},
-            ],
-            cellEdited: function(cell) {  // Hücre düzenlendiğinde güncelle
-                var updatedData = cell.getRow().getData();
-                
-                $.ajax({
-                    url: `{{ route('tabulator.updateData', ':id') }}`.replace(':id', updatedData.id),
-                    type: 'PUT',
-                    data: JSON.stringify(updatedData),
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        console.log("Güncelleme başarılı:", response);
-                        table.updateData([response.data]);  // Tabloyu güncel veriyle güncelle
-                    },
-                    error: function(xhr) {
-                        console.log(xhr);
-                        let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Bilinmeyen bir hata oluştu.';
-                        alert("Hata: " + errorMessage);
-                    }
-                });
-            }
+            });
         });
-    });
-
     </script>   
 </div>
 @endsection
