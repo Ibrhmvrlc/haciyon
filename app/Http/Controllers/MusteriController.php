@@ -288,16 +288,6 @@ class MusteriController extends Controller
         return response()->json(['success' => false, 'message' => 'Data not found!'], 404);
     }
 
-
-
-
-
-
-
-
-
-
-
     public function musteriTuru(){
         $title = 'Müşteri Türü';
         $turler = Tur::all();
@@ -651,7 +641,7 @@ class MusteriController extends Controller
 
         return redirect()->route('bildirim.onay');
     }
-   
+
     public function bildirimForm()
     {
         $musteriler = FiyatGuncellemeBildirim::with('santiyeFiyatlar')->get();
@@ -701,6 +691,25 @@ class MusteriController extends Controller
 
         return back()->with('success', 'Yazı Aktif edildi.');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
  /*
     public function bildirimGonder(Request $request)
