@@ -148,7 +148,7 @@
                     </script>
 
                     <!-- STEP 4 START-->
-                    <form action="xxxxxxxxx" method="post">
+                    <form action="{{route('bildirim.onay.form')}}" method="post">
                         @csrf
                         <div class="row">
                             <h2 class="mb-4 ml-4">Bildirim Onay</h2>

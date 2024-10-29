@@ -334,6 +334,15 @@
                 </div>
             </div>
             @endif
+
+            @if(session('success'))
+            <div style="margin:auto; max-width:95%">
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            </div>
+            @endif
+
             @yield('content')
         </div>
         <!--**********************************

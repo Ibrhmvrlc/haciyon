@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\FiyatGuncellemeBildirimMail;
 
 
 use function PHPUnit\Framework\isEmpty;
@@ -692,7 +693,36 @@ class MusteriController extends Controller
         return back()->with('success', 'Yazı Aktif edildi.');
     }
 
-
+    public function topluFiyatGuncellemeBildirimiGonder(){
+        // MAIL ILE GONDERME BASLANGICI
+        $fiyat_guncelleme_bildirims = FiyatGuncellemeBildirim::where('bildirim_sekli', 'eposta')->where('bildirim_olacak_mi', true)->get();
+    
+        foreach ($fiyat_guncelleme_bildirims as $musteri) {
+            // E-posta adreslerini diziye ekleyin
+            $musteriEmails = array_filter([
+                $musteri->eposta_bir,
+                $musteri->eposta_iki,
+                $musteri->eposta_uc,
+                $musteri->eposta_dort,
+                $musteri->eposta_bes,
+            ]);
+    
+            // Şantiyeleri gruplayarak alın
+            $fiyatlar = AktifSantiyeFiyat::where('aktif_musteri_id', $musteri->musteri_id)
+                        ->where('aktif_mi', true)
+                        ->get()
+                        ->groupBy('santiye_id');
+    
+            $urunler = Urunler::all();
+    
+            // Her şantiye için ayrı PDF dosyaları oluşturmak için güncel Mail çağrısı
+            Mail::to($musteriEmails)->send(new FiyatGuncellemeBildirimMail($musteri, $fiyatlar, $urunler));
+        }
+    
+        return redirect()->route('home')->with('success', 'Fiyat Güncelleme Bildirimi başarıyla gönderilmiştir.');
+        // MAIL ILE GONDERME SONU
+    }
+    
 
 
 

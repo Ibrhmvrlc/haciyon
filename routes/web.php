@@ -71,7 +71,7 @@ Route::middleware(['auth'])->prefix('/musteri')->group(function(){ // PAZARLAMAC
 
     Route::get('/zam-bildirimi/onay', [MusteriController::class, 'onay'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.onay');
     Route::get('/zam-bildirimi/fiyat-yazisi/{musteri_id}/{santiye_id}', [MusteriController::class, 'showPdf'])->middleware(\App\Http\Middleware\ReferrerMiddleware::class)->name('bildirim.fiyat_yazisi');
-    Route::post('/zam-bildirimi/onay', [MusteriController::class, 'xxxxxxxx'])->name('bildirim.onay.form');
+    Route::post('/zam-bildirimi/onay', [MusteriController::class, 'topluFiyatGuncellemeBildirimiGonder'])->name('bildirim.onay.form');
     Route::get('/zam-bildirimi/onay/iptal/{id}', [MusteriController::class, 'yaziyiIptalEt'])->name('bildirim.onay.iptal.santiye');
     Route::get('/zam-bildirimi/onay/aktif/{id}', [MusteriController::class, 'yaziyiAktifEt'])->name('bildirim.onay.aktif.santiye');
 
